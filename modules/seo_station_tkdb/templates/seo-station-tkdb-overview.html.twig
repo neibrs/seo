@@ -36,32 +36,24 @@
 
 {{ content.second }}
 
-<div class="card-list card-list--four-cols mb-3">
-
+<div class="row py-1">
   {% for station in content.stations %}
-  <div class="card card--vertical card-list__item" aria-labelledby="bootstrap5-label" aria-describedby="bootstrap5-description">
-
-    <div class="card__content-wrapper">
-      <div class="card__content">
-        <div id="bootstrap5-description" class="card__content-item">
-          分组名称： <b>{{ station.name }}</b>
-        </div>
-        <div id="bootstrap5-description" class="card__content-item">
-          所属模型： <b>{{ station.model }}</b>
-        </div>
-      </div>
-
-      <div class="card__footer">
-
-        <ul class="operations clearfix action-links text-left">
-          <li class="action-links__item">
-            主配置：<a href="#" title="Install Bootstrap5 theme" class="action-link action-link--icon-checkmark action-link--small">未设置，点击设置</a>
-          </li>
-          <li class="action-links__item">
-            泛域名：<a href="#" title="将 Bootstrap5 设置为默认主题" class="action-link action-link--icon-checkmark action-link--small ml-0">未设置，点击设置</a>
-          </li>
-        </ul>
-      </div>
+  <div class="col-3 d-flex">
+    <div class="tkdb-boxlist">
+      <dl style="width: 200px;text-align:left;">
+        <dt>
+          <p style="text-align:left;">分组名称：<b>{{ station.name }}</b></p>
+          <p style="text-align:left;">所属模型：{{ station.model }}</p>
+        </dt>
+        <dd>
+          <b style="color:black">主配置：</b>
+          <a class="button button_small" href="javascript:" onclick="editdm('7','test','zhu');">未设置，点击设置</a>
+        </dd>
+        <dd style="margin-top:5px;border-top:1px dotted #ccc;padding:5px 0;">
+          <b style="color:black">泛域名：</b>
+          <a class="button button_small" href="javascript:" onclick="editdm('7','test','fan');">未设置，点击设置</a>
+        </dd>
+      </dl>
     </div>
   </div>
   {% endfor %}
