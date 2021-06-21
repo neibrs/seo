@@ -5,6 +5,7 @@
  * Enables modules and site configuration for a airui site installation.
  */
 
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\contact\Entity\ContactForm;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Link;
@@ -65,19 +66,18 @@ function airui_form_install_configure_submit($form, FormStateInterface $form_sta
 /**
  * Implements hook_form_FORM_ID_alter() for install_select_language_form.
  */
-function airui_form_install_select_language_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function airui_form_install_select_language_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#title'] = '选择语言环境';
   $link_to_english = install_full_redirect_url(['parameters' => ['langcode' => 'en']]);
   $form['help']['#markup'] = '<p>从<a href="http://localize.drupal.org">Drupal翻译站点</a>下载翻译文件. 如果您想安装英文环境，选择<a href="' . $link_to_english . '">English</a>.</p>';
 
-
   $site_path = \Drupal::getContainer()->getParameter('site.path');
-//  $files_directory = $site_path . '/files';
+  //  $files_directory = $site_path . '/files';
   $normal_directory = $site_path . '/files/normal';
 
   $source = drupal_get_path('profile', 'airui') . '/软件协议.txt';
   $file_system = Drupal::service('file_system');
-  $file_system->prepareDirectory($normal_directory, \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY | \Drupal\Core\File\FileSystemInterface::MODIFY_PERMISSIONS);
+  $file_system->prepareDirectory($normal_directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
   $file_system->copy($source, PublicStream::basePath() . '/normal');
 
   $xieyi = file_get_contents($source);
@@ -100,7 +100,7 @@ function airui_form_install_select_language_form_alter(&$form, \Drupal\Core\Form
 /**
  * Implements hook_form_FORM_ID_alter() for install_settings_form.
  */
-function airui_form_install_settings_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function airui_form_install_settings_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#title'] = '数据库配置';
   $form['driver']['#title'] = '数据库类型';
 
@@ -132,6 +132,7 @@ function airui_form_install_settings_form_alter(&$form, \Drupal\Core\Form\FormSt
 function airui_preprocess_install_page(&$variables) {
   $variables['site_version'] = '1.0';
 }
+
 /**
  * Implements hook_install_tasks_alter().
  */
@@ -144,7 +145,7 @@ function airui_install_tasks_alter(&$tasks, $install_state) {
   $tasks['install_configure_form']['display_name'] = '站点设置';
 
   // 取消翻译文件下载,跳过此步骤.
-//  $tasks['install_download_translation']['run'] = INSTALL_TASK_SKIP;
+  //  $tasks['install_download_translation']['run'] = INSTALL_TASK_SKIP;
 }
 
 /**
@@ -195,8 +196,10 @@ function airui_install_profile_modules(&$install_state) {
   }
   $batch = [
     'operations' => $operations,
-    'title' => '初始化软件环境', //t('安装@drupal', ['@drupal' => drupal_install_profile_distribution_name()]),
-    'error_message' => '安装过程出错',//t('The installation has encountered an error.'),
+  // t('安装@drupal', ['@drupal' => drupal_install_profile_distribution_name()]),
+    'title' => '初始化软件环境',
+  // t('The installation has encountered an error.'),
+    'error_message' => '安装过程出错',
   ];
   return $batch;
 }

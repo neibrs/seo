@@ -26,7 +26,7 @@ class SeograntListBuilder extends EntityListBuilder {
    * {@inheritdoc}
    */
   public function buildRow(EntityInterface $entity) {
-    /* @var \Drupal\seo_grant\Entity\Seogrant $entity */
+    /** @var \Drupal\seo_grant\Entity\Seogrant $entity */
     $row['id'] = $entity->id();
     $row['name'] = Link::createFromRoute(
       $entity->label(),

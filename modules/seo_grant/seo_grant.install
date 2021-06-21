@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * @file
+ */
+
+/**
  * Implements hook_install().
  */
 function seo_grant_install($is_syncing) {

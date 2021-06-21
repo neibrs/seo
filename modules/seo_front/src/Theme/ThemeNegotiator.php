@@ -8,7 +8,8 @@ use Drupal\Core\Theme\ThemeNegotiatorInterface;
 
 class ThemeNegotiator implements ThemeNegotiatorInterface {
 
-  /** @var ConfigFactoryInterface */
+  /**
+   * @var \Drupal\Core\Config\ConfigFactoryInterface */
   protected $configFactory;
 
   public function __construct(ConfigFactoryInterface $configFactory) {
@@ -44,4 +45,5 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
 
     return FALSE;
   }
+
 }

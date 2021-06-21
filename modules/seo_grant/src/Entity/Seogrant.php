@@ -122,7 +122,7 @@ class Seogrant extends ContentEntityBase implements SeograntInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-//    授权用户:
+    //    授权用户:
     $fields['grant_user'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('用户')
       ->setSetting('target_type', 'user')
@@ -139,7 +139,7 @@ class Seogrant extends ContentEntityBase implements SeograntInterface {
           'placeholder' => '',
         ],
       ]);
-//    IP:
+    //    IP:
     $fields['ip'] = BaseFieldDefinition::create('string')
       ->setLabel('IP')
       ->setSettings([
@@ -158,7 +158,7 @@ class Seogrant extends ContentEntityBase implements SeograntInterface {
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-//    域名:
+    //    域名:
     $fields['domain'] = BaseFieldDefinition::create('string')
       ->setLabel('域名')
       ->setSettings([
@@ -178,7 +178,7 @@ class Seogrant extends ContentEntityBase implements SeograntInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
-//    授权时间:
+    //    授权时间:
     $fields['grant_time'] = BaseFieldDefinition::create('timestamp')
       ->setLabel('授权时间')
       ->setDefaultValue(0)
@@ -188,7 +188,7 @@ class Seogrant extends ContentEntityBase implements SeograntInterface {
         'weight' => 1,
       ])
       ->setDisplayConfigurable('view', TRUE);
-//    授权码:
+    //    授权码:
     $fields['grant_code'] = BaseFieldDefinition::create('text_long')
       ->setLabel('授权码')
       ->setDisplayOptions('view', [

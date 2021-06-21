@@ -29,15 +29,16 @@ function seo_front_help($route_name, RouteMatchInterface $route_match) {
 function seo_front_theme($existing, $type, $theme, $path) {
   $theme = [];
 
-//  $theme['page__front'] = [
-//    'template' => 'page--seo-front',
-//    'preprocess functions' => ['seo_front_preprocess_seo_front'],
-//  ];
+  //  $theme['page__front'] = [
+  //    'template' => 'page--seo-front',
+  //    'preprocess functions' => ['seo_front_preprocess_seo_front'],
+  //  ];
 
   return $theme;
 }
+
 //
-//function seo_front_preprocess_seo_front(&$variables) {
+// function seo_front_preprocess_seo_front(&$variables) {
 //  $block_manager = \Drupal::service('plugin.manager.block');
 //
 //  $logo_uri = \Drupal::service('file_system')->copy(drupal_get_path('module', 'seo_front') . '/images/logo.png', 'public://seo-logo.png');
@@ -52,11 +53,11 @@ function seo_front_theme($existing, $type, $theme, $path) {
 //  $variables['page']['main_menu'] = $block_manager->createInstance('system_menu_block:main')->build();
 //
 //  $x = 'a';
-//}
+// }
 //
-///**
+// **
 // * Implements hook_form_FORM_ID_alter() for search_block_form.
 // */
-//function seo_front_form_search_block_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+// function seo_front_form_search_block_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 //  $form['keys']['#placeholder'] = '请输入关键词, 回车';
-//}
+// }

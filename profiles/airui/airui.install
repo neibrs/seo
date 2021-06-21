@@ -5,8 +5,6 @@
  * Install, update and uninstall hooks for the Airui install profile.
  */
 
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * Implements hook_install().
  *
@@ -62,7 +60,6 @@ function install_airui_components(&$install_state) {
 
   return $batch;
 }
-
 
 function _install_module_dependencies_batch($module, $module_name, &$context) {
   \Drupal::service('module_installer')->install([$module], TRUE);
