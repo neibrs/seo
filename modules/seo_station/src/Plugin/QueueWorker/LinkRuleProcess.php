@@ -22,6 +22,9 @@ class LinkRuleProcess extends QueueWorkerBase {
 
     $title = $this->getTitle();
     $body = $this->getBody();
+    if (empty($title) || empty($body)) {
+      return;
+    }
     $values = [
       'type' => 'article',
       'title' => $title[0],

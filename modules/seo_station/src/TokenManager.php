@@ -28,7 +28,6 @@ class TokenManager implements TokenManagerInterface {
 
     $link = $this->replaceToken($link, $tokens);
 
-    \Drupal::moduleHandler()->alter('link_rule_data', $link);
     return $link;
   }
 

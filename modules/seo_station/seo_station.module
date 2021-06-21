@@ -102,14 +102,14 @@ function seo_station_theme($existing, $type, $theme, $path) {
 }
 
 /**
+//$arr = [
+//'station' => $station,
+//'domain' => $d,
+//'replacements' => $replacements,
+//];
  * Implements hook_link_rule_data_alter().
  */
 function seo_station_link_rule_data_alter(array &$data) {
-  // $data可能引起内存泄漏
-  $path = parse_url($data[0]);
-  // 入队列.
-  if (!empty($path['path'])) {
-    $queue = \Drupal::queue('link_rule_process');
-    $queue->createItem($path);
-  }
+  $queue = \Drupal::queue('link_rule_process');
+  $queue->createItem($data);
 }

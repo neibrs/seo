@@ -21,28 +21,10 @@ class StationController extends ControllerBase {
   protected function getStationLinks($number = 1) {
     $stations = \Drupal::entityTypeManager()->getStorage('seo_station')->loadMultiple();
 
-    $links = [];
+    $links = $data = [];
     foreach ($stations as $station) {
       list($domains, $rule) = $this->getWildDomains($station, $number);
-      $links = $this->getSingleDomainRule($domains, $rule);
-    }
-
-    $data = [];
-    foreach ($links as $link) {
-      $data[] = $this->generateLinks($link, $number);
-    }
-
-    return $data;
-  }
-
-  protected function generateLinks($link, $number) {
-    if (empty($link)) {
-      return [];
-    }
-    $data = [];
-
-    for($i = 0; $i < $number; $i++) {
-      $data[] = \Drupal::service('seo_station.token.manager')->generate([$link]);
+      list($links, $data) = $this->getSingleDomainRule($station, $domains, $rule, $number);
     }
 
     return $data;
@@ -50,8 +32,15 @@ class StationController extends ControllerBase {
 
   /**
    * 站点模式为单域名时
+   *
+   * @param string $station
+   * @param array $domains
+   * @param string $rule
+   * @param int $number
+   *
+   * @return array
    */
-  function getSingleDomainRule($domains, $rule) {
+  function getSingleDomainRule($station = '', $domains = [], $rule = '', $number = 1) {
     $links = [];
     // 单域名时
     foreach ($domains as $domain) {
@@ -59,7 +48,25 @@ class StationController extends ControllerBase {
         if ($d === '0' || empty($d)) {
           continue;
         }
-        $links[] = $_SERVER['REQUEST_SCHEME'] . '://' . $d . '/' . $rule;
+
+        $replacements = [];
+        for($i = 0; $i < $number; $i++) {
+          $replacements[] = \Drupal::service('seo_station.token.manager')->generate([$rule]);
+        }
+        foreach ($replacements as $replacement) {
+          $links[] = $_SERVER['REQUEST_SCHEME'] . '://' . $d . '/' . $replacement;
+        }
+
+        // 生成真实的链接数据，并加入相应的队列.
+        // 插入队列.
+        $arr = [
+          'station' => $station,
+          'domain' => $d,
+        ];
+        foreach ($arr['replacements'] as $replacement) {
+          $new_arr = $arr + ['replacement' => $replacement];
+          \Drupal::moduleHandler()->alter('link_rule_data', $new_arr);
+        }
       }
     }
 
