@@ -20,9 +20,12 @@ class LinkRuleProcess extends QueueWorkerBase {
     // TODO， 暂时只做一个新闻类型的网站文章数据.
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
-    $title = $this->getTitle();
     $body = $this->getBody();
-    if (empty($title) || empty($body)) {
+    if (empty($title)) {
+      return;
+    }
+    $title = $this->getTitle($body[0]);
+    if (empty($title)) {
       return;
     }
     try {

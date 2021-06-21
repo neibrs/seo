@@ -21,10 +21,11 @@ class StationController extends ControllerBase {
   protected function getStationLinks($number = 1) {
     $stations = \Drupal::entityTypeManager()->getStorage('seo_station')->loadMultiple();
 
-    $links = $data = [];
+    $data = [];
     foreach ($stations as $station) {
       list($domains, $rule) = $this->getWildDomains($station, $number);
-      list($links, $data) = $this->getSingleDomainRule($station, $domains, $rule, $number);
+      // TODO, 需要确认是否全局保留下已生成的动态域名.
+      $data[] = $this->getSingleDomainRule($station, $domains, $rule, $number);
     }
 
     return $data;
@@ -51,7 +52,8 @@ class StationController extends ControllerBase {
 
         $replacements = [];
         for($i = 0; $i < $number; $i++) {
-          $replacements[] = \Drupal::service('seo_station.token.manager')->generate([$rule]);
+          $real_data = \Drupal::service('seo_station.token.manager')->generate([$rule]);
+          $replacements[] = reset($real_data);
         }
         foreach ($replacements as $replacement) {
           $links[] = $_SERVER['REQUEST_SCHEME'] . '://' . $d . '/' . $replacement;
@@ -63,7 +65,7 @@ class StationController extends ControllerBase {
           'station' => $station,
           'domain' => $d,
         ];
-        foreach ($arr['replacements'] as $replacement) {
+        foreach ($replacements as $replacement) {
           $new_arr = $arr + ['replacement' => $replacement];
           \Drupal::moduleHandler()->alter('link_rule_data', $new_arr);
         }
