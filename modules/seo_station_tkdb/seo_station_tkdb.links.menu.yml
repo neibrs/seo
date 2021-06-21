@@ -1,6 +1,6 @@
 
-#seo_station_tkdb.overview:
-#  title: 'TKDB调用模板'
-#  route_name: seo_station_tkdb.overview
-#  parent: entity.seo_station.administer
-#  weight: 10
+seo_station_tkdb.overview:
+  title: 'TKDB调用模板'
+  route_name: seo_station_tkdb.overview
+  parent: entity.seo_station.administer
+  weight: 10

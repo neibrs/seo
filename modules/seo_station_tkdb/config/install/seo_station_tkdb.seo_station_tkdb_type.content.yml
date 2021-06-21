@@ -2,4 +2,4 @@ langcode: zh-hans
 status: true
 dependencies: { }
 id: content
-label: 内容模板
+label: 内容

@@ -42,7 +42,7 @@ class StationTkdbForm extends FormBase {
 		foreach($types as $type) {
 			$form[$type->id().'_settings'] = [
 				'#type' => 'details',
-				'#title' => $type->label(),
+				'#title' => $type->label() . '模板',
 				'#group' => 'tabs',
 			];
 			if ($type->id() == 'title') {
@@ -83,7 +83,7 @@ class StationTkdbForm extends FormBase {
 系统将随机调用，仅用于内容页show.html
 模板标签，如：内容句子1至20条：{$content}...{$content20}、图片地址：{$pic1}...{$pic20}、视频地址：{$video1}...{$video20}等
 随机关键词->{$randkws}、{$randkws1}、{$randkws2}...(注：前提是设置了关键词插入)、泛域名城市名称->{$city}
-在前台模板文件show.html中调用的标签为: {$body}，如果网站的内容模式选的是文章库内容则不会用的这里</span></p>',
+在前台模板文件show.html中调用的标签为: {$body}，如果网站的内容模式选的是文章库内容则不会用这里</span></p>',
         ];
       }
 			else {
