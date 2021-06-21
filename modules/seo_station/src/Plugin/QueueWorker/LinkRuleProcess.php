@@ -25,22 +25,27 @@ class LinkRuleProcess extends QueueWorkerBase {
     if (empty($title) || empty($body)) {
       return;
     }
-    $values = [
-      'type' => 'article',
-      'title' => $title[0],
-      'field_image' => '',
-      'body' => [
-        'value' => $body[1],
-        'summary' => mb_substr($body[1], 100),
-        'format' => 'basic_html',
-      ],
-    ];
-    // 创建该别名的文章数据.
-    $node = $node_storage->create(['type' => 'article']);
-    foreach ($values as $key => $val) {
-      $node->set($key, $val);
+    try {
+      $values = [
+        'type' => 'article',
+        'title' => mb_substr($title[0], 0, 60),
+        'field_image' => '',
+        'body' => [
+          'value' => $body[1],
+          'summary' => mb_substr($body[1], 0, 100),
+          'format' => 'basic_html',
+        ],
+      ];
+      // 创建该别名的文章数据.
+      $node = $node_storage->create(['type' => 'article']);
+      foreach ($values as $key => $val) {
+        $node->set($key, $val);
+      }
+      $node->save();
     }
-    $node->save();
+    catch (\Exception $e) {
+      \Drupal::messenger()->addWarning($e);
+    }
 
     $path_alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
     $path_alias = $path_alias_storage->create();
@@ -66,6 +71,9 @@ class LinkRuleProcess extends QueueWorkerBase {
     // 随机模式
     $data = seo_textdata_auto_read($uri);
     $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
+    if ($sub_data = str_replace("\n","-||-", $data)) {
+      $ds = array_unique(explode('-||-', $sub_data));
+    }
     $dst = $ds[mt_rand(0, count($ds))];
     return explode('******', $dst);
   }
