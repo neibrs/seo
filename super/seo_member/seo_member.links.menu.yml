@@ -1,0 +1,1 @@
+seoer.members.management:  title: '会员'  parent: system.seo  route_name: seoer.members.management

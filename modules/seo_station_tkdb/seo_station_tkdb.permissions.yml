@@ -1,0 +1,20 @@
+add tkdb entities:
+  title: 'Create new Tkdb entities'
+
+administer tkdb entities:
+  title: 'Administer Tkdb entities'
+  description: 'Allow to access the administration form to configure Tkdb entities.'
+  restrict access: true
+
+delete tkdb entities:
+  title: 'Delete Tkdb entities'
+
+edit tkdb entities:
+  title: 'Edit Tkdb entities'
+
+view published tkdb entities:
+  title: 'View published Tkdb entities'
+
+view unpublished tkdb entities:
+  title: 'View unpublished Tkdb entities'
+

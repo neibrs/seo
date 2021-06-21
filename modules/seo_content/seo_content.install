@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function seo_content_install($is_syncing) {
+  $taxonomy_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+
+  $data = [
+    'SEO技术',
+    '公告',
+    '提示',
+    '郑重声明',
+    '违规处理',
+  ];
+
+  foreach ($data as $d) {
+    $seo = $taxonomy_storage->create([
+      'vid' => 'tags',
+      'name' => $d,
+    ]);
+    $seo->save();
+  }
+}

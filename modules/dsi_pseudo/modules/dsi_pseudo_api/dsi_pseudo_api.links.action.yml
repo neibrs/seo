@@ -1,0 +1,5 @@
+entity.dsi_pseudo_api.add_form:
+  route_name: entity.dsi_pseudo_api.add_form
+  title: 'Add Pseudo api'
+  appears_on:
+    - entity.dsi_pseudo_api.collection

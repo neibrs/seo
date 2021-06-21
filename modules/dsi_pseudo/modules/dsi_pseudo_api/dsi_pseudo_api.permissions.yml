@@ -1,0 +1,20 @@
+add pseudo api entities:
+  title: 'Create new Pseudo api entities'
+
+administer pseudo api entities:
+  title: 'Administer Pseudo api entities'
+  description: 'Allow to access the administration form to configure Pseudo api entities.'
+  restrict access: true
+
+delete pseudo api entities:
+  title: 'Delete Pseudo api entities'
+
+edit pseudo api entities:
+  title: 'Edit Pseudo api entities'
+
+view published pseudo api entities:
+  title: 'View published Pseudo api entities'
+
+view unpublished pseudo api entities:
+  title: 'View unpublished Pseudo api entities'
+

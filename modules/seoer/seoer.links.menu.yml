@@ -1,0 +1,16 @@
+system.seo:
+  title: 'SEO管理'
+  route_name: system.seo
+  weight: 9
+  menu_name: seo
+
+seoer.members.collection:
+  title: '站群会员'
+  parent: seoer.members.management
+  route_name: seoer.members.management
+
+seo.workbench:
+  title: 工作台
+  menu_name: account
+  route_name: seoer.workbench
+  weight: -20

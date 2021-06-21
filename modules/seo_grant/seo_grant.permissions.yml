@@ -1,0 +1,21 @@
+add seogrant entities:
+  title: '添加授权'
+
+administer seogrant entities:
+  title: '管理授权'
+  restrict access: true
+
+delete seogrant entities:
+  title: '删除授权'
+
+edit seogrant entities:
+  title: '编辑授权'
+
+view published seogrant entities:
+  title: '查看已发布的授权'
+
+view unpublished seogrant entities:
+  title: '查看未发布的授权'
+
+view own seogrant entities:
+  title: '查看自己的授权'

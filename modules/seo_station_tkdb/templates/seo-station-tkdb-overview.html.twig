@@ -1,0 +1,69 @@
+
+{{ content.tips }}
+
+<div class="row py-1">
+  {# style for bs5 #}
+  {% for v in content.models %}
+  <div class="col d-flex">
+    <div class="text-center">
+      <h4 class="mb-0">{{ v.name }}</h4>
+      <p>{{ v.config_dir }}</p>
+      <p>
+      <ul class="operations clearfix action-links text-center list-group list-group-horizontal">
+        {% if v.config_dir == 'default' %}
+          <li class="action-links__item list-group-item text-nowrap">
+            {{ v.edit }}
+          </li>
+        {% elseif v.is_empty %}
+          <li class="action-links__item  list-group-item text-nowrap">
+            {{ v.link_empty }}
+          </li>
+        {% else %}
+          <li class="action-links__item list-group-item text-nowrap">
+            {{ v.edit }}
+          </li>
+          <li class="action-links__item list-group-item text-nowrap">
+            {{ v.delete }}
+          </li>
+        {% endif %}
+      </ul>
+      </p>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>
+
+{{ content.second }}
+
+<div class="card-list card-list--four-cols mb-3">
+
+  {% for station in content.stations %}
+  <div class="card card--vertical card-list__item" aria-labelledby="bootstrap5-label" aria-describedby="bootstrap5-description">
+
+    <div class="card__content-wrapper">
+      <div class="card__content">
+        <div id="bootstrap5-description" class="card__content-item">
+          分组名称： <b>{{ station.name }}</b>
+        </div>
+        <div id="bootstrap5-description" class="card__content-item">
+          所属模型： <b>{{ station.model }}</b>
+        </div>
+      </div>
+
+      <div class="card__footer">
+
+        <ul class="operations clearfix action-links text-left">
+          <li class="action-links__item">
+            主配置：<a href="#" title="Install Bootstrap5 theme" class="action-link action-link--icon-checkmark action-link--small">未设置，点击设置</a>
+          </li>
+          <li class="action-links__item">
+            泛域名：<a href="#" title="将 Bootstrap5 设置为默认主题" class="action-link action-link--icon-checkmark action-link--small ml-0">未设置，点击设置</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>

@@ -1,0 +1,7 @@
+services:
+  seo_station.manager:
+    class: Drupal\seo_station\StationManager
+    arguments: ['@entity_type.manager']
+  seo_station.token.manager:
+    class: Drupal\seo_station\TokenManager
+    arguments: ['@entity_type.manager']

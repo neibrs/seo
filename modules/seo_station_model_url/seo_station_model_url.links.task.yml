@@ -1,0 +1,16 @@
+
+entity.seo_station_model_url.canonical:
+  route_name: entity.seo_station_model_url.canonical
+  base_route: entity.seo_station_model_url.canonical
+  title: 'View'
+
+entity.seo_station_model_url.edit_form:
+  route_name: entity.seo_station_model_url.edit_form
+  base_route: entity.seo_station_model_url.canonical
+  title: 'Edit'
+
+entity.seo_station_model_url.delete_form:
+  route_name:  entity.seo_station_model_url.delete_form
+  base_route:  entity.seo_station_model_url.canonical
+  title: Delete
+  weight: 10

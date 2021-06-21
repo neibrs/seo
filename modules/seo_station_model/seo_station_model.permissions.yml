@@ -1,0 +1,19 @@
+add station model entities:
+  title: '添加站群模型'
+
+administer station model entities:
+  title: '管理站群模型'
+  restrict access: true
+
+delete station model entities:
+  title: '删除站群模型'
+
+edit station model entities:
+  title: '编辑站群模型'
+
+view published station model entities:
+  title: '查看已发布的站群模型'
+
+view unpublished station model entities:
+  title: '查看未发布的站群模型'
+

@@ -1,0 +1,12 @@
+dsi_collection.type.*:
+  type: config_entity
+  label: '采集类型配置'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string

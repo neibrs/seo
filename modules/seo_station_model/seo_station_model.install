@@ -1,0 +1,60 @@
+<?php
+
+use Drupal\seo_station_model\Entity\StationModel;
+
+/**
+ * Implements hook_install().
+ */
+function seo_station_model_install($is_syncing) {
+  user_role_grant_permissions('seo', [
+    'add station model entities',
+    'administer station model entities',
+    'delete station model entities',
+    'edit station model entities',
+    'view published station model entities',
+    'view unpublished station model entities',
+  ]);
+  $pre_data = [
+    'company' => '行业企业',
+    'news' => '文章新闻',
+    'video' => '电影视频',
+    'bbs' => '论坛社区',
+    'audio' => '视频音乐',
+  ];
+  foreach ($pre_data as $key => $val) {
+    $values = [
+      'name' => $val,
+      'config_dir' => $key,
+      'main' => 'index,list,show',
+    ];
+    if ($key == 'company') {
+      $values['secondary'] = 'contact,about,product_list,product_show';
+    }
+    $entity = StationModel::create($values);
+
+    $entity->save();
+  }
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function seo_station_model_update_9001(&$sandbox) {
+  /** @var \Drupal\config_update\ConfigRevertInterface $config_update */
+  $config_update = \Drupal::service('config_update.config_update');
+  $config_update->import('view', 'seo_station_model');
+}
+
+/**
+ * Implements hook_update_N() refactor permission for station model.
+ */
+function seo_station_model_update_9002(&$sandbox) {
+  user_role_grant_permissions('seo', [
+    'add station model entities',
+    'administer station model entities',
+    'delete station model entities',
+    'edit station model entities',
+    'view published station model entities',
+    'view unpublished station model entities',
+  ]);
+}

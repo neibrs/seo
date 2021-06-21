@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_member.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_member_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_member module.
+    case 'help.page.seo_member':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The member of seo.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

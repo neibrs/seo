@@ -1,0 +1,76 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_content.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_content_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_content module.
+    case 'help.page.seo_content':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The content of seo.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for search_block_form.
+ */
+function seo_content_form_search_block_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $form['keys']['#placeholder'] = '关键词, 回车';
+}
+
+/**
+ * Implements hook_theme().
+ */
+function seo_content_theme($existing, $type, $theme, $path) {
+  $theme = [];
+  $theme['seo_content_notice'] = [
+    'variables' => [ 'content' => NULL ],
+    'render element' => 'children',
+  ];
+  $theme['seo_related_content'] = [
+    'variables' => [ 'content' => NULL ],
+    'render element' => 'children',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function seo_content_entity_extra_field_info() {
+  $extra = [];
+
+  $extra['node']['article']['display']['related_content'] = [
+    'label' => '相关文章',
+    'description' => '相关文章',
+    'weight' => 10,
+  ];
+
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for node.
+ */
+function seo_content_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->getEntityTypeId() == 'node'
+    && $entity->bundle() == 'article'
+    && $display->getComponent('related_content')
+    && $view_mode == 'full'
+  ) {
+    // 只处理文章类型的相关性
+    $build['related_content'] = \Drupal::service('plugin.manager.block')->createInstance('seo_content_related_content')->build();
+  }
+}

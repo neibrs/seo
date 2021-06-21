@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_station_model_url.module.
+ */
+
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_station_model_url_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_station_model_url module.
+    case 'help.page.seo_station_model_url':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('模型url规则') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function seo_station_model_url_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+  $fields = [];
+
+  if ($entity_type->id() == 'seo_station_model') {
+    $fields['rule_url_id'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('模板规则')
+      ->setSetting('target_type', 'seo_station_model_url');
+  }
+
+  return $fields;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete() for seo_station_model.
+ */
+function seo_station_model_url_seo_station_model_delete(Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'seo_station_model') {
+    $storage = \Drupal::entityTypeManager()->getStorage('seo_station_model_url');
+    $urls = $storage->loadByProperties([
+      'model' => $entity->id(),
+    ]);
+    $storage->delete($urls);
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function seo_station_model_url_cron() {
+  $storage_url = \Drupal::entityTypeManager()->getStorage('seo_station_model_url');
+  $storage_model = \Drupal::entityTypeManager()->getStorage('seo_station_model');
+}

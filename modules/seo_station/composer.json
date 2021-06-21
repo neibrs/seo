@@ -1,0 +1,13 @@
+{
+    "name": "drupal/seo_station",
+    "type": "drupal-module",
+    "description": "网站管理",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/seo_station",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/seo_station",
+        "source": "http://cgit.drupalcode.org/seo_station"
+    }
+}

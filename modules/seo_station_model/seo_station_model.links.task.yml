@@ -1,0 +1,5 @@
+# Station model routing definition
+seo_station_model.settings_tab:
+  route_name: seo_station_model.settings
+  title: 'Settings'
+  base_route: seo_station_model.settings

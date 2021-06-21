@@ -1,0 +1,34 @@
+
+# Station menu items definition
+
+entity.seo_station.administer:
+  title: '站群'
+  route_name: entity.seo_station.collection
+  parent: system.seo
+
+entity.seo_station.collection:
+  title: '网站管理'
+  route_name: entity.seo_station.collection
+  parent: entity.seo_station.administer
+  weight: 100
+
+#seo_station.cities_form:
+#  title: '泛域名城市标签'
+#  route_name: seo_station.cities_form
+#  parent: entity.seo_station.administer
+#  weight: 100
+#seo_station.https_form:
+#  title: 'https站点管理'
+#  route_name: seo_station.https_form
+#  parent: entity.seo_station.administer
+#  weight: 90
+#seo_station.contact_form:
+#  title: '自定义联系方式'
+#  route_name: seo_station.contact_form
+#  parent: entity.seo_station.administer
+#  weight: 100
+#seo_station.custom_domain_tkd_form:
+#  title: '自定义域名TKD'
+#  route_name: seo_station.custom_domain_tkd_form
+#  parent: entity.seo_station.administer
+#  weight: 100

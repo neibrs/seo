@@ -1,0 +1,12 @@
+seo_station_model_url.seo_station_model_url_type.*:
+  type: config_entity
+  label: '模板URL规则类型'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string

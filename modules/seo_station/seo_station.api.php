@@ -1,0 +1,1 @@
+<?phpfunction hook_link_rule_data_alter(array &$data) {}

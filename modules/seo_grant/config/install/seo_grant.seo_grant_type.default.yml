@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies:
+  enforced:
+    module:
+      - seo_grant
+id: default
+label: 默认

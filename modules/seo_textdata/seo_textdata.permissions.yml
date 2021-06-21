@@ -1,0 +1,19 @@
+add text data entities:
+  title: '创建内容库数据'
+
+administer text data entities:
+  title: '管理内容库数据'
+  restrict access: true
+
+delete text data entities:
+  title: '删除内容库数据'
+
+edit text data entities:
+  title: '编辑内容库数据'
+
+view published text data entities:
+  title: '查看已发布内容库数据'
+
+view unpublished text data entities:
+  title: '查看未发布内容库数据'
+

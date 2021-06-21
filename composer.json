@@ -1,0 +1,50 @@
+{
+    "name": "drupal/ds",
+    "description": "DS.",
+    "type": "project",
+    "authors": [
+        {
+            "name": "John",
+            "email": "80285394@qq.com"
+        }
+    ],
+    "require": {
+        "drush/drush": "^10.4",
+        "drupal/console": "^1.9",
+        "wikimedia/composer-merge-plugin": "^2.0",
+        "cweagans/composer-patches": "~1.0",
+        "drupal/entity_word": "^2.7",
+        "drupal/encrypt": "^3.0",
+        "drupal/metatag": "^1.16",
+        "drupal/xmlsitemap": "^1.0"
+    },
+    "extra": {
+        "merge-plugin": {
+            "require": [],
+            "recurse": true,
+            "replace": false,
+            "ignore-duplicates": false,
+            "merge-dev": true,
+            "merge-extra": false,
+            "merge-extra-deep": false,
+            "merge-scripts": false
+        },
+        "composer-exit-on-patch-failure": true,
+        "enable-patching": true,
+        "patchLevel": {
+            "drupal/core": "-p2"
+        },
+        "patches": {
+            "drupal/core": {
+                "Call to a member function getLabel()": "https://www.drupal.org/files/issues/2020-04-08/2985882-field-85.patch"
+            }
+        },
+        "patches-ignore": {
+            "drupal/lightning": {
+                "drupal/panelizer": {
+                    "This patch has known conflicts with our Quick Edit integration": "https://www.drupal.org/files/issues/2664682-49.patch"
+                }
+            }
+        }
+    }
+}

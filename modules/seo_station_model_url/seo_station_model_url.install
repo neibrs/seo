@@ -1,0 +1,15 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function seo_station_model_url_install($is_syncing) {
+  user_role_grant_permissions('seo', [
+    'add station model url entities',
+    'administer station model url entities',
+    'delete station model url entities',
+    'edit station model url entities',
+    'view published station model url entities',
+    'view unpublished station model url entities',
+  ]);
+}

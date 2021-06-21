@@ -1,0 +1,39 @@
+add station entities:
+  title: '添加网站管理'
+
+administer station entities:
+  title: '管理网站管理'
+  restrict access: true
+
+delete station entities:
+  title: '删除网站管理'
+
+edit station entities:
+  title: '编辑网站管理'
+
+view published station entities:
+  title: '查看已发布的网站管理'
+
+view unpublished station entities:
+  title: '查看未发布的网站管理'
+
+add auto prefix entities:
+  title: 'Create new Auto prefix entities'
+
+administer auto prefix entities:
+  title: 'Administer Auto prefix entities'
+  description: 'Allow to access the administration form to configure Auto prefix entities.'
+  restrict access: true
+
+delete auto prefix entities:
+  title: 'Delete Auto prefix entities'
+
+edit auto prefix entities:
+  title: 'Edit Auto prefix entities'
+
+view published auto prefix entities:
+  title: 'View published Auto prefix entities'
+
+view unpublished auto prefix entities:
+  title: 'View unpublished Auto prefix entities'
+

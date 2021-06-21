@@ -1,0 +1,12 @@
+seo.member.create:
+  route_name: seoer.members.management.create
+  title: '添加'
+  options:
+    attributes:
+      class: ['use-ajax']
+      data-dialog-type: modal
+      data-dialog-options: '{"width":"50%"}'
+    query:
+      destination: '/seo/member'
+  appears_on:
+    - seoer.members.management

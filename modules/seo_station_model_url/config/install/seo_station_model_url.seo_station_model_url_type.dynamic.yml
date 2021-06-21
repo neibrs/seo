@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies:
+  enforced:
+    module:
+      - seo_station_model_url
+id: dynamic
+label: 随机模式

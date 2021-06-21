@@ -1,0 +1,108 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_station_model.module.
+ */
+
+use Drupal\Component\Serialization\Json;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function seo_station_model_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_station_model module.
+    case 'help.page.seo_station_model':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('My Awesome Module') . '</p>';
+      return $output;
+    case 'entity.seo_station_model.collection':
+      $output = '';
+      $output .= '<p><span class="description-red">提示：网站模型，用于区分网站内容（每个模型一个内容库）、风格模板、采集、URL规则模板等</span></p>';
+      return $output;
+    default:
+  }
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function seo_station_model_entity_operation_alter(array &$operations, \Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'seo_station_model') {
+    $operations['edit'] = [
+      'title' => '编辑',
+      'weight' => 0,
+      'url' => Url::fromRoute('entity.seo_station_model.edit_form',['seo_station_model' => $entity->id()]),
+      'attributes' => [
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode([
+          'width' => 700,
+        ]),
+        'class' => [
+          'use-ajax',
+        ],
+      ],
+    ];
+    $operations['delete'] = [
+      'title' => '删除',
+      'weight' => 0,
+      'url' => Url::fromRoute('entity.seo_station_model.delete_form',['seo_station_model' => $entity->id()]),
+      'attributes' => [
+        'data-dialog-type' => 'modal',
+        'data-dialog-options' => Json::encode([
+          'width' => 700,
+        ]),
+        'class' => [
+          'use-ajax',
+        ],
+      ],
+    ];
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function seo_station_model_theme($existing, $type, $theme, $path) {
+  $theme = [];
+  $theme['seo_station_model_url_item_list'] = [
+    'variables' => [ 'content' => NULL ],
+    'render element' => 'children',
+  ];
+
+  return $theme;
+}
+
+function template_preprocess_seo_station_model_url_item_list(&$variables) {
+  $types = \Drupal::entityTypeManager()->getStorage('seo_station_model_url_type')->loadMultiple();
+
+  $model = $variables['content']['seo_model'];
+  $items = [];
+  foreach ($types as $type) {
+    $items[] = [
+      'title' => $type->label(),
+      'edit' => \Drupal\Core\Link::createFromRoute('点击修改', 'seo_station_model.url_rule_form', [
+        'seo_station_model' => $model->id(),
+        'seo_station_model_url_type' => $type->id(),
+      ], [
+        'attributes' => [
+          'class' => ['use-ajax button button--primary'],
+          'data-dialog-type' => 'modal',
+          'data-dialog-options' => '{"width": "50%"}',
+        ],
+      ])->toString(),
+    ];
+  }
+  $variables['items'] = $items;
+}
+
+function seo_station_model_sidebar_tee_menu_alter(&$data) {
+  $icons = [
+    'entity.seo_station_model.collection' => 'icon gitee-icon activities',
+  ];
+  _eabax_core_set_menu_items_icon($data, $icons);
+}

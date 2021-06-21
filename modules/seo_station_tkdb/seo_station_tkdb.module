@@ -1,0 +1,74 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_station_tkdb.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_station_tkdb_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_station_tkdb module.
+    case 'help.page.seo_station_tkdb':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The tkdb modules.') . '</p>';
+      return $output;
+    case 'seo_station_tkdb.overview':
+      $output = '';
+      $output .= '<p><span class="description-red">TKDB调用模板 (即：title、keywords、description、内容调用，注：如果模型未在这里建立内容模板，则使用默认模板)</span></p>';
+
+      return $output;
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function seo_station_tkdb_theme() {
+  $theme = [];
+  $theme['seo_station_tkdb'] = [
+    'render element' => 'elements',
+    'file' => 'seo_station_tkdb.page.inc',
+    'template' => 'seo_station_tkdb',
+  ];
+  $theme['seo_station_tkdb_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'seo_station_tkdb.page.inc',
+  ];
+  $theme['seo_station_tkdb_overview'] = [
+    'variables' => [ 'content' => NULL ],
+    'render element' => 'children',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function seo_station_tkdb_theme_suggestions_seo_station_tkdb(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#seo_station_tkdb'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'seo_station_tkdb__' . $sanitized_view_mode;
+  $suggestions[] = 'seo_station_tkdb__' . $entity->bundle();
+  $suggestions[] = 'seo_station_tkdb__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'seo_station_tkdb__' . $entity->id();
+  $suggestions[] = 'seo_station_tkdb__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
+
+
+function seo_station_tkdb_sidebar_tee_menu_alter(&$data) {
+  $icons = [
+    'seo_station_tkdb.overview' => 'icon gitee-icon activities',
+  ];
+  _eabax_core_set_menu_items_icon($data, $icons);
+}

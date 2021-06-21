@@ -1,0 +1,4 @@
+
+.station-extract.button--action::before {
+  content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABPElEQVQ4T6XTPY+OQRjF8d/paZQ63SZKkYhKy5Io2EZEEBFi9yug0luFEOslKtt6iYZoRSeRSCRKX0F3ydyZe3N78rxIXOXMXP+5zjkz8Z+VaX9V7ccRfE/y61/Ye4CquoNrONgbHya5sQoyAKqq3foF7/AZ53AYu0k2lkFGwBU8wXqStx36DJdWQUbARbzA3SRNylBVdR+b2Elydd4kI+AAvnb9G0l2q+oVvvWm2ziT5PUsZGriaTzHbzxGa3qEe/i5SMpsjA3SUjiJsziEE3jaPWoyHiRpsob6CzDRvo1buIyjuIljHdwm20tnEeA43mMfruNDkh/d2Je4gMGruYB+8Dyaka2Gw329Sfo4JrYQMAeylWS7qt7g1MoJJn60SXa6nHF5uQezWVdV86Q9tjV8mj62pRJWfaS2/wfXnnARpTrJ/wAAAABJRU5ErkJggg==");
+}

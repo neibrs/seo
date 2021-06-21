@@ -1,0 +1,169 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_textdata.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function seo_textdata_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_textdata module.
+    case 'help.page.seo_textdata':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('文章数据库') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function seo_textdata_theme() {
+  $theme = [];
+  $theme['seo_textdata'] = [
+    'render element' => 'elements',
+    'file' => 'seo_textdata.page.inc',
+    'template' => 'seo_textdata',
+  ];
+  $theme['seo_textdata_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'seo_textdata.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function seo_textdata_theme_suggestions_seo_textdata(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#seo_textdata'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'seo_textdata__' . $sanitized_view_mode;
+  $suggestions[] = 'seo_textdata__' . $entity->bundle();
+  $suggestions[] = 'seo_textdata__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'seo_textdata__' . $entity->id();
+  $suggestions[] = 'seo_textdata__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
+
+/**
+ * Implements hook_sidebar_tee_menu_alter().
+ */
+function seo_textdata_sidebar_tee_menu_alter(array &$data) {
+  $icons = [
+    'entity.seo_textdata.collection' => 'gitee-icon icon project',
+    'seo_textdata.type.article' => 'gitee-icon icon project',
+    'seo_textdata.type.title' => 'gitee-icon icon project',
+    'seo_textdata.type.webname' => 'gitee-icon icon project',
+    'seo_textdata.type.typename' => 'gitee-icon icon project',
+    'seo_textdata.type.content' => 'gitee-icon icon project',
+    'seo_textdata.type.pic' => 'gitee-icon icon project',
+    'seo_textdata.type.video' => 'gitee-icon icon project',
+    'seo_textdata.type.diy' => 'gitee-icon icon project',
+  ];
+
+  _eabax_core_set_menu_items_icon($data, $icons);
+}
+
+/**
+ * Implements hook_block_access().
+ */
+function seo_textdata_block_access(\Drupal\block\Entity\Block $block, $operation, \Drupal\Core\Session\AccountInterface $account) {
+  if ($operation == 'view') {
+    $plugin_id = $block->getPluginId();
+    if ($plugin_id == 'local_tasks_block') {
+      $x = 'a';
+    }
+    $hide_block = [
+      'page_title_block',
+      'seo_content_notice_block',
+      'views_block:content_recent-block_1',
+    ];
+    if (in_array($plugin_id, $hide_block)) {
+      $route_name = \Drupal::routeMatch()->getRouteName();
+      $hide_on = [
+        'entity.seo_textdata.collection',
+        'entity.seo_textdata.add_page',
+        'entity.seo_textdata.add_form',
+        'entity.seo_textdata.edit_form',
+        'entity.seo_textdata.delete_form',
+        'seo_textdata.type',
+        'seo_textdata.import',
+      ];
+
+      if (in_array($route_name, $hide_on)) {
+        return \Drupal\Core\Access\AccessResult::forbidden();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function seo_textdata_entity_operation(\Drupal\Core\Entity\EntityInterface $entity) {
+  $operations = [];
+  switch ($entity->getEntityTypeId()) {
+    case 'seo_textdata':
+      $operations['preview'] = [
+        'title' => '预览',
+        'url' => Url::fromRoute('seo_textdata.file_preview', [
+          'seo_textdata' => $entity->id(),
+        ], [
+          'attributes' => [
+            'class' => [
+              'use-ajax',
+            ],
+            'data-dialog-type' => 'modal',
+            'data-dialog-options' => '{"width": "80%"}',
+          ],
+          'query' => \Drupal::destination()->getAsArray(),
+        ]),
+        'weight' => 0,
+      ];
+      $operations['download'] = [
+        'title' => '下载',
+        'url' => Url::fromRoute('seo_textdata.force_download', [
+          'seo_textdata' => $entity->id(),
+        ]),
+//        'url' => Url::fromUri(file_create_url($entity->attachment->entity->getFileUri())),
+        'weight' => 0,
+      ];
+      break;
+  }
+
+  return $operations;
+}
+
+/**
+ * Implements hook_entity_operation_alter().
+ */
+function seo_textdata_entity_operation_alter(array &$operations, \Drupal\Core\Entity\EntityInterface $entity) {
+  if ($entity->getEntityTypeId() == 'seo_textdata') {
+    unset($operations['edit']);
+  }
+}
+
+function seo_textdata_auto_read($file, $charset = 'UTF-8') {
+  $list = array('GBK', 'UTF-8', 'UTF-16LE', 'UTF-16BE', 'ISO-8859-1');
+  $str = file_get_contents($file);
+  foreach ($list as $item) {
+    $tmp = mb_convert_encoding($str, $item, $item);
+    if (md5($tmp) == md5($str)) {
+      return mb_convert_encoding($str, $charset, $item);
+    }
+  }
+  return "";
+}

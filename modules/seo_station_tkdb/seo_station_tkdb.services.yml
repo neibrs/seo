@@ -1,0 +1,4 @@
+services:
+  seo_station_tkdb.manager:
+    class: Drupal\seo_station_tkdb\TkdbManager
+    arguments: ['@entity_type.manager']

@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function seo_station_tkdb_install($is_syncing) {
+  user_role_grant_permissions('seo', [
+   'add tkdb entities',
+   'administer tkdb entities',
+   'delete tkdb entities',
+   'edit tkdb entities',
+   'view published tkdb entities',
+   'view unpublished tkdb entities',
+  ]);
+}
+
+/**
+ * Implements hook_update_N().
+ */
+function seo_station_tkdb_update_9002(&$sandbox) {
+  user_role_grant_permissions('seo', [
+    'add tkdb entities',
+    'administer tkdb entities',
+    'delete tkdb entities',
+    'edit tkdb entities',
+    'view published tkdb entities',
+    'view unpublished tkdb entities',
+  ]);
+}

@@ -1,0 +1,70 @@
+name: Airui
+type: profile
+description: 'The airui profile.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+distribution:
+  name: '艾瑞SEO'
+#  langcode: zh-hans
+dependencies:
+  - node
+  - history
+  - block
+  - breakpoint
+  - ckeditor
+  - color
+  - config
+  - comment
+  - contextual
+  - contact
+  - menu_link_content
+  - datetime
+  - block_content
+  - quickedit
+  - editor
+  - help
+  - image
+  - menu_ui
+  - options
+  - path
+  - page_cache
+  - dynamic_page_cache
+  - big_pipe
+  - taxonomy
+  - dblog
+  - search
+  - shortcut
+  - field_ui
+  - file
+  - rdf
+  - views
+  - views_ui
+  - automated_cron
+  - config_translation
+  - drush_language
+  - translation
+  - field_group
+  - views_plus
+  - views_template
+  - entity_plus
+  - eabax_core
+  - image_resize_filter
+  - pathauto
+  - xmlsitemap
+##dependencies:
+#  - seoer
+#  - dsi_login
+#  - seo_grant
+#  - seo_station_model
+#  - seo_station_model_url
+#  - seo_station
+#  - seo_station_tkdb
+#  - seo_textdata
+#  - seo_site
+#  - seo_front
+#  - seo_content
+#  - dsi_block
+
+themes:
+  - xbarrio
+  - seven

@@ -1,0 +1,12 @@
+entity.seo_station_model.add_form:
+  route_name: entity.seo_station_model.add_form
+  title: 'Add'
+  appears_on:
+    - entity.seo_station_model.collection
+  options:
+    attributes:
+      class: ['use-ajax']
+      data-dialog-type: modal
+      data-dialog-options: '{"width":"50%"}'
+    query:
+      destination: '/seo_station_model'

@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies:
+  enforced:
+    module:
+      - seo_station
+id: independent_access
+label: 独立设置选项

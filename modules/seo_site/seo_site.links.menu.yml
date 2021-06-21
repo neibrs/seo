@@ -1,0 +1,1 @@
+seo_site.admin:  title: '设置'  route_name: seo_site.configuration  parent: system.seo  weight: 999seo_site.configuration:  title: '系统设置'  route_name: seo_site.configuration  parent: seo_site.admin

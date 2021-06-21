@@ -1,0 +1,16 @@
+
+system.seo:
+  path: '/seo'
+  defaults:
+    _controller: '\Drupal\system\Controller\SystemController::systemAdminMenuBlockPage'
+    _title: 'SEO Administration'
+  requirements:
+    _permission: 'access administration pages'
+
+seoer.workbench:
+  path: '/seo_workbench'
+  defaults:
+    _controller: '\Drupal\seoer\Controller\SeoerController::getWorkbench'
+    _title: '工作台'
+  requirements:
+    _permission: 'access administration pages'

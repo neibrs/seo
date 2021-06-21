@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_station.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_station_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_station module.
+    case 'help.page.seo_station':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('网站管理') . '</p>';
+      return $output;
+    case 'entity.seo_station.collection':
+      $output = '';
+      $output .= '<p><span class="description-red">提示</span></p>';
+      $output .= '<p><span class="description-red">1). 网站分组管理，可以个性化每个网站的风格、内容、站点模式、关键词、外链等</span>';
+      $output .= '<p><span class="description-red">2). 关键词、内容优化、外链是基于网站分组进行管理</span></p>';
+      $output .= '<p><span class="description-red">3). 这里关键词、外链显示为 无 时，表示该分组未上传有文件，全局的和这里无关</span>';
+      $output .= '<p><span class="description-red">txt地图：</span><span class="description-blue">http://域名/sitemap.txt</span>';
+      $output .= '<p><span class="description-red">百度pc xml地图：</span><span class="description-blue">http://域名/sitemap.txt</span>';
+      $output .= '<p><span class="description-red">百度移动xml地图：</span><span class="description-blue">http://域名/sitemap/baidu_mobile.xml</span>';
+      $output .= '<p><span class="description-red">谷歌xml地图：</span><span class="description-blue">http://域名/sitemap/google.xml</span>';
+
+      return $output;
+    case 'seo_station.cities_form':
+      $output = '';
+      $output .= '<p><span class="description-red">本功能用于自定义泛域名前缀的城市标签，可实现城市站群，即：域名前缀为beijing时（如：beijing.a.com），对应的标签{$city}调用出来的就是北京</span></p>';
+      $output .= '<p><span class="description-green">提示：城市名调用的标签为： {$city}，可用于后台的TKBD模板、自定义tkd以及前台模板文件调用。</span> </p>';
+      $output .= '<p><span class="description-blue">如果你的网站分组开启了“屏蔽非自定义泛前缀访问”，则需要启用城市泛域名（编辑网站分组，站点模式里开启）。</span></p>';
+      $output .= '<p><span class="description-red">格式（每行一条）：泛域名前缀----城市名称</span> </p>';
+
+      return $output;
+    case 'seo_station.https_form':
+      $output = '';
+      $output .= '<p><span class="description-blue">本功能可以自定义域名使用https协议开头的URL，即生成的链接都是https的（证书自己处理）</span></p>';
+      $output .= '<p>每行为一个域名的设置，如：<span class="description-red">www.xxfseo.com</span></p>';
+      $output .= '<p>支持泛域名，格式： <span class="description-red">*.xxfseo.com</span></p>';
+
+      return $output;
+    case 'seo_station.contact_form':
+      $output = '';
+      $output .= '<p><span class="description-red">提示：一般用于企业模型，设置后随机调用，未设置的，系统会自动生成！</span></p>';
+      $output .= '<p><span class="description-blue">注意： 如未生效，请清除模板编译缓存或者页面缓存！</span></p>';
+
+      return $output;
+    case 'seo_station.custom_domain_tkd_form':
+      $output = '';
+      $output .= '<p><span class="description-blue">本功能可以自定义指定域名首页的TKD，即：首页标题、首页关键词、首页描述</span></p>';
+      $output .= '<p>每行为一个域名的设置，格式：<span class="description-red">域名----网站名称----首页标题----关键词----描述</span>，<br/>例子：<span class="description-red">seo.com----seo教程网----首页标题----seo关键词,关键词2----seo描述巴拉巴拉</span></p>';
+      $output .= '<p>如只设置标题，则可以这样：<span class="description-red">域名----网站名称</span></p>';
+      $output .= '<p>支持泛域名，格式： <span class="description-red">*.seo.com，支持使用模板标签</span>《模板调用标签说明文档》';
+
+      return $output;
+    default:
+  }
+}
+
+/**
+ * Implements hook_page_attachments() add library.
+ */
+function seo_station_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'seo_station/default';
+}
+
+/**
+ * Implements hook_sidebar_tee_menu_alter().
+ */
+function seo_station_sidebar_tee_menu_alter(&$data) {
+  $icons = [
+    'entity.seo_station.administer' => 'gitee-icon icon project',
+    'entity.seo_station.collection' => 'icon gitee-icon task',
+    'seo_station.cities_form' => 'icon gitee-icon task-todo-check',
+    'seo_station.https_form' => 'icon gitee-icon pull-request',
+    'seo_station.contact_form' => 'icon gitee-icon project-public',
+    'seo_station.custom_domain_tkd_form' => 'icon gitee-icon wiki',
+  ];
+  _eabax_core_set_menu_items_icon($data, $icons);
+}
+
+/**
+ * Implements hook_theme().
+ */
+function seo_station_theme($existing, $type, $theme, $path) {
+  $theme = [];
+  $theme['seo_station_extract'] = [
+    'variables' => [ 'content' => NULL ],
+    'render element' => 'children',
+  ];
+  $theme['seo_station_domain_index'] = [
+    'variables' => [ 'content' => NULL ],
+    'render element' => 'children',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_link_rule_data_alter().
+ */
+function seo_station_link_rule_data_alter(array &$data) {
+  // $data可能引起内存泄漏
+  $path = parse_url($data[0]);
+  // 入队列.
+  if (!empty($path['path'])) {
+    $queue = \Drupal::queue('link_rule_process');
+    $queue->createItem($path);
+  }
+}

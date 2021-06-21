@@ -1,0 +1,6 @@
+name: '采集'
+type: module
+description: '仿火车头采集功能.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Dsi'

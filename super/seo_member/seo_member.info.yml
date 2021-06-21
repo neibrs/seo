@@ -1,0 +1,6 @@
+name: 'SEO member'
+type: module
+description: 'The member of seo.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Dsi'

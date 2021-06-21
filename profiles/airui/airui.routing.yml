@@ -1,0 +1,1 @@
+airui.xieyi:  path: '/airui/xieyi'  defaults:    _form: 'Drupal\airui\Form\XieyiForm'    _title: '安装协议'  requirements:    _access: 'TRUE'

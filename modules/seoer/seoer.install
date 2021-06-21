@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * Implements hook_update_N() 添加会员管理页面(SEOer).
+ */
+function seoer_update_9001(&$sandbox) {
+  \Drupal::service('module_installer')->install(['config_update']);
+
+  /** @var \Drupal\config_update\ConfigRevertInterface $config_update */
+  $config_update = \Drupal::service('config_update.config_update');
+  $config_update->revert('view', 'seo_member');
+
+  $role_storage = \Drupal::entityTypeManager()->getStorage('user_role');
+  /** @var \Drupal\user\RoleInterface $role */
+  $role = $role_storage->load('admin');
+  $role->setThirdPartySetting('role_frontpage', 'frontpage', '/seo_workbench');
+  $role->save();
+}

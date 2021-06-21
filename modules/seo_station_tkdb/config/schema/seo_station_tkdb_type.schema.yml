@@ -1,0 +1,12 @@
+seo_station_tkdb.seo_station_tkdb_type.*:
+  type: config_entity
+  label: 'Tkdb type config'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string

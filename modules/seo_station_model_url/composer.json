@@ -1,0 +1,13 @@
+{
+    "name": "drupal/seo_station_model_url",
+    "type": "drupal-module",
+    "description": "模型url规则",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/seo_station_model_url",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/seo_station_model_url",
+        "source": "http://cgit.drupalcode.org/seo_station_model_url"
+    }
+}

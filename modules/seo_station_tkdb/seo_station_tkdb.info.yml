@@ -1,0 +1,8 @@
+name: 'Tkdb'
+type: module
+description: 'The tkdb modules.'
+core: 8.x
+package: 'Dsi'
+core_version_requirement: ^8 || ^9
+dependencies:
+  - seo_station

@@ -1,0 +1,105 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_site.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_site_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_site module.
+    case 'help.page.seo_site':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The seo site configuration of the global.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_sidebar_tee_menu_alter().
+ */
+function seo_site_sidebar_tee_menu_alter(array &$data) {
+  $icons = [
+    'seo_site.admin' => 'gitee-icon icon setting-cog',
+    'seo_site.configuration' => 'gitee-icon icon setting-cog',
+  ];
+
+  _eabax_core_set_menu_items_icon($data, $icons);
+}
+
+/**
+ * Implements hook_block_access() 隐藏侧边内容栏.
+ */
+function seo_site_block_access(\Drupal\block\Entity\Block $block, $operation, \Drupal\Core\Session\AccountInterface $account) {
+  if ($operation == 'view') {
+    $plugin_id = $block->getPluginId();
+
+    $hide_block = [
+      'page_title_block',
+      'seo_content_notice_block',
+      'views_block:content_recent-block_1',
+    ];
+    if (in_array($plugin_id, $hide_block)) {
+      $route_name = \Drupal::routeMatch()->getRouteName();
+      $hide_on = [
+        'seo_site.configuration',
+      ];
+
+      if (in_array($route_name, $hide_on)) {
+        return \Drupal\Core\Access\AccessResult::forbidden();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_page_top().
+ */
+function seo_site_page_top(array &$page_top) {
+  $seo_site_config = \Drupal::config('seo_site.site_configuration');
+  if ($seo_site_config->get('insert_top')) {
+    $page_top['insert_top'] = [
+      '#type' => 'item',
+      '#title' => '页面顶部插入代码',
+      '#title_display' => 'invisible',
+      '#markup' => $seo_site_config->get('insert_top_code'),
+    ];
+  }
+
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function seo_site_entity_extra_field_info() {
+  $extra = [];
+  $extra['node']['article']['display']['node_word'] = [
+    'label' => '下载Word',
+    'description' => '下载Word',
+    'weight' => 0,
+  ];
+  return $extra;
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for node.
+ */
+function seo_site_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+  if ($display->getComponent('node_word')) {
+    $build['node_word'] = [
+      '#type' => 'link',
+      '#title' => '下载Word',
+      '#url' => \Drupal\Core\Url::fromRoute('entity_word.node_to_word', [
+        'node_id' => $entity->id(),
+      ]),
+    ];
+  }
+}

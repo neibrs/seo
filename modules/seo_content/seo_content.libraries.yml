@@ -1,0 +1,11 @@
+block:
+  version: VERSION
+  css:
+    component:
+      css/content.css: { }
+
+related:
+  version: VERSION
+  css:
+    component:
+      css/related.css: { }

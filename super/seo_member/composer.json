@@ -1,0 +1,13 @@
+{
+    "name": "seo_member",
+    "type": "drupal-module",
+    "description": "The member of seo.",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/seo_member",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/seo_member",
+        "source": "http://cgit.drupalcode.org/seo_member"
+    }
+}

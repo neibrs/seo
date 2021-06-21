@@ -1,0 +1,17 @@
+# Collection routing definition
+
+entity.dsi_collection.canonical:
+  route_name: entity.dsi_collection.canonical
+  base_route: entity.dsi_collection.canonical
+  title: 'View'
+
+entity.dsi_collection.edit_form:
+  route_name: entity.dsi_collection.edit_form
+  base_route: entity.dsi_collection.canonical
+  title: 'Edit'
+
+entity.dsi_collection.delete_form:
+  route_name:  entity.dsi_collection.delete_form
+  base_route:  entity.dsi_collection.canonical
+  title: Delete
+  weight: 10

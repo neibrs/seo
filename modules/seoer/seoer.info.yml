@@ -1,0 +1,9 @@
+name: 'seoer'
+type: module
+description: 'The seo er module.'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Dsi'
+dependencies:
+  - config_update
+  - role_frontpage

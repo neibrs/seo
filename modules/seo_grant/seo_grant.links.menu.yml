@@ -1,0 +1,6 @@
+
+# Seogrant menu items definition
+entity.seo_grant.collection:
+  title: '授权码'
+  route_name: entity.seo_grant.collection
+  parent: seoer.members.management

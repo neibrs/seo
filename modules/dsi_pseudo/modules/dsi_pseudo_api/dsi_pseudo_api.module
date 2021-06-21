@@ -1,0 +1,60 @@
+<?php
+
+/**
+ * @file
+ * Contains dsi_pseudo_api.module.
+ */
+
+use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function dsi_pseudo_api_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the dsi_pseudo_api module.
+    case 'help.page.dsi_pseudo_api':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Pseudo API') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function dsi_pseudo_api_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+  $fields = [];
+  if ($entity_type->id() == 'dsi_collection') {
+    //伪原创
+    $fields['pseudo'] = BaseFieldDefinition::create('boolean')
+      ->setLabel('伪原创')
+      ->setDescription(' 是否进行伪原创词汇替换，词汇在<span class="description-green">站点优化->伪原创 · 词汇</span>中设置')
+      ->setDefaultValue(FALSE)
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons_with_none',
+        'weight' => 15,
+      ]);
+
+    $fields['pseudo_api'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('伪原创API')
+      ->setSetting('target_type', 'dsi_pseudo_api')
+      ->setDisplayOptions('view', [
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+  }
+
+  return $fields;
+}

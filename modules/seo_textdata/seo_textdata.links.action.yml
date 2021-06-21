@@ -1,0 +1,12 @@
+#entity.seo_textdata.add_form:
+#  route_name: entity.seo_textdata.add_page
+#  title: 'Add'
+#  appears_on:
+#    - entity.seo_textdata.collection
+#    - seo_textdata.type
+
+entity.seo_textdata_type.add_form:
+  route_name: entity.seo_textdata_type.add_form
+  title: 'Add type'
+  appears_on:
+    - entity.seo_textdata_type.collection

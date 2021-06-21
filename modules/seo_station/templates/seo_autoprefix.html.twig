@@ -1,0 +1,22 @@
+{#
+/**
+ * @file seo_autoprefix.html.twig
+ * Default theme implementation to present Auto prefix data.
+ *
+ * This template is used when viewing Auto prefix pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_seo_autoprefix()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes.addClass('seo_autoprefix') }}>
+  {% if content %}
+    {{- content -}}
+  {% endif %}
+</div>

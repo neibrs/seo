@@ -1,0 +1,67 @@
+<?php
+
+/**
+ * @file
+ * Contains dsi_collection.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function dsi_collection_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the dsi_collection module.
+    case 'help.page.dsi_collection':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('仿火车头采集功能.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function dsi_collection_theme() {
+  $theme = [];
+  $theme['dsi_collection'] = [
+    'render element' => 'elements',
+    'file' => 'dsi_collection.page.inc',
+    'template' => 'dsi_collection',
+  ];
+  $theme['dsi_collection_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'dsi_collection.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function dsi_collection_theme_suggestions_dsi_collection(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#dsi_collection'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'dsi_collection__' . $sanitized_view_mode;
+  $suggestions[] = 'dsi_collection__' . $entity->bundle();
+  $suggestions[] = 'dsi_collection__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'dsi_collection__' . $entity->id();
+  $suggestions[] = 'dsi_collection__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
+
+function dsi_collection_content_language_options_allowed_values(\Drupal\Core\Field\BaseFieldDefinition $definition, \Drupal\Core\Entity\FieldableEntityInterface $entity, $cacheable) {
+  // TODO 获取语言列表
+
+  return [
+    'zh-hans' => '简体中文',
+    'en' => '英文',
+  ];
+}

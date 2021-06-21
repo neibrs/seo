@@ -1,0 +1,10 @@
+entity.seo_station_model_url.add_form:
+  route_name: entity.seo_station_model_url.add_form
+  title: 'Add'
+  appears_on:
+    - entity.seo_station_model_url.collection
+entity.seo_station_model_url_type.add_form:
+  route_name: entity.seo_station_model_url_type.add_form
+  title: 'Add'
+  appears_on:
+    - entity.seo_station_model_url_type.collection

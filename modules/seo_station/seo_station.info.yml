@@ -1,0 +1,9 @@
+name: 'Station'
+type: module
+description: '网站管理'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Dsi'
+dependencies:
+  - lookup
+  - seo_station_model

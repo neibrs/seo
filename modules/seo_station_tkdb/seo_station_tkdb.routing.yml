@@ -1,0 +1,39 @@
+seo_station_tkdb.overview:
+  path: '/seo_station_tkdb/overview'
+  defaults:
+    _title: 'TKDB调用模板'
+    _controller: '\Drupal\seo_station_tkdb\Controller\StationTkdbController::getOverview'
+  requirements:
+    _permission: 'administer tkdb entities'
+
+tkdb.model_link.edit_form:
+  path: '/seo_station_tkdb/model_link/{seo_station_model}/edit'
+  defaults:
+    _title: '调用TKDB调用模板'
+    _form: '\Drupal\seo_station_tkdb\Form\StationTkdbForm'
+  requirements:
+    _permission: 'administer tkdb entities'
+
+tkdb.model_station.edit_form:
+  path: '/seo_station_tkdb/model_link/{seo_station_model}/{seo_station}/edit'
+  defaults:
+    _title: '调用TKDB调用模板'
+    _form: '\Drupal\seo_station_tkdb\Form\StationTkdbForm'
+  requirements:
+    _permission: 'administer tkdb entities'
+
+tkdb.model_link.delete_form:
+  path: '/seo_station_tkdb/model_link/{seo_station_model}/delete'
+  defaults:
+    _title: '调用TKDB调用模板'
+    _form: '\Drupal\seo_station_tkdb\Form\StationTkdbDeleteForm'
+  requirements:
+    _permission: 'administer tkdb entities'
+
+tkdb.model_station.delete_form:
+  path: '/seo_station_tkdb/model_link/{seo_station_model}/{seo_station}/delete'
+  defaults:
+    _title: '清除调用TKDB调用模板'
+    _form: '\Drupal\seo_station_tkdb\Form\StationTkdbDeleteForm'
+  requirements:
+    _permission: 'administer tkdb entities'

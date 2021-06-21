@@ -1,0 +1,13 @@
+
+front:
+  version: VERSION
+  css:
+    theme:
+      css/iconfont.css: { }
+      css/kap.css: { }
+      css/seo_front.css: { }
+  js:
+    js/seo_front.js: { }
+  dependencies:
+    - core/jquery
+    - core/drupal

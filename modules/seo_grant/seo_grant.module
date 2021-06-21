@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_grant.module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_help().
+ */
+function seo_grant_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_grant module.
+    case 'help.page.seo_grant':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('SEO 授权码管理') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function seo_grant_theme() {
+  $theme = [];
+  $theme['seo_grant'] = [
+    'render element' => 'elements',
+    'file' => 'seo_grant.page.inc',
+    'template' => 'seo_grant',
+  ];
+  $theme['seo_grant_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'seo_grant.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function seo_grant_theme_suggestions_seo_grant(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#seo_grant'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'seo_grant__' . $sanitized_view_mode;
+  $suggestions[] = 'seo_grant__' . $entity->bundle();
+  $suggestions[] = 'seo_grant__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'seo_grant__' . $entity->id();
+  $suggestions[] = 'seo_grant__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function seo_grant_entity_operation(EntityInterface $entity) {
+  $operations = [];
+  switch ($entity->getEntityTypeId()) {
+    case 'user':
+      $operations['seo_grant'] = [
+        'title' => t('+授权'),
+        'url' => Url::fromRoute('entity.seo_grant.add_form', [
+          'seo_grant_type' => 'default',
+          ],
+          [
+            'attributes' => [
+              'class' => [
+                'use-ajax',
+              ],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => '{"width": "50%"}',
+            ],
+            'query' => \Drupal::destination()->getAsArray(),
+          ]
+        ),
+        'weight' => 0,
+      ];
+      break;
+  }
+
+  return $operations;
+}

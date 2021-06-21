@@ -1,0 +1,1 @@
+seo_site.configuration:  path: '/seo_site/configuration'  defaults:    _form: '\Drupal\seo_site\Form\SeoSiteForm'    _title: '系统设置'  requirements:    _permission: 'access toolbar'

@@ -1,0 +1,21 @@
+# Pseudo api routing definition
+dsi_pseudo_api.settings_tab:
+  route_name: dsi_pseudo_api.settings
+  title: 'Settings'
+  base_route: dsi_pseudo_api.settings
+
+entity.dsi_pseudo_api.canonical:
+  route_name: entity.dsi_pseudo_api.canonical
+  base_route: entity.dsi_pseudo_api.canonical
+  title: 'View'
+
+entity.dsi_pseudo_api.edit_form:
+  route_name: entity.dsi_pseudo_api.edit_form
+  base_route: entity.dsi_pseudo_api.canonical
+  title: 'Edit'
+
+entity.dsi_pseudo_api.delete_form:
+  route_name:  entity.dsi_pseudo_api.delete_form
+  base_route:  entity.dsi_pseudo_api.canonical
+  title: Delete
+  weight: 10

@@ -1,0 +1,7 @@
+
+# Pseudo api menu items definition
+entity.dsi_pseudo_api.collection:
+  title: '伪原创·API'
+  route_name: entity.dsi_pseudo_api.collection
+  parent: dsi_pseudo.manage
+  weight: 100

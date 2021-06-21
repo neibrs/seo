@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function seo_station_install($is_syncing) {
+  user_role_grant_permissions('seo', [
+    'administer station entities',
+    'add station entities',
+    'delete station entities',
+    'edit station entities',
+    'view published station entities',
+    'view unpublished station entities',
+  ]);
+
+  $data = [
+    '1' => '是',
+    '2' => '否',
+    '3' => '跟随全局设置'
+  ];
+
+  generateLookup($data, 'independent_access');
+
+  $data = [
+    '1' => '关闭',
+    '2' => '全部重定向',
+    '3' => '顶级域名重定向',
+  ];
+  generateLookup($data, '301_redirect_type');
+}
+
+function generateLookup($data, $type) {
+  $lookup_storage = \Drupal::entityTypeManager()->getStorage('lookup');
+
+  foreach ($data as $key => $value) {
+    if (empty($value)) {
+      continue;
+    }
+    $values = [
+      'name' => $value,
+      'type' => $type,
+    ];
+    if (empty($lookup_storage->loadByProperties($values))) {
+      $lookup_storage->create($values)->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_update_N() refactor permission for station.
+ */
+function seo_station_update_9000(&$sandbox) {
+  user_role_grant_permissions('seo', [
+    'administer station entities',
+    'add station entities',
+    'delete station entities',
+    'edit station entities',
+    'view published station entities',
+    'view unpublished station entities',
+  ]);
+}

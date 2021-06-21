@@ -1,0 +1,37 @@
+seo_station.cities:
+  type: config_object
+  label: 'Cities'
+  mapping:
+    cities:
+      type: text
+      label: 'Cities'
+seo_station.https:
+  type: config_object
+  label: 'https'
+  mapping:
+    https:
+      type: text
+      label: 'https'
+seo_station.custom_contact:
+  type: config_object
+  label: '自定义联系方式'
+  mapping:
+    site_group:
+      type: integer
+      label: 网站分组
+    phone:
+      type: text
+      label: 联系电话
+    address:
+      type: text
+      label: 联系地址
+    email:
+      type: text
+      label: 联系邮箱
+seo_station.custom_domain_tkd:
+  type: config_object
+  label: '自定义域名TKD'
+  mapping:
+    custom_domain_tkd:
+      type: text
+      label: '自定义域名TKD'

@@ -1,0 +1,23 @@
+entity.seo_station.add_form:
+  route_name: entity.seo_station.add_form
+  title: 'Add'
+  appears_on:
+    - entity.seo_station.collection
+  options:
+    attributes:
+      class: ['use-ajax']
+      data-dialog-type: modal
+      data-dialog-options: '{"width":"80%"}'
+    query:
+      destination: '/seo_station'
+
+seo_station.extract_links_form:
+  route_name: seo_station.extract_links_form
+  title: '全站链接提取'
+  appears_on:
+    - entity.seo_station.collection
+  options:
+    attributes:
+      class: ['use-ajax', 'station-extract']
+      data-dialog-type: modal
+      data-dialog-options: '{"width":"50%"}'

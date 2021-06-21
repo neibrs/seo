@@ -1,0 +1,10 @@
+entity.seo_station_tkdb.add_form:
+  route_name: entity.seo_station_tkdb.add_page
+  title: 'Add Tkdb'
+  appears_on:
+    - entity.seo_station_tkdb.collection
+entity.seo_station_tkdb_type.add_form:
+  route_name: entity.seo_station_tkdb_type.add_form
+  title: 'Add Tkdb type'
+  appears_on:
+    - entity.seo_station_tkdb_type.collection

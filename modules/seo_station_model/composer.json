@@ -1,0 +1,13 @@
+{
+    "name": "drupal/seo_station_model",
+    "type": "drupal-module",
+    "description": "My Awesome Module",
+    "keywords": [
+    ],
+    "homepage": "https://www.drupal.org/project/seo_station_model",
+    "minimum-stability": "dev",
+    "support": {
+        "issues": "https://www.drupal.org/project/issues/seo_station_model",
+        "source": "http://cgit.drupalcode.org/seo_station_model"
+    }
+}

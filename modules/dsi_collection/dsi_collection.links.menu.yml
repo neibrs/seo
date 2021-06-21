@@ -1,0 +1,11 @@
+
+# Collection menu items definition
+entity.dsi_collection.manager:
+  title: '采集库'
+  route_name: entity.dsi_collection.collection
+  parent: system.seo
+entity.dsi_collection.collection:
+  title: '采集规则'
+  route_name: entity.dsi_collection.collection
+  parent: entity.dsi_collection.manager
+

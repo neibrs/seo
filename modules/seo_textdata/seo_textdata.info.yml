@@ -1,0 +1,8 @@
+name: 'Text Data'
+type: module
+description: '文章数据库'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Dsi'
+dependencies:
+  - seo_station_model

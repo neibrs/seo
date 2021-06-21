@@ -1,0 +1,1 @@
+langcode: zh-hansstatus: truedependencies:  enforced:    module:      - dsi_collectionid: sentencelabel: 句子

@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Contains seoer.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seoer_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seoer module.
+    case 'help.page.seoer':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The seo er module.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_sidebar_tee_menu_alter().
+ */
+function seoer_sidebar_tee_menu_alter(&$data) {
+  $icons = [
+    'seoer.members.management' => 'gitee-icon icon project',
+  ];
+  _eabax_core_set_menu_items_icon($data, $icons);
+}

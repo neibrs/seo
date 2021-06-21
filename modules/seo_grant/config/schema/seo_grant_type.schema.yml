@@ -1,0 +1,12 @@
+seo_grant.seo_grant_type.*:
+  type: config_entity
+  label: '授权码类型配置'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    uuid:
+      type: string

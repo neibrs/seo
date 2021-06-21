@@ -1,0 +1,7 @@
+seo_station_model.url_rule_form:
+  path: '/seo_station_model/{seo_station_model}/url/{seo_station_model_url_type}'
+  defaults:
+    _title_callback: '\Drupal\seo_station_model_url\Controller\StationModelController::getTitle'
+    _form: '\Drupal\seo_station_model_url\Form\UrlRuleForm'
+  requirements:
+    _permission: 'edit station model url entities'
