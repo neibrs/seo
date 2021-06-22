@@ -28,7 +28,7 @@ class StationTkdbController extends ControllerBase {
         'name' => $model->label(),
         'config_dir' => $model->config_dir->value,
         'is_empty' => empty($ids),
-        'link_empty' => empty($ids) ? Link::createFromRoute('点击设置', 'tkdb.model_link.edit_form', [
+        'link_empty' => empty($ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_link.edit_form', [
           'seo_station_model' => $model->id(),
         ], [
           'query' => \Drupal::destination()->getAsArray(),
