@@ -27,8 +27,8 @@ entity.seo_station.collection:
 #  route_name: seo_station.contact_form
 #  parent: entity.seo_station.administer
 #  weight: 100
-#seo_station.custom_domain_tkd_form:
-#  title: '自定义域名TKD'
-#  route_name: seo_station.custom_domain_tkd_form
-#  parent: entity.seo_station.administer
-#  weight: 100
+seo_station.custom_domain_tkd_form:
+  title: '自定义域名TKD'
+  route_name: seo_station.custom_domain_tkd_form
+  parent: entity.seo_station.administer
+  weight: 100

@@ -4,32 +4,32 @@
 <div class="row py-1">
   {# style for bs5 #}
   {% for v in content.models %}
-  <div class="col d-flex">
-    <div class="text-center">
-      <h4 class="mb-0">{{ v.name }}</h4>
-      <p>{{ v.config_dir }}</p>
-      <p>
-      <ul class="operations clearfix action-links text-center list-group list-group-horizontal">
-        {% if v.config_dir == 'default' %}
-          <li class="action-links__item list-group-item text-nowrap">
-            {{ v.edit }}
-          </li>
-        {% elseif v.is_empty %}
-          <li class="action-links__item  list-group-item text-nowrap">
-            {{ v.link_empty }}
-          </li>
-        {% else %}
-          <li class="action-links__item list-group-item text-nowrap">
-            {{ v.edit }}
-          </li>
-          <li class="action-links__item list-group-item text-nowrap">
-            {{ v.delete }}
-          </li>
-        {% endif %}
-      </ul>
-      </p>
-    </div>
-  </div>
+   <div class="col-2">
+     <div class="tkdb-boxlist text-center">
+       <h4 class="mb-0">{{ v.name }}</h4>
+       <p>{{ v.config_dir }}</p>
+               <p>
+               <ul class="operations clearfix action-links text-center list-group list-group-horizontal">
+                 {% if v.config_dir == 'default' %}
+                   <li class="action-links__item list-group-item text-nowrap mx-auto">
+                     {{ v.edit }}
+                   </li>
+                 {% elseif v.is_empty %}
+                   <li class="action-links__item  list-group-item text-nowrap mx-auto">
+                     {{ v.link_empty }}
+                   </li>
+                 {% else %}
+                   <li class="action-links__item list-group-item text-nowrap mx-auto">
+                     {{ v.edit }}
+                   </li>
+                   <li class="action-links__item list-group-item text-nowrap mx-auto">
+                     {{ v.delete }}
+                   </li>
+                 {% endif %}
+               </ul>
+               </p>
+     </div>
+   </div>
   {% endfor %}
 
 </div>
