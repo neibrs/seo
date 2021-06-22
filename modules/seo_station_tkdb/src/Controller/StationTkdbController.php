@@ -87,26 +87,9 @@ class StationTkdbController extends ControllerBase {
 
     $stations = \Drupal::entityTypeManager()->getStorage('seo_station')->loadMultiple();
     $stations = array_map(function ($station){
-//      $keywords = [
-//        'type' => $station->getEntityTypeId(),
-//        'model' => $station->model->target_id,
-//        'group' => $station->id(),
-//      ];
-//      $ids = \Drupal::service('seo_station_tkdb.manager')->getTkdb($keywords);
       return [
         'name' => $station->label(),
         'model' => !empty($station->model->target_id) ? $station->model->entity->label() : '无模型',
-//        'link_empty' => empty($ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.edit_form', [
-//          'seo_station_model' => $station->model->entity->id(),
-//          'seo_station' => $station->id(),
-//        ], [
-//          'query' => \Drupal::destination()->getAsArray(),
-//          'attributes' => [
-//            'class' => ['use-ajax'],
-//            'data-dialog-type' => 'modal',
-//            'data-dialog-options' => '{"width": "80%"}',
-//          ],
-//        ])->toString() : NULL,
         'edit' => Link::createFromRoute('修改', 'tkdb.model_station.edit_form', [
           'seo_station_model' => $station->model->entity->id(),
           'seo_station' => $station->id(),
