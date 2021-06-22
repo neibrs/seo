@@ -7,3 +7,4 @@ package: 'Dsi'
 dependencies:
   - lookup
   - seo_station_model
+  - seo_station_tkdb

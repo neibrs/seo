@@ -285,117 +285,154 @@ class Station extends ContentEntityBase implements StationInterface {
 //        'weight' => 10,
 //      ]);
 //网站名称库(site_name)
-    $fields['site_name'] = BaseFieldDefinition::create('string')
+    $fields['site_name'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('网站名称库')
       ->setDescription('即网站名称，不填则随机取自网站名称库')
-      ->setDefaultValue('')
+      ->setSetting('target_type', 'seo_textdata')
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'webname' => 'webname',
+        ],
+      ])
       ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'options_select',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-//自定义栏目库(site_column)
-    $fields['site_column'] = BaseFieldDefinition::create('string')
+
+    //自定义栏目库(site_column)
+    $fields['site_column'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('自定义栏目库')
       ->setDescription('即网站栏目，不填则随机取自栏目库')
-      ->setDefaultValue('')
+      ->setSetting('target_type', 'seo_textdata')
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'typename' => 'typename',
+        ],
+      ])
       ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'options_select',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义标题库(site_title)
-    $fields['site_title'] = BaseFieldDefinition::create('string')
+    $fields['site_title'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('自定义标题库')
       ->setDescription('内容类型为<span class="description-blue">句子拼凑</span>时使用，不填则随机取自标题库')
-      ->setDefaultValue('')
+      ->setSetting('target_type', 'seo_textdata')
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'title' => 'title',
+        ],
+      ])
       ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'options_select',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义句子库(site_sentence)
-    $fields['site_sentence'] = BaseFieldDefinition::create('string')
+    $fields['site_sentence'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('自定义句子库')
       ->setDescription('不填则随机取自句子库')
-      ->setDefaultValue('')
+      ->setSetting('target_type', 'seo_textdata')
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'diy' => 'diy',
+        ],
+      ])
       ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'options_select',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义图片库(site_pics)
-    $fields['site_pics'] = BaseFieldDefinition::create('string')
+    $fields['site_pics'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('自定义图片库')
       ->setDescription('不填则随机取自图片库，一般句子模式时使用到')
-      ->setDefaultValue('')
+      ->setSetting('target_type', 'seo_textdata')
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'pic' => 'pic',
+        ],
+      ])
       ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'options_select',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义文章库(site_node)
-    $fields['site_node'] = BaseFieldDefinition::create('string')
+    $fields['site_node'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('自定义文章库')
       ->setDescription('内容类型为<span class="description-blue">文章库</span>时使用，不填则随机取自文章库')
-      ->setDefaultValue('')
+      ->setSetting('target_type', 'seo_textdata')
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'article' => 'article',
+        ],
+      ])
       ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'options_select',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //企业简介句子(site_intro)
-    $fields['site_intro'] = BaseFieldDefinition::create('string')
+    $fields['site_intro'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('企业简介句子')
       ->setDescription('模型为<span class="description-blue">企业</span>时使用，不填则使用默认的')
-      ->setDefaultValue('')
+      ->setSetting('target_type', 'seo_textdata')
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'content' => 'content',
+        ],
+      ])
       ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
       ])
       ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
+        'type' => 'options_select',
+        'weight' => 0,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
+
 //内容句子调用条数(number)
     $fields['number'] = BaseFieldDefinition::create('integer')
       ->setLabel('内容句子调用条数')
