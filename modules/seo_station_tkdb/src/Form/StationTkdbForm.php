@@ -132,7 +132,7 @@ class StationTkdbForm extends FormBase {
           $tkdb = $this->tkdb_storage->load(reset($ids));
         }
 
-        $form[$type->id().'_settings'][$type->id().'_table'][$i]['content']['#default_value'] = $this->getDefaultContent($tkdb, $type->id(), $template);
+        $form[$type->id().'_settings'][$type->id().'_table'][$i]['content']['#default_value'] = \Drupal::service('seo_station_tkdb.manager')->getDefaultContent($tkdb, $type->id(), $template);
         $i++;
       }
 
@@ -163,68 +163,6 @@ class StationTkdbForm extends FormBase {
     }
 	  $this->messenger()->addMessage('保存成功！');
 	}
-
-	protected function getDefaultContent($tkdb, $type, $template) {
-    $content = '';
-
-    if (!empty($tkdb)) {
-      $content = $tkdb->get('content')->value;
-
-      return $content;
-    }
-    switch ($type) {
-      case 'title':
-        switch ($template) {
-          case 'index':
-            $content = '{网站名称}';
-            break;
-          case 'list':
-            $content = '{$title}主题-{网站名称}';
-            break;
-          case 'show':
-            $content = '{$title}-{网站名称}';
-            break;
-        }
-        break;
-      case 'keywords':
-        switch ($template) {
-          case 'index':
-            $content = '{网站名称}';
-            break;
-          case 'list':
-          case 'show':
-            $content = '{$title}';
-            break;
-        }
-        break;
-      case 'description':
-        switch ($template) {
-          case 'index':
-            $content = '{网站名称}';
-            break;
-          case 'list':
-          case 'show':
-            $content = '{$content}';
-            break;
-        }
-        break;
-      case 'content':
-        $content = '<p>{$content}</p>
-<p>{$content1}{$content2}</p>
-<p><img src="{$pic}" alt="{$title}" /></p>
-<p>{$content3}{$content4}{$content5}</p>
-<p><img src="{$pic1}" alt="{$title}" /></p>
-<p>{$content6}{$content7}</p>
-<p><img src="{$pic2}" alt="{$title}" /></p>
-<p>{$content8}</p>
-<p>{$content9}{$content10}</p>
-<p>{$content11}{$content12}</p>
-<p>{$content13}{$content14}</p>';
-        break;
-    }
-
-    return $content;
-  }
 
 	protected function updateOrCreateTkdb($val, $type) {
     foreach ($val as $k => $v) {

@@ -65,9 +65,7 @@ class StationTkdbController extends ControllerBase {
     $default[] = [
       'name' => '默认配置',
       'config_dir' => 'default',
-      'edit' => Link::createFromRoute('点击修改', 'tkdb.model_link.edit_form', [
-        'seo_station_model' => 1,//$model->id(),
-      ], [
+      'edit' => Link::createFromRoute('点击修改', 'tkdb.model_link.default.edit_form', [], [
         'query' => \Drupal::destination()->getAsArray(),
         'attributes' => [
           'class' => ['use-ajax', 'action-link action-link--icon-checkmark action-link--small text-color-yellow'],

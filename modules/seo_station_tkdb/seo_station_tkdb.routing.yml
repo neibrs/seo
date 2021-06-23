@@ -22,6 +22,14 @@ tkdb.model_station.edit_form:
   requirements:
     _permission: 'administer tkdb entities'
 
+tkdb.model_link.default.edit_form:
+  path: '/seo_station_tkdb/default/model_link/edit'
+  defaults:
+    _title: '默认配置'
+    _form: 'Drupal\seo_station_tkdb\Form\StationTkdbDefaultForm'
+  requirements:
+    _permission: 'administer tkdb entities'
+
 tkdb.model_link.delete_form:
   path: '/seo_station_tkdb/model_link/{seo_station_model}/delete'
   defaults:

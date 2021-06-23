@@ -12,6 +12,49 @@ function seo_station_tkdb_install($is_syncing) {
    'view published tkdb entities',
    'view unpublished tkdb entities',
   ]);
+
+  // 添加默认的Tkdb
+  $names = [
+    'index',
+    'list',
+    'show',
+  ];
+  $values = [];
+
+  $types = [
+    'title',
+    'description',
+    'keywords',
+    'content',
+  ];
+  foreach ($types as $type) {
+    $values['type'] = $type;
+    foreach ($names as $name) {
+      switch ($name) {
+        case 'index':
+          $values['content'] = '{网站名称}';
+          break;
+        case 'list':
+          $values['content'] = '{$title}主题-{网站名称}';
+          break;
+        case 'show':
+          $values['content'] = '{$title}-{网站名称}';
+          break;
+      }
+      $values['template'] = $name;
+      $values['name'] = $name;
+    }
+    // create values.
+//    $values = [
+//      'template' => 'index',
+//      'type' => 'title',
+//      'content' => 'xxxx',
+//      'name' => 'index',
+//    ];
+    $storage = \Drupal::service('entity_type.manager')->getStorage('seo_station_tkdb');
+    $tkdb = $storage->create($values);
+    $tkdb->save();
+  }
 }
 
 /**
