@@ -5,6 +5,7 @@
  * Contains seo_station.module.
  */
 
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Routing\RouteMatchInterface;
 
 /**
@@ -112,4 +113,24 @@ function seo_station_theme($existing, $type, $theme, $path) {
 function seo_station_link_rule_data_alter(array &$data) {
   $queue = \Drupal::queue('link_rule_process');
   $queue->createItem($data);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function seo_station_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'seo_station_tkdb') {
+    $fields = [];
+    //    - group 网站分组
+    $fields['group'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('网站ID')
+      ->setSetting('target_type', 'seo_station');
+
+    // Station Tkdb设置中区分是否泛域名设置.
+    $fields['wild'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('泛域名设置')
+      ->setSetting('target_type', 'seo_station');
+
+    return $fields;
+  }
 }

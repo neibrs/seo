@@ -123,20 +123,8 @@ class Tkdb extends ContentEntityBase implements TkdbInterface {
       ->setRequired(TRUE);
 
     //    - model 网站模型
-    $fields['model'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel('模型ID')
-      ->setSetting('target_type', 'seo_station_model');
-
     //    - group 网站分组
-    $fields['group'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel('网站ID')
-      ->setSetting('target_type', 'seo_station');
-
     // Station Tkdb设置中区分是否泛域名设置.
-    $fields['wild'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel('泛域名设置')
-      ->setSetting('target_type', 'seo_station');
-
 
     //    - template 模板文件，index, list, show, ...
     $fields['template'] = BaseFieldDefinition::create('string')

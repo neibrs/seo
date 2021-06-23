@@ -6,6 +6,7 @@
  */
 
 use Drupal\Component\Serialization\Json;
+use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
@@ -105,4 +106,17 @@ function seo_station_model_sidebar_tee_menu_alter(&$data) {
     'entity.seo_station_model.collection' => 'icon gitee-icon activities',
   ];
   _eabax_core_set_menu_items_icon($data, $icons);
+}
+
+/**
+ * Implements hook_entity_base_field_info().
+ */
+function seo_station_model_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'seo_station_tkdb') {
+    $fields = [];
+    $fields['model'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('模型ID')
+      ->setSetting('target_type', 'seo_station_model');
+    return $fields;
+  }
 }

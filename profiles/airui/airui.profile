@@ -115,7 +115,6 @@ function airui_form_install_settings_form_alter(&$form, FormStateInterface $form
     '#type' => 'textfield',
     '#title' => '密码',
     '#default_value' => 'root',
-    '#value' => 'root',
   ];
   $form['settings']['mysql']['advanced_options']['#title'] = '高级选项';
   $form['settings']['mysql']['advanced_options']['prefix']['#title'] = '表前缀';
