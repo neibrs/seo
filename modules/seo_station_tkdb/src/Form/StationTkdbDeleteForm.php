@@ -13,6 +13,7 @@ class StationTkdbDeleteForm extends ConfirmFormBase {
 
   protected $model;
   protected $station;
+  protected $wild;
   protected $entityTypeManager;
   protected $tkdb_storage;
 
@@ -31,9 +32,10 @@ class StationTkdbDeleteForm extends ConfirmFormBase {
     return 'seo_station_tkdb_delete_form';
   }
 
-  public function buildForm(array $form, FormStateInterface $form_state, $seo_station_model = NULL, $seo_station = NULL) {
+  public function buildForm(array $form, FormStateInterface $form_state, $seo_station_model = NULL, $seo_station = NULL, $wild = NULL) {
     $this->model = $seo_station_model;
     $this->station = $seo_station;
+    $this->wild = $wild;
 
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = [
@@ -48,6 +50,9 @@ class StationTkdbDeleteForm extends ConfirmFormBase {
       'model' => $this->model,
       'group' => $this->station,
     ];
+    if ($this->wild) {
+      $keywords['wild'] = $this->station;
+    }
     // 创建？
     $ids = \Drupal::service('seo_station_tkdb.manager')->getTkdb($keywords);
     $tkdb_storage = $this->entityTypeManager->getStorage('seo_station_tkdb');

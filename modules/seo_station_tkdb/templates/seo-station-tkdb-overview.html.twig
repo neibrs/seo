@@ -8,26 +8,26 @@
      <div class="tkdb-boxlist text-center">
        <h4 class="mb-0">{{ v.name }}</h4>
        <p>{{ v.config_dir }}</p>
-               <p>
-               <ul class="operations clearfix action-links text-center list-group list-group-horizontal">
-                 {% if v.config_dir == 'default' %}
-                   <li class="action-links__item list-group-item text-nowrap mx-auto">
-                     {{ v.edit }}
-                   </li>
-                 {% elseif v.is_empty %}
-                   <li class="action-links__item  list-group-item text-nowrap mx-auto">
-                     {{ v.link_empty }}
-                   </li>
-                 {% else %}
-                   <li class="action-links__item list-group-item text-nowrap mx-auto">
-                     {{ v.edit }}
-                   </li>
-                   <li class="action-links__item list-group-item text-nowrap mx-auto">
-                     {{ v.delete }}
-                   </li>
-                 {% endif %}
-               </ul>
-               </p>
+       <p>
+       <ul class="operations clearfix action-links text-center list-group list-group-horizontal">
+         {% if v.config_dir == 'default' %}
+           <li class="action-links__item list-group-item text-nowrap mx-auto">
+             {{ v.edit }}
+           </li>
+         {% elseif v.is_empty %}
+           <li class="action-links__item  list-group-item text-nowrap mx-auto">
+             {{ v.link_empty }}
+           </li>
+         {% else %}
+           <li class="action-links__item list-group-item text-nowrap mx-auto">
+             {{ v.edit }}
+           </li>
+           <li class="action-links__item list-group-item text-nowrap mx-auto">
+             {{ v.delete }}
+           </li>
+         {% endif %}
+       </ul>
+       </p>
      </div>
    </div>
   {% endfor %}
@@ -47,11 +47,25 @@
         </dt>
         <dd>
           <b style="color:black">主配置：</b>
-          <a class="button button_small" href="javascript:" onclick="editdm('7','test','zhu');">未设置，点击设置</a>
+            {% if station.is_empty %}
+{#              <a class="button button_small" href="javascript:" onclick="editdm('7','test','zhu');">未设置，点击设置</a> &nbsp;&nbsp;#}
+              {{ station.master.link_empty }}
+            {% else %}
+              {{ station.master.edit }}
+              {{ station.master.delete }}
+            {% endif %}
+{#          <a class="button button_small button_success" href="javascript:" onclick="editdm('7','test','zhu');">修改</a>#}
+{#          <a href="?admin-arctype-tplrules_deldm-id-7-type-zhu" class="button button_small button_remove" onclick="return confirm(&quot;确定清除该配置？!&quot;);">清除</a>#}
         </dd>
         <dd style="margin-top:5px;border-top:1px dotted #ccc;padding:5px 0;">
           <b style="color:black">泛域名：</b>
-          <a class="button button_small" href="javascript:" onclick="editdm('7','test','fan');">未设置，点击设置</a>
+            {% if station.is_empty %}
+{#              <a class="button button_small" href="javascript:" onclick="editdm('7','test','fan');">未设置，点击设置</a>#}
+                {{ station.wild.link_empty }}
+            {% else %}
+                {{ station.wild.edit }}
+                {{ station.wild.delete }}
+            {% endif %}
         </dd>
       </dl>
     </div>

@@ -88,27 +88,77 @@ class StationTkdbController extends ControllerBase {
       return [
         'name' => $station->label(),
         'model' => !empty($station->model->target_id) ? $station->model->entity->label() : '无模型',
-        'edit' => Link::createFromRoute('修改', 'tkdb.model_station.edit_form', [
-          'seo_station_model' => $station->model->entity->id(),
-          'seo_station' => $station->id(),
-        ], [
-          'query' => \Drupal::destination()->getAsArray(),
-          'attributes' => [
-            'class' => ['use-ajax'],
-            'data-dialog-type' => 'modal',
-            'data-dialog-options' => '{"width": "80%"}',
-          ],
-        ])->toString(),
-        'delete' => Link::createFromRoute('清除', 'tkdb.model_station.delete_form', [
-          'seo_station' => $station->id(),
-        ],[
-          'query' => \Drupal::destination()->getAsArray(),
-          'attributes' => [
-            'class' => ['use-ajax'],
-            'data-dialog-type' => 'modal',
-            'data-dialog-options' => '{"width": "80%"}',
-          ],
-        ]),
+        'is_empty' => empty($ids),
+        'master' => [
+          'link_empty' => empty($ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.edit_form', [
+            'seo_station_model' => $station->model->entity->id(),
+            'seo_station' => $station->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+            'attributes' => [
+              'class' => ['use-ajax', 'action-link action-link--icon-checkmark action-link--small text-color-green'],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => '{"width": "80%"}',
+            ],
+          ])->toString() : NULL,
+          'edit' => Link::createFromRoute('修改', 'tkdb.model_station.edit_form', [
+            'seo_station_model' => $station->model->entity->id(),
+            'seo_station' => $station->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+            'attributes' => [
+              'class' => ['use-ajax'],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => '{"width": "80%"}',
+            ],
+          ])->toString(),
+          'delete' => Link::createFromRoute('清除', 'tkdb.model_station.delete_form', [
+            'seo_station' => $station->id(),
+          ],[
+            'query' => \Drupal::destination()->getAsArray(),
+            'attributes' => [
+              'class' => ['use-ajax'],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => '{"width": "80%"}',
+            ],
+          ]),
+        ],
+        'wild' => [
+          'link_empty' => empty($ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.edit_form', [
+            'seo_station_model' => $station->model->entity->id(),
+            'seo_station' => $station->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+            'attributes' => [
+              'class' => ['use-ajax', 'action-link action-link--icon-checkmark action-link--small text-color-green'],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => '{"width": "80%"}',
+            ],
+          ])->toString() : NULL,
+          'edit' => Link::createFromRoute('修改', 'tkdb.model_station.wild.edit_form', [
+            'seo_station_model' => $station->model->entity->id(),
+            'seo_station' => $station->id(),
+            'wild' => $station->id(),
+          ], [
+            'query' => \Drupal::destination()->getAsArray(),
+            'attributes' => [
+              'class' => ['use-ajax'],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => '{"width": "80%"}',
+            ],
+          ])->toString(),
+          'delete' => Link::createFromRoute('清除', 'tkdb.model_station.wild.delete_form', [
+            'seo_station' => $station->id(),
+            'wild' => $station->id(),
+          ],[
+            'query' => \Drupal::destination()->getAsArray(),
+            'attributes' => [
+              'class' => ['use-ajax'],
+              'data-dialog-type' => 'modal',
+              'data-dialog-options' => '{"width": "80%"}',
+            ],
+          ]),
+        ],
       ];
     }, $stations);
 

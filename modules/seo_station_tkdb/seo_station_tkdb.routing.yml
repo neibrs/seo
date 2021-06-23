@@ -22,6 +22,13 @@ tkdb.model_station.edit_form:
   requirements:
     _permission: 'administer tkdb entities'
 
+tkdb.model_station.wild.edit_form:
+  path: '/seo_station_tkdb/model_link/{seo_station_model}/{seo_station}/wild/{wild}/edit'
+  defaults:
+    _title: '调用TKDB调用模板'
+    _form: '\Drupal\seo_station_tkdb\Form\StationTkdbForm'
+  requirements:
+    _permission: 'administer tkdb entities'
 tkdb.model_link.default.edit_form:
   path: '/seo_station_tkdb/default/model_link/edit'
   defaults:
@@ -42,6 +49,13 @@ tkdb.model_station.delete_form:
   path: '/seo_station_tkdb/model_link/{seo_station_model}/{seo_station}/delete'
   defaults:
     _title: '清除调用TKDB调用模板'
+    _form: '\Drupal\seo_station_tkdb\Form\StationTkdbDeleteForm'
+  requirements:
+    _permission: 'administer tkdb entities'
+tkdb.model_station.wild.delete_form:
+  path: '/seo_station_tkdb/model_link/{seo_station_model}/{seo_station}/wild/{wild}/delete'
+  defaults:
+    _title: '清除调用TKDB调用模板(泛域名)'
     _form: '\Drupal\seo_station_tkdb\Form\StationTkdbDeleteForm'
   requirements:
     _permission: 'administer tkdb entities'

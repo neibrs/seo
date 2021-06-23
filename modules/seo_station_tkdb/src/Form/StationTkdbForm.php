@@ -11,6 +11,7 @@ class StationTkdbForm extends FormBase {
 
   protected $model;
   protected $station;
+  protected $wild;
   protected $entityTypeManager;
   protected $tkdb_storage;
 
@@ -29,9 +30,10 @@ class StationTkdbForm extends FormBase {
 		return 'seo_station_tkdb_setting_form';
 	}
 
-	public function buildForm(array $form, FormStateInterface $form_state, $seo_station_model = NULL, $seo_station = NULL) {
+	public function buildForm(array $form, FormStateInterface $form_state, $seo_station_model = NULL, $seo_station = NULL, $wild = NULL) {
     $this->model = $seo_station_model;
     $this->station = $seo_station;
+    $this->wild = $wild;
 
 		$form['tabs'] = [
 			'#type' => 'horizontal_tabs',
@@ -126,6 +128,10 @@ class StationTkdbForm extends FormBase {
           'model' => $this->model,
           'group' => $this->station,
         ];
+        // 泛域名设置
+        if ($this->wild) {
+          $values['wild'] = $this->station;
+        }
         $ids = \Drupal::service('seo_station_tkdb.manager')->getTkdb($values);
         $tkdb = NULL;
         if (!empty($ids)) {
@@ -177,6 +183,9 @@ class StationTkdbForm extends FormBase {
       $values = [
         'content' => $v['content'],
       ];
+      if ($this->wild) {
+        $keywords['wild'] = $this->station;
+      }
       // 创建？
       $ids = \Drupal::service('seo_station_tkdb.manager')->getTkdb($keywords);
       // 更新？
