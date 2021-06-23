@@ -5,6 +5,7 @@ namespace Drupal\seo_station_tkdb;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class TkdbManager extends TkdbManagerInterface implements ContainerInjectionInterface {
@@ -107,6 +108,55 @@ class TkdbManager extends TkdbManagerInterface implements ContainerInjectionInte
     }
 
     return $content;
+  }
+
+  public function updateTkdbSubmitForm(array &$form, FormStateInterface $form_state) {
+    foreach ($form_state->getValues() as $key => $val) {
+      if ($key == 'title_table') {
+        $this->updateOrCreateTkdb($val, 'title');
+      }
+      if ($key == 'keywords_table') {
+        $this->updateOrCreateTkdb($val, 'keywords');
+      }
+      if ($key == 'description_table') {
+        $this->updateOrCreateTkdb($val, 'description');
+      }
+      if ($key == 'content_table') {
+        $this->updateOrCreateTkdb($val, 'content');
+      }
+    }
+  }
+
+  // 和StationTkdbFormg一样的代码
+  protected function updateOrCreateTkdb($val, $type) {
+    foreach ($val as $k => $v) {
+      // 创建tkdb实体
+      $keywords = [
+        'name' => $v['template'],
+        'type' => $type,
+        'template' => $v['template'],
+        'model' => NULL,
+        'group' => NULL,
+      ];
+      $values = [
+        'content' => $v['content'],
+      ];
+      // 创建？
+      $ids = \Drupal::service('seo_station_tkdb.manager')->getTkdb($keywords);
+      // 更新？
+      if (!empty($ids)) {
+        $tkdb = $this->tkdb_storage->load(reset($ids));
+        foreach ($keywords + $values as $k => $v) {
+          $tkdb->set($k, $v);
+        }
+        $tkdb->save();
+      }
+      else {
+        $this->tkdb_storage
+          ->create($keywords + $values)
+          ->save();
+      }
+    }
   }
 
 }
