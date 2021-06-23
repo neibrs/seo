@@ -124,9 +124,10 @@ class StationTkdbController extends ControllerBase {
           ]),
         ],
         'wild' => [
-          'link_empty' => empty($ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.edit_form', [
+          'link_empty' => empty($ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.wild.edit_form', [
             'seo_station_model' => $station->model->entity->id(),
             'seo_station' => $station->id(),
+            'wild' => $station->id(),
           ], [
             'query' => \Drupal::destination()->getAsArray(),
             'attributes' => [

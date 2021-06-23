@@ -29,6 +29,7 @@ tkdb.model_station.wild.edit_form:
     _form: '\Drupal\seo_station_tkdb\Form\StationTkdbForm'
   requirements:
     _permission: 'administer tkdb entities'
+
 tkdb.model_link.default.edit_form:
   path: '/seo_station_tkdb/default/model_link/edit'
   defaults:
