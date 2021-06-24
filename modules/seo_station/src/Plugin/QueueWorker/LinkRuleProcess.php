@@ -21,9 +21,6 @@ class LinkRuleProcess extends QueueWorkerBase {
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
     $body = $this->getBody();
-    if (empty($title)) {
-      return;
-    }
     $title = $this->getTitle($body[0]);
     if (empty($title)) {
       return;
@@ -31,7 +28,7 @@ class LinkRuleProcess extends QueueWorkerBase {
     try {
       $values = [
         'type' => 'article',
-        'title' => mb_substr($title[0], 0, 60),
+        'title' => is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60),
         'field_image' => '',
         'body' => [
           'value' => $body[1],
@@ -58,7 +55,7 @@ class LinkRuleProcess extends QueueWorkerBase {
   }
 
   // 随机获取title类型的标题库的文件一份
-  protected function getTitle() {
+  protected function getTitle($body_title = NULL) {
     $storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
     $title = $storage->loadByProperties([
       'type' => 'title',
@@ -76,6 +73,9 @@ class LinkRuleProcess extends QueueWorkerBase {
     $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
     if ($sub_data = str_replace("\n","-||-", $data)) {
       $ds = array_unique(explode('-||-', $sub_data));
+    }
+    if (in_array($body_title, $ds)) {
+      return $body_title;
     }
     $dst = $ds[mt_rand(0, count($ds))];
     return explode('******', $dst);
