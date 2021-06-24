@@ -99,7 +99,8 @@ class UrlRuleForm extends FormBase {
       }
       else {
         $form['rules'][$j]['url'] = [
-          '#type' => 'textarea',
+          '#type' => 'text_format',
+          '#format' => 'plain_text',
         ];
       }
       // 随机模式

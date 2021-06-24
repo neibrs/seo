@@ -18,7 +18,8 @@ class StationHttpsForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('seo_station.https');
     $form['https'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'plain_text',
       '#rows' => 15,
       '#default_value' => $config->get('https'),
     ];

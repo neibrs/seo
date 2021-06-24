@@ -18,7 +18,8 @@ class StationCustomDomainTkdForm extends ConfigFormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = $this->config('seo_station.custom_domain_tkd');
     $form['custom_domain_tkd'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'plain_text',
       '#rows' => 15,
       '#default_value' => $config->get('custom_domain_tkd'),
     ];

@@ -26,7 +26,8 @@ class CitiesForm extends ConfigFormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $form['cities'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'plain_text',
       '#rows' => 15,
       '#default_value' => $this->config('seo_station.cities')->get('cities'),
     ];
