@@ -47,6 +47,7 @@ function install_airui_components(&$install_state) {
     'seo_front',
     'seo_content',
     'dsi_block',
+    'seo_station_address',
   ];
   $operations = [];
   foreach ($modules as $module) {

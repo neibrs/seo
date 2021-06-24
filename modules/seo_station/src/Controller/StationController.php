@@ -9,11 +9,20 @@ class StationController extends ControllerBase {
 
   public function getExtract($number = 1) {
     $data = $this->getStationLinks($number);
+    $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+    foreach ($data as $id => $addresses) {
+      foreach ($addresses as $address) {
+        $storage->create([
+          'name' => $address,
+          'station' => $id,
+        ])->save();
+      }
+    }
 
     $build = [];
     $build['#theme'] = 'seo_station_extract';
     $build['#content'] = $data;
-    $build['#cache']['tags'] = Cache::mergeTags(\Drupal::entityTypeManager()->getDefinition('seo_station')->getListCacheTags(), \Drupal::entityTypeManager()->getDefinition('seo_station_model_url')->getListCacheTags(), \Drupal::entityTypeManager()->getDefinition('seo_station_model')->getListCacheTags());
+    $build['#cache']['tags'] = Cache::mergeTags(\Drupal::entityTypeManager()->getDefinition('seo_station')->getListCacheTags(), \Drupal::entityTypeManager()->getDefinition('seo_station_model_url')->getListCacheTags(), \Drupal::entityTypeManager()->getDefinition('seo_station_model')->getListCacheTags(), \Drupal::entityTypeManager()->getDefinition('seo_station_address')->getListCacheTags());
 
     return $build;
   }
@@ -25,7 +34,7 @@ class StationController extends ControllerBase {
     foreach ($stations as $station) {
       list($domains, $rule) = $this->getWildDomains($station, $number);
       // TODO, 需要确认是否全局保留下已生成的动态域名.
-      $data[] = $this->getSingleDomainRule($station, $domains, $rule, $number);
+      $data[$station->id()] = $this->getSingleDomainRule($station, $domains, $rule, $number);
     }
 
     return $data;
