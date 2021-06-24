@@ -47,7 +47,7 @@
         </dt>
         <dd>
           <b style="color:black">主配置：</b>
-            {% if station.is_empty %}
+            {% if station.master.is_empty %}
 {#              <a class="button button_small" href="javascript:" onclick="editdm('7','test','zhu');">未设置，点击设置</a> &nbsp;&nbsp;#}
               {{ station.master.link_empty }}
             {% else %}
@@ -59,7 +59,7 @@
         </dd>
         <dd style="margin-top:5px;border-top:1px dotted #ccc;padding:5px 0;">
           <b style="color:black">泛域名：</b>
-            {% if station.is_empty %}
+            {% if station.wild.is_empty %}
 {#              <a class="button button_small" href="javascript:" onclick="editdm('7','test','fan');">未设置，点击设置</a>#}
                 {{ station.wild.link_empty }}
             {% else %}

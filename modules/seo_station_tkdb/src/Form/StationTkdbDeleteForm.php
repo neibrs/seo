@@ -53,6 +53,9 @@ class StationTkdbDeleteForm extends ConfirmFormBase {
     if ($this->wild) {
       $keywords['wild'] = $this->station;
     }
+    else {
+      $keywords['wild'] = NULL;
+    }
     // 创建？
     $ids = \Drupal::service('seo_station_tkdb.manager')->getTkdb($keywords);
     $tkdb_storage = $this->entityTypeManager->getStorage('seo_station_tkdb');

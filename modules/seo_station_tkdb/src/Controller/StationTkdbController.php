@@ -85,12 +85,21 @@ class StationTkdbController extends ControllerBase {
 
     $stations = \Drupal::entityTypeManager()->getStorage('seo_station')->loadMultiple();
     $stations = array_map(function ($station){
+      $keywords = [
+        'model' => $station->model->target_id,
+        'group' => $station->id(),
+        'wild' => NULL,
+      ];
+      $master_ids = \Drupal::service('seo_station_tkdb.manager')->getTkdb($keywords);
+
+      $keywords['wild'] = $station->id();
+      $wild_ids = \Drupal::service('seo_station_tkdb.manager')->getTkdb($keywords);
       return [
         'name' => $station->label(),
         'model' => !empty($station->model->target_id) ? $station->model->entity->label() : '无模型',
-        'is_empty' => empty($ids),
         'master' => [
-          'link_empty' => empty($ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.edit_form', [
+          'is_empty' => empty($master_ids),
+          'link_empty' => empty($master_ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.edit_form', [
             'seo_station_model' => $station->model->entity->id(),
             'seo_station' => $station->id(),
           ], [
@@ -113,6 +122,7 @@ class StationTkdbController extends ControllerBase {
             ],
           ])->toString(),
           'delete' => Link::createFromRoute('清除', 'tkdb.model_station.delete_form', [
+            'seo_station_model' => $station->model->entity->id(),
             'seo_station' => $station->id(),
           ],[
             'query' => \Drupal::destination()->getAsArray(),
@@ -124,7 +134,8 @@ class StationTkdbController extends ControllerBase {
           ]),
         ],
         'wild' => [
-          'link_empty' => empty($ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.wild.edit_form', [
+          'is_empty' => empty($wild_ids),
+          'link_empty' => empty($wild_ids) ? Link::createFromRoute('未设置，点击设置', 'tkdb.model_station.wild.edit_form', [
             'seo_station_model' => $station->model->entity->id(),
             'seo_station' => $station->id(),
             'wild' => $station->id(),
@@ -149,6 +160,7 @@ class StationTkdbController extends ControllerBase {
             ],
           ])->toString(),
           'delete' => Link::createFromRoute('清除', 'tkdb.model_station.wild.delete_form', [
+            'seo_station_model' => $station->model->entity->id(),
             'seo_station' => $station->id(),
             'wild' => $station->id(),
           ],[
