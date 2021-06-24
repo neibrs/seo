@@ -34,7 +34,7 @@ class LinkRuleProcess extends QueueWorkerBase {
         // 根据规则，寻找可替换的TKDB. 这里寻找的是show规则.
 
         // 设置title, keywords, description, content. metatag.
-
+        // TODO
       }
 
       $values = [
