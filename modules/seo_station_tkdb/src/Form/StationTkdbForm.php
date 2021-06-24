@@ -113,8 +113,7 @@ class StationTkdbForm extends FormBase {
             '#markup' => $template,
           ],
           'content' => [
-            '#type' => 'text_format',
-            '#format' => 'plain_text',
+            '#type' => 'textarea',
             '#rows' => 3,
           ],
           'template' => [

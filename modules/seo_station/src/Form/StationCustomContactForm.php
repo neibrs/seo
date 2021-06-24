@@ -37,8 +37,7 @@ class StationCustomContactForm extends ConfigFormBase {
       '#title' => '联系方式',
     ];
     $form['contact_group']['phone'] = [
-      '#type' => 'text_format',
-      '#format' => 'plain_text',
+      '#type' => 'textarea',
       '#title' => '联系电话',
       '#rows' => 5,
       '#default_value' => $this->config('seo_station.custom_contact')->get('phone'),
@@ -46,16 +45,14 @@ class StationCustomContactForm extends ConfigFormBase {
     ];
 
     $form['contact_group']['address'] = [
-      '#type' => 'text_format',
-      '#format' => 'plain_text',
+      '#type' => 'textarea',
       '#title' => '联系地址',
       '#rows' => 5,
       '#default_value' => $this->config('seo_station.custom_contact')->get('address'),
       '#description' => '<span class="description-red">每行一个联系地址，系统会随机调用</span>',
     ];
     $form['contact_group']['email'] = [
-      '#type' => 'text_format',
-      '#format' => 'plain_text',
+      '#type' => 'textarea',
       '#title' => '联系邮箱',
       '#rows' => 5,
       '#default_value' => $this->config('seo_station.custom_contact')->get('email'),
