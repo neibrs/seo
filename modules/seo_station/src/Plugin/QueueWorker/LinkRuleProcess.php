@@ -26,6 +26,17 @@ class LinkRuleProcess extends QueueWorkerBase {
       return;
     }
     try {
+      // TODO
+      if (\Drupal::moduleHandler()->moduleExists('seo_station_tkdb')) {
+        // 这里添加tkdb规则,用以对每个node进行定义。
+        $tkdb_manager = \Drupal::service('seo_station_tkdb.manager');
+        $tkdb_rules = $tkdb_manager->getTkdbShowRule($data);
+        // 根据规则，寻找可替换的TKDB. 这里寻找的是show规则.
+
+        // 设置title, keywords, description, content. metatag.
+
+      }
+
       $values = [
         'type' => 'article',
         'title' => is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60),
@@ -36,6 +47,7 @@ class LinkRuleProcess extends QueueWorkerBase {
           'format' => 'basic_html',
         ],
       ];
+
       // 创建该别名的文章数据.
       $node = $node_storage->create(['type' => 'article']);
       foreach ($values as $key => $val) {

@@ -159,4 +159,67 @@ class TkdbManager extends TkdbManagerInterface implements ContainerInjectionInte
     }
   }
 
+  /**
+   * 获取一条TKDB规则
+   * $arr = [
+   *  'station' => $station,
+   *  'domain' => $d,
+   *  'replacement' => '***',
+   *  ];
+   * @param $data
+   * 获取规则：
+   *  网站分组下存在泛域名设置规则
+   *  网站分组下存在主配置规则
+   *  网站模型下存在规则
+   *  获取默认规则
+   */
+  public function getTkdbRule($data) {
+    $tkdb_manager = \Drupal::service('seo_station_tkdb.manager');
+    $tkdb_storage = \Drupal::entityTypeManager()->getStorage('seo_station_tkdb');
+
+    //    网站分组下存在泛域名设置规则
+    $keywords = [
+      'model' => $data['station'],
+      'group' => $data['station'],
+      'wild' => $data['station'],
+    ];
+    $ids = $tkdb_manager->getTkdb($keywords);
+    if (!empty($ids)) {
+      return $tkdb_storage->loadMultiple($ids);
+    }
+
+    //    网站分组下存在主配置规则
+    $keywords['wild'] = NULL;
+    $ids = $tkdb_manager->getTkdb($keywords);
+    if (!empty($ids)) {
+      return $tkdb_storage->loadMultiple($ids);
+    }
+    //    网站模型下存在规则
+    $keywords['group'] = NULL;
+    $ids = $tkdb_manager->getTkdb($keywords);
+    if (!empty($ids)) {
+      return $tkdb_storage->loadMultiple($ids);
+    }
+
+    //    获取默认规则
+    $keywords['model'] = NULL;
+    $ids = $tkdb_manager->getTkdb($keywords);
+    if (!empty($ids)) {
+      return $tkdb_storage->loadMultiple($ids);
+    }
+
+  }
+
+  public function getTkdbShowRule($data) {
+    $tkdb_storage = \Drupal::entityTypeManager()->getStorage('seo_station_tkdb');
+    $ids = $this->getTkdbRule($data);
+    $query = $tkdb_storage->getQuery();
+    if (!empty($ids)) {
+      $query->condition('id', $ids, 'IN');
+    }
+    $query->condition('template', 'show');
+    $xids = $query->execute();
+
+    return $tkdb_storage->loadMultiple($xids);
+  }
 }
