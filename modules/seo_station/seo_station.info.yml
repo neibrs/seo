@@ -6,4 +6,5 @@ core_version_requirement: ^8 || ^9
 package: 'Dsi'
 dependencies:
   - lookup
+  - metatag
   - seo_station_model
