@@ -1,0 +1,14 @@
+
+# Station address menu items definition
+entity.seo_station_address.collection:
+  title: 'Station address list'
+  route_name: entity.seo_station_address.collection
+  description: 'List Station address entities'
+  parent: system.admin_structure
+  weight: 100
+
+seo_station_address.admin.structure.settings:
+  title: 'Station address settings'
+  description: 'Configure Station address entities'
+  route_name: seo_station_address.settings
+  parent: system.admin_structure

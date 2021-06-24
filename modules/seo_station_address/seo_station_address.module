@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_station_address.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_station_address_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_station_address module.
+    case 'help.page.seo_station_address':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('网站提取数据后，生成的地址') . '</p>';
+      return $output;
+
+    default:
+  }
+}

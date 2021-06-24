@@ -1,0 +1,6 @@
+name: 'Station Address'
+type: module
+description: '用来保存网站提取数据后，生成的地址'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Dsi'

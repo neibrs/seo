@@ -1,0 +1,20 @@
+add station address entities:
+  title: 'Create new Station address entities'
+
+administer station address entities:
+  title: 'Administer Station address entities'
+  description: 'Allow to access the administration form to configure Station address entities.'
+  restrict access: true
+
+delete station address entities:
+  title: 'Delete Station address entities'
+
+edit station address entities:
+  title: 'Edit Station address entities'
+
+view published station address entities:
+  title: 'View published Station address entities'
+
+view unpublished station address entities:
+  title: 'View unpublished Station address entities'
+
