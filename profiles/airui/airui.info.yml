@@ -51,6 +51,7 @@ dependencies:
   - image_resize_filter
   - pathauto
   - xmlsitemap
+  - metatag
 ##dependencies:
 #  - seoer
 #  - dsi_login
