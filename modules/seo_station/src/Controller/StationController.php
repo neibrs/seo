@@ -12,6 +12,7 @@ class StationController extends ControllerBase {
     $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
     foreach ($data as $id => $addresses) {
       foreach ($addresses as $address) {
+        // 保存生成的链接数据.
         $storage->create([
           'name' => $address,
           'station' => $id,
@@ -70,7 +71,7 @@ class StationController extends ControllerBase {
         // 生成真实的链接数据，并加入相应的队列.
         // 插入队列.
         $arr = [
-          'station' => $station,
+          'station' => $station->id(),
           'domain' => $d,
         ];
         foreach ($replacements as $replacement) {

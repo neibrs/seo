@@ -177,35 +177,39 @@ class TkdbManager extends TkdbManagerInterface implements ContainerInjectionInte
     $tkdb_manager = \Drupal::service('seo_station_tkdb.manager');
     $tkdb_storage = \Drupal::entityTypeManager()->getStorage('seo_station_tkdb');
 
+    $model = '';
+    if ($data['station']) {
+      $model = \Drupal::entityTypeManager()->getStorage('seo_station')->load($data['station'])->model->target_id;
+    }
     //    网站分组下存在泛域名设置规则
     $keywords = [
-      'model' => $data['station'],
+      'model' => $model,
       'group' => $data['station'],
       'wild' => $data['station'],
     ];
     $ids = $tkdb_manager->getTkdb($keywords);
     if (!empty($ids)) {
-      return $tkdb_storage->loadMultiple($ids);
+      return $ids;
     }
 
     //    网站分组下存在主配置规则
     $keywords['wild'] = NULL;
     $ids = $tkdb_manager->getTkdb($keywords);
     if (!empty($ids)) {
-      return $tkdb_storage->loadMultiple($ids);
+      return $ids;
     }
     //    网站模型下存在规则
     $keywords['group'] = NULL;
     $ids = $tkdb_manager->getTkdb($keywords);
     if (!empty($ids)) {
-      return $tkdb_storage->loadMultiple($ids);
+      return $ids;
     }
 
     //    获取默认规则
     $keywords['model'] = NULL;
     $ids = $tkdb_manager->getTkdb($keywords);
     if (!empty($ids)) {
-      return $tkdb_storage->loadMultiple($ids);
+      return $ids;
     }
 
   }
