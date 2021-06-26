@@ -122,7 +122,7 @@ show/{id}{数字5}.html';
           }
           else {
             $form['rules'][$j]['url']['#default_value'] = 'html/{id}_{aid}.html
-show/{id}_{aid}.html';
+show/{数字6}.html';
           }
           break;
       }

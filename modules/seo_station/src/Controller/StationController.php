@@ -33,7 +33,6 @@ class StationController extends ControllerBase {
     $data = [];
     foreach ($stations as $station) {
       list($domains, $rule) = $this->getWildDomains($station, $number);
-      // TODO, 需要确认是否全局保留下已生成的动态域名.
       $data[$station->id()] = $this->getSingleDomainRule($station, $domains, $rule, $number);
     }
 
