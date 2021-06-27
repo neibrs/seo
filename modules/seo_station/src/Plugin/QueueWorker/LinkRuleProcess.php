@@ -30,6 +30,7 @@ class LinkRuleProcess extends QueueWorkerBase {
     }
     try {
       // 初始化node的值
+      $tkdb_values = $this->getTkdbValues($data);
       $values = [
         'type' => 'article',
         'title' => is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60),
@@ -41,9 +42,9 @@ class LinkRuleProcess extends QueueWorkerBase {
         ],
         'path' => '/'.$data['replacement'],//Alias
 //        'domain' => $data['domain'], //domain
-        'field_metatag' => [
-          'value' => serialize($this->getTkdbValues($data)),
-        ],
+//        'field_metatag' => [
+//          'value' => serialize($tkdb_values),
+//        ],
       ];
       // 创建该别名的文章数据.
       $node = $node_storage->create(['type' => 'article']);
@@ -56,11 +57,6 @@ class LinkRuleProcess extends QueueWorkerBase {
       \Drupal::messenger()->addWarning($e);
     }
 
-//    $path_alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
-//    $path_alias = $path_alias_storage->create();
-//    $path_alias->set('path', '/node/' . $node->id())
-//      ->set('alias', $data['path'])
-//      ->save();
   }
 
   // 随机获取title类型的标题库的文件一份

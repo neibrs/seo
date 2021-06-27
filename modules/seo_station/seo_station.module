@@ -172,6 +172,7 @@ function seo_station_block_access(\Drupal\block\Entity\Block $block, $operation,
       $route_name = \Drupal::routeMatch()->getRouteName();
       $hide_on = [
         'seo_station.custom_domain_tkd_form',
+        'xmlsitemap.admin_settings',
       ];
 
       if (in_array($route_name, $hide_on)) {
