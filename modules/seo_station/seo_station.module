@@ -155,3 +155,28 @@ function seo_station_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterf
   }
 }
 
+
+/**
+ * Implements hook_block_access() 隐藏侧边内容栏.
+ */
+function seo_station_block_access(\Drupal\block\Entity\Block $block, $operation, \Drupal\Core\Session\AccountInterface $account) {
+  if ($operation == 'view') {
+    $plugin_id = $block->getPluginId();
+
+    $hide_block = [
+      'page_title_block',
+      'seo_content_notice_block',
+      'views_block:content_recent-block_1',
+    ];
+    if (in_array($plugin_id, $hide_block)) {
+      $route_name = \Drupal::routeMatch()->getRouteName();
+      $hide_on = [
+        'seo_station.custom_domain_tkd_form',
+      ];
+
+      if (in_array($route_name, $hide_on)) {
+        return \Drupal\Core\Access\AccessResult::forbidden();
+      }
+    }
+  }
+}

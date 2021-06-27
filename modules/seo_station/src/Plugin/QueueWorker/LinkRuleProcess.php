@@ -56,11 +56,11 @@ class LinkRuleProcess extends QueueWorkerBase {
       \Drupal::messenger()->addWarning($e);
     }
 
-    $path_alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
-    $path_alias = $path_alias_storage->create();
-    $path_alias->set('path', '/node/' . $node->id())
-      ->set('alias', $data['path'])
-      ->save();
+//    $path_alias_storage = \Drupal::entityTypeManager()->getStorage('path_alias');
+//    $path_alias = $path_alias_storage->create();
+//    $path_alias->set('path', '/node/' . $node->id())
+//      ->set('alias', $data['path'])
+//      ->save();
   }
 
   // 随机获取title类型的标题库的文件一份
