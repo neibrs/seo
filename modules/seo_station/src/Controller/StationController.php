@@ -23,7 +23,7 @@ class StationController extends ControllerBase {
     $build = [];
     $build['#theme'] = 'seo_station_extract';
     $build['#content'] = $data;
-    $build['#cache']['tags'] = Cache::mergeTags(\Drupal::entityTypeManager()->getDefinition('seo_station')->getListCacheTags(), \Drupal::entityTypeManager()->getDefinition('seo_station_model_url')->getListCacheTags(), \Drupal::entityTypeManager()->getDefinition('seo_station_model')->getListCacheTags(), \Drupal::entityTypeManager()->getDefinition('seo_station_address')->getListCacheTags());
+    $build['#cache']['max-age'] = 0;
 
     return $build;
   }

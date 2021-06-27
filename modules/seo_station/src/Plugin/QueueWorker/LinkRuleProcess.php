@@ -33,7 +33,7 @@ class LinkRuleProcess extends QueueWorkerBase {
       $values = [
         'type' => 'article',
         'title' => is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60),
-        'field_image' => '',
+//        'field_image' => '',
         'body' => [
           'value' => $body[1],
           'summary' => mb_substr($body[1], 0, 100),
@@ -41,10 +41,10 @@ class LinkRuleProcess extends QueueWorkerBase {
         ],
         'path' => '/'.$data['replacement'],//Alias
 //        'domain' => $data['domain'], //domain
+        'field_metatag' => [
+          'value' => serialize($this->getTkdbValues($data)),
+        ],
       ];
-
-      $values = $this->getTkdbValues($data, $values);
-
       // 创建该别名的文章数据.
       $node = $node_storage->create(['type' => 'article']);
       foreach ($values as $key => $val) {
@@ -107,7 +107,7 @@ class LinkRuleProcess extends QueueWorkerBase {
     return explode('******', $dst);
   }
 
-  public function getTkdbValues($data, $values) {
+  public function getTkdbValues($data) {
     // 这里添加tkdb规则,用以对每个node进行定义。
     $tkdb_manager = \Drupal::service('seo_station_tkdb.manager');
     $tkdb_rules = $tkdb_manager->getTkdbShowRule($data);
@@ -117,6 +117,9 @@ class LinkRuleProcess extends QueueWorkerBase {
     $tkdb_config = \Drupal::config('seo_station.custom_domain_tkd')->get('custom_domain_tkd');
     // 先解析
     $rules = array_unique(explode('-||-', str_replace("\r\n","-||-", $tkdb_config)));
+    $field_metatag = [
+      'canonical' => '[node:url]',
+    ];
     foreach ($rules as $rule) {
       // rule: 域名----网站名称----首页标题----关键词----描述
       $rule_domain = explode('----', $rule);
@@ -127,16 +130,16 @@ class LinkRuleProcess extends QueueWorkerBase {
       }
       // 站点标题.
       if (isset($rule_domain[1])) {
-        $values['field_metatag'][0]['basic']['title'] = '[node:title]-' . $rule_domain[1];
+        $field_metatag['title'] = '[node:title]-' . $rule_domain[1];
       }
       if (isset($rule_domain[2])) {
-        $values['field_metatag'][0]['basic']['abstract'] = $rule_domain[2];
+        $field_metatag['abstract'] = $rule_domain[2];
       }
       if (isset($rule_domain[3])) {
-        $values['field_metatag'][0]['basic']['keywords'] = $rule_domain[3];
+        $field_metatag['keywords'] = $rule_domain[3];
       }
       if (isset($rule_domain[4])) {
-        $values['field_metatag'][0]['basic']['description'] = '[node:summary]-' . $rule_domain[4];
+        $field_metatag['description'] = $rule_domain[4];
       }
       break;
     }
@@ -154,7 +157,7 @@ class LinkRuleProcess extends QueueWorkerBase {
 //    }
     // TODO
 
-    return $values;
+    return $field_metatag;
   }
 
   public function getWildRule($rule, $rule_url, $rule_domain) {
