@@ -39,6 +39,8 @@ class LinkRuleProcess extends QueueWorkerBase {
           'summary' => mb_substr($body[1], 0, 100),
           'format' => 'basic_html',
         ],
+        'path' => '/'.$data['replacement'],//Alias
+//        'domain' => $data['domain'], //domain
       ];
 
       $values = $this->getTkdbValues($data, $values);
@@ -125,30 +127,31 @@ class LinkRuleProcess extends QueueWorkerBase {
       }
       // 站点标题.
       if (isset($rule_domain[1])) {
-        $values['field_metatag']['title'] = '';
+        $values['field_metatag'][0]['basic']['title'] = '[node:title]-' . $rule_domain[1];
       }
       if (isset($rule_domain[2])) {
-
+        $values['field_metatag'][0]['basic']['abstract'] = $rule_domain[2];
       }
       if (isset($rule_domain[3])) {
-
+        $values['field_metatag'][0]['basic']['keywords'] = $rule_domain[3];
       }
       if (isset($rule_domain[4])) {
-
+        $values['field_metatag'][0]['basic']['description'] = '[node:summary]-' . $rule_domain[4];
       }
+      break;
     }
 
-    foreach ($tkdb_rules as $tkdb_rule) {
-      switch ($tkdb_rule->type->entity->id()) {
-        case 'title':
-        case 'keywords':
-        case 'description':
-        case 'content':
-          $rule = strip_tags($tkdb_rule->content->value);
-
-          break;
-      }
-    }
+//    foreach ($tkdb_rules as $tkdb_rule) {
+//      switch ($tkdb_rule->type->entity->id()) {
+//        case 'title':
+//        case 'keywords':
+//        case 'description':
+//        case 'content':
+//          $rule = strip_tags($tkdb_rule->content->value);
+//
+//          break;
+//      }
+//    }
     // TODO
 
     return $values;
@@ -157,9 +160,9 @@ class LinkRuleProcess extends QueueWorkerBase {
   public function getWildRule($rule, $rule_url, $rule_domain) {
     if ($rule_url['path'] != $rule_domain[0]) {
       // 泛域名匹配
-      if ($star_pos = strpos($rule_domain[0], '*')) {
-        $wild_string = substr($rule_domain[0], $star_pos+1);
-        $pos = strpos($rule['path'], $wild_string);
+      if (strpos($rule_domain[0], '*') === 0) {
+        $wild_string = substr($rule_domain[0], 2);
+        $pos = strpos($rule, $wild_string);
         if (!$pos) {
           return false;
         }
@@ -170,5 +173,6 @@ class LinkRuleProcess extends QueueWorkerBase {
         return false;
       }
     }
+    return true;
   }
 }
