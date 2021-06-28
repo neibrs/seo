@@ -1,0 +1,1 @@
+<?phpnamespace Drupal\seo_negotiator\Controller;use Drupal\Core\Controller\ControllerBase;class NegotiatorController extends ControllerBase {  public function getThemeList() {    return [];  }}

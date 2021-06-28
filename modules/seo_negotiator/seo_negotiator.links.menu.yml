@@ -1,0 +1,1 @@
+seo_negotiator.theme_list:  title: '模板'  route_name: seo_negotiator.theme_list  parent: system.seo  weight: 20

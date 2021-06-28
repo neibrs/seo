@@ -22,3 +22,38 @@ function seo_negotiator_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+/**
+ * Implements hook_sidebar_tee_menu_alter().
+ */
+function seo_negotiator_sidebar_tee_menu_alter(&$data) {
+  $icons = [
+    'seo_negotiator.theme_list' => 'gitee-icon icon project',
+  ];
+  _eabax_core_set_menu_items_icon($data, $icons);
+}
+
+
+/**
+ * Implements hook_block_access() 隐藏侧边内容栏.
+ */
+function seo_negotiator_block_access(\Drupal\block\Entity\Block $block, $operation, \Drupal\Core\Session\AccountInterface $account) {
+  if ($operation == 'view') {
+    $plugin_id = $block->getPluginId();
+
+    $hide_block = [
+      'page_title_block',
+      'seo_content_notice_block',
+      'views_block:content_recent-block_1',
+    ];
+    if (in_array($plugin_id, $hide_block)) {
+      $route_name = \Drupal::routeMatch()->getRouteName();
+      $hide_on = [
+        'eo_negotiator.theme_list',
+      ];
+
+      if (in_array($route_name, $hide_on)) {
+        return \Drupal\Core\Access\AccessResult::forbidden();
+      }
+    }
+  }
+}

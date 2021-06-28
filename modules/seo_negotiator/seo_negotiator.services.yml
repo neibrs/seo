@@ -1,6 +1,6 @@
 services:
   seo_negotiator.theme.negotiator:
-    class: Drupal\seo_negotiator\Theme\ThemeNegotiator
+    class: 'Drupal\seo_negotiator\Theme\ThemeNegotiator'
     arguments:
       - '@config.factory'
     tags:

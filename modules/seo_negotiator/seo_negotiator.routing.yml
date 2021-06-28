@@ -1,0 +1,1 @@
+seo_negotiator.theme_list:  path: '/negotiator/list'  defaults:    _title: '模板'    _controller: 'Drupal\seo_negotiator\Controller\NegotiatorController::getThemeList'  requirements:    _permission: 'administer station entities'
