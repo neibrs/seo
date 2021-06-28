@@ -48,7 +48,7 @@ function seo_negotiator_block_access(\Drupal\block\Entity\Block $block, $operati
     if (in_array($plugin_id, $hide_block)) {
       $route_name = \Drupal::routeMatch()->getRouteName();
       $hide_on = [
-        'eo_negotiator.theme_list',
+        'seo_negotiator.theme_list',
       ];
 
       if (in_array($route_name, $hide_on)) {
