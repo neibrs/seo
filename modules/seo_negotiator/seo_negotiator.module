@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_negotiator.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_negotiator_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_negotiator module.
+    case 'help.page.seo_negotiator':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('域名下主题设置') . '</p>';
+      return $output;
+
+    default:
+  }
+}

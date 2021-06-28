@@ -1,0 +1,6 @@
+name: '主题解析'
+type: module
+description: '域名下主题设置'
+core: 8.x
+core_version_requirement: ^8 || ^9
+package: 'Dsi'
