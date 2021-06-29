@@ -62,3 +62,15 @@ function seo_negotiator_block_access(\Drupal\block\Entity\Block $block, $operati
     }
   }
 }
+
+/**
+ * Implements hook_theme().
+ */
+function seo_negotiator_theme($existing, $type, $theme, $path) {
+  $theme = [];
+  $theme['negotiator_theme_form'] = [
+    'render element' => 'form',
+  ];
+
+  return $theme;
+}
