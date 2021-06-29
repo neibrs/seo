@@ -18,7 +18,12 @@ function seo_negotiator_help($route_name, RouteMatchInterface $route_match) {
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('域名下主题设置') . '</p>';
       return $output;
+    case 'seo_negotiator.theme_list':
+      $output = '';
+      $output .= '<p>注：未绑定模板的域名将会随机调用，支持泛域名绑定，如: *.abc.com，注：域名必须是对应模型下的才有效</p>';
 
+      return $output;
+      break;
     default:
   }
 }
