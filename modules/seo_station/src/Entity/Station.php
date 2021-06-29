@@ -298,10 +298,10 @@ class Station extends ContentEntityBase implements StationInterface {
         'weight' => 0,
         'label' => 'inline',
       ])
-      ->setDisplayOptions('form', [
-        'type' => 'options_select',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_select',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -320,10 +320,10 @@ class Station extends ContentEntityBase implements StationInterface {
         'weight' => 0,
         'label' => 'inline',
       ])
-      ->setDisplayOptions('form', [
-        'type' => 'options_select',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_select',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义标题库(site_title)
@@ -362,10 +362,10 @@ class Station extends ContentEntityBase implements StationInterface {
         'weight' => 0,
         'label' => 'inline',
       ])
-      ->setDisplayOptions('form', [
-        'type' => 'options_select',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_select',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义图片库(site_pics)
@@ -383,10 +383,10 @@ class Station extends ContentEntityBase implements StationInterface {
         'weight' => 0,
         'label' => 'inline',
       ])
-      ->setDisplayOptions('form', [
-        'type' => 'options_select',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_select',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义文章库(site_node)
@@ -404,10 +404,10 @@ class Station extends ContentEntityBase implements StationInterface {
         'weight' => 0,
         'label' => 'inline',
       ])
-      ->setDisplayOptions('form', [
-        'type' => 'options_select',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_select',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //企业简介句子(site_intro)
@@ -425,10 +425,10 @@ class Station extends ContentEntityBase implements StationInterface {
         'weight' => 0,
         'label' => 'inline',
       ])
-      ->setDisplayOptions('form', [
-        'type' => 'options_select',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_select',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -444,10 +444,10 @@ class Station extends ContentEntityBase implements StationInterface {
         'weight' => 0,
         'label' => 'inline',
       ])
-      ->setDisplayOptions('form', [
-        'type' => 'number',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'number',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //
