@@ -178,7 +178,6 @@ class Station extends ContentEntityBase implements StationInterface {
 //网站模式(站点模式)(site_mode)
     $fields['site_mode'] = BaseFieldDefinition::create('boolean')
       ->setLabel('站点模式')
-      ->setDescription('泛域名需泛解析, 暂时只支持单域名')
       ->setDefaultValue(TRUE)
       ->setSetting('on_label', '泛域名')
       ->setSetting('off_label', '单域名')
