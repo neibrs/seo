@@ -33,7 +33,7 @@ class NegotiatorThemeForm extends FormBase {
     }
 
     $form['items'] = [
-      '#type' => 'items_list',
+      '#type' => 'item',
       '#items' => $twig_themes,
     ];
 

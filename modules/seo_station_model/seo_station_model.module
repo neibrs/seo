@@ -82,6 +82,9 @@ function template_preprocess_seo_station_model_url_item_list(&$variables) {
   $types = \Drupal::entityTypeManager()->getStorage('seo_station_model_url_type')->loadMultiple();
 
   $model = $variables['content']['seo_model'];
+  if ($model->isNew()) {
+    $model->save();
+  }
   $items = [];
   foreach ($types as $type) {
     $items[] = [

@@ -61,3 +61,13 @@ function seo_front_theme($existing, $type, $theme, $path) {
 // function seo_front_form_search_block_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 //  $form['keys']['#placeholder'] = '请输入关键词, 回车';
 // }
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function seo_front_theme_suggestions_views_view_list_alter(array &$suggestions, array $variables) {
+//  $view = $variables['view'];
+//  if (!empty($view)) {
+//    $suggestions[] = '';
+//  }
+}
