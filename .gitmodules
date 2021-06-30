@@ -1,0 +1,3 @@
+[submodule "themes/news/zhuqiu"]
+	path = themes/news/zhuqiu
+	url = git@gitee.com:erel33/zhuqiu.git
