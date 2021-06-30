@@ -7,6 +7,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Defines the Negotiator entity.
@@ -98,6 +99,15 @@ class Negotiator extends ContentEntityBase implements NegotiatorInterface {
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
+      ->setRequired(TRUE);
+
+    $fields['themes'] = BaseFieldDefinition::create('string')
+      ->setLabel('主题')
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSettings([
+        'max_length' => 50,
+        'text_processing' => 0,
+      ])
       ->setRequired(TRUE);
 
     $fields['status']->setDescription(t('A boolean indicating whether the Negotiator is published.'))
