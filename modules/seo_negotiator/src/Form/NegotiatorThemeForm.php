@@ -59,6 +59,8 @@ class NegotiatorThemeForm extends FormBase {
       ];
     }
 
+    $form['#attached']['library'][] = 'seo_negotiator/theme';
+
     return $form;
   }
 
