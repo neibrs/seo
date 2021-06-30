@@ -26,24 +26,26 @@ class NegotiatorThemeForm extends FormBase {
     $form['themes_container'] = [
       '#type' => 'container',
       '#title' => '所有模板',
+      '#tree' => TRUE,
     ];
+    $models = \Drupal::entityTypeManager()->getStorage('seo_station_model')->loadMultiple();
+    $types = [];
+    foreach ($models as $model) {
+      $types[$model->config_dir->value] = $model->label();
+    }
     foreach ($type_themes as $name => $type_theme) {
       $form['themes_container'][$name] = [
-        'type' => [
-          '#type' => 'item',
-          '#markup' => $type_theme->info['seo_theme'],
-        ],
         'machine_name' => [
           '#type' => 'item',
           '#markup' => $name,
         ],
         'machine_label' => [
           '#type' => 'item',
-          '#markup' => $type_theme->info['name'],
+          '#markup' => $type_theme->info['name'] . '(' . $types[$type_theme->info['seo_theme']] . ')',
         ],
         'screen' => [
-          '#type' => 'responsive_image',
-          '#uri' => $type_theme->getPath() . '/' . $type_theme->info['screenshot'],
+          '#type' => 'item',
+          '#markup' => '<img class="w-100" src=/' . $type_theme->info['screenshot'] . '>',
         ],
         'domains' => [
           '#type' => 'textarea',
