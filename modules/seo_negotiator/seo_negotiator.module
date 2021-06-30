@@ -74,3 +74,13 @@ function seo_negotiator_theme($existing, $type, $theme, $path) {
 
   return $theme;
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function seo_negotiator_theme_suggestions_views_view_list_alter(array &$suggestions, array $variables) {
+  $view = $variables['view'];
+  if (!empty($view)) {
+    $suggestions[] = 'views_view_list_' . $view->id();
+  }
+}

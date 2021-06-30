@@ -23,19 +23,39 @@ class NegotiatorThemeForm extends FormBase {
       }
     });
 
-    $twig_themes = [];
-    foreach ($type_themes as &$type_theme) {
-      $twig_themes[] = [
-        'name' => $type_theme->info['name'],
-        'description' => $type_theme->info['description'],
-        'seo_theme' => $type_theme->info['seo_theme'],
+    $form['themes_container'] = [
+      '#type' => 'container',
+      '#title' => '所有模板',
+    ];
+    foreach ($type_themes as $name => $type_theme) {
+      $form['themes_container'][$name] = [
+        'type' => [
+          '#type' => 'item',
+          '#markup' => $type_theme->info['seo_theme'],
+        ],
+        'machine_name' => [
+          '#type' => 'item',
+          '#markup' => $name,
+        ],
+        'machine_label' => [
+          '#type' => 'item',
+          '#markup' => $type_theme->info['name'],
+        ],
+        'screen' => [
+          '#type' => 'responsive_image',
+          '#uri' => $type_theme->getPath() . '/' . $type_theme->info['screenshot'],
+        ],
+        'domains' => [
+          '#type' => 'textarea',
+          '#title' => '绑定域名(一行一个)：',
+          '#rows' => 5,
+        ],
+        'type_theme_action' => [
+          '#type' => 'submit',
+          '#value' => '保存',
+        ],
       ];
     }
-
-    $form['items'] = [
-      '#type' => 'item',
-      '#items' => $twig_themes,
-    ];
 
     return $form;
   }
