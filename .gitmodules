@@ -10,3 +10,9 @@
 [submodule "themes/news/yangshen"]
 	path = themes/news/yangshen
 	url = git@api.gitee.com:erel33/yangshen.git
+[submodule "themes/news/xinwen"]
+	path = themes/news/xinwen
+	url = git@api.gitee.com:erel33/xinwen.git
+[submodule "themes/news/jinisi"]
+	path = themes/news/jinisi
+	url = git@api.gitee.com:erel33/jinisi.git
