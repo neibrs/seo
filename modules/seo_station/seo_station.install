@@ -59,3 +59,10 @@ function seo_station_update_9000(&$sandbox) {
     'view unpublished station entities',
   ]);
 }
+
+/**
+ * Implements hook_update_N() enable seo_negotiator.
+ */
+function seo_station_update_9001(&$sandbox) {
+  \Drupal::service('module_installer')->install(['seo_negotiator']);
+}
