@@ -2,10 +2,23 @@
 
 namespace Drupal\seo_negotiator\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class NegotiatorThemeForm extends FormBase {
+
+  protected $entityTypeManager;
+
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager')
+    );
+  }
 
   public function getFormId() {
     return 'negotiator_theme_form';
@@ -31,17 +44,17 @@ class NegotiatorThemeForm extends FormBase {
     $models = \Drupal::entityTypeManager()->getStorage('seo_station_model')->loadMultiple();
     $types = [];
     foreach ($models as $model) {
-      $types[$model->config_dir->value] = $model->label();
+      $types[$model->config_dir->value] = $model->name->value;
     }
     foreach ($type_themes as $name => $type_theme) {
       $form['themes_container'][$name] = [
-        'machine_name' => [
+        'type' => [
           '#type' => 'item',
-          '#markup' => $name,
+          '#markup' => $types[$type_theme->info['seo_theme']],
         ],
         'machine_label' => [
           '#type' => 'item',
-          '#markup' => $type_theme->info['name'] . '(' . $types[$type_theme->info['seo_theme']] . ')',
+          '#markup' => '<span class="description-blue">' . $type_theme->info['name'] . '</span>(<span class="text-muted">' . $name . '</span>)',
         ],
         'screen' => [
           '#type' => 'item',
@@ -59,10 +72,46 @@ class NegotiatorThemeForm extends FormBase {
       ];
     }
 
+    $form['#attached']['library'][] = 'seo_negotiator/theme_page';
+
     return $form;
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state) {
+    $themes = $form_state->getValue('themes_container');
+    $negotiator_storage = $this->entityTypeManager->getStorage('seo_negotiator');
+    foreach ($themes as $name => $theme) {
+      if (empty($theme['domains'])) {
+        continue;
+      }
+      $domains = array_unique(explode(',', str_replace("\r\n",",", $theme['domains'])));
+      foreach ($domains as $domain) {
+        $values_condition = [
+          'name' => $domain,
+        ];
+        $values['themes'][] = $name;
+        $query = $negotiator_storage->getQuery();
+
+        $ar_values = $values + $values_condition;
+        foreach ($values_condition as $key => $value) {
+          $query->condition($key, $value);
+        }
+        $ids = $query->execute();
+        if (empty($ids)) {
+          $negotiator_storage->create($ar_values)
+            ->save();
+        }
+        else {
+          // Update
+          $negotiator = $negotiator_storage->load(reset($ids));
+          foreach ($ar_values as $key => $value) {
+            $negotiator->set($key, $value);
+          }
+          $negotiator->save();
+        }
+      }
+
+    }
   }
 
 }

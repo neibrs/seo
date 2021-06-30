@@ -1,0 +1,20 @@
+add negotiator entities:
+  title: 'Create new Negotiator entities'
+
+administer negotiator entities:
+  title: 'Administer Negotiator entities'
+  description: 'Allow to access the administration form to configure Negotiator entities.'
+  restrict access: true
+
+delete negotiator entities:
+  title: 'Delete Negotiator entities'
+
+edit negotiator entities:
+  title: 'Edit Negotiator entities'
+
+view published negotiator entities:
+  title: 'View published Negotiator entities'
+
+view unpublished negotiator entities:
+  title: 'View unpublished Negotiator entities'
+

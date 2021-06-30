@@ -16,3 +16,9 @@
 [submodule "themes/news/jinisi"]
 	path = themes/news/jinisi
 	url = git@api.gitee.com:erel33/jinisi.git
+[submodule "themes/news/it"]
+	path = themes/news/it
+	url = git@api.gitee.com:erel33/it.git
+[submodule "themes/news/zhinet"]
+	path = themes/news/zhinet
+	url = git@gitee.com:erel33/zhinet.git

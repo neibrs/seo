@@ -1,1 +1,1 @@
-theme:  version: VERSION  css:    css/theme_page.css: { }
+theme_page:  version: VERSION  css:    theme:      css/theme_page.css: { }

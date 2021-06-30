@@ -1,0 +1,1 @@
+<?phpnamespace Drupal\seo_negotiator;use Drupal\Core\Entity\Sql\SqlContentEntityStorage;class NegotiatorStorage extends SqlContentEntityStorage implements NegotiatorStorageInterface {}
