@@ -1,0 +1,1 @@
+<?phpnamespace Drupal\seo_negotiator;interface NegotiatorStorageInterface {}

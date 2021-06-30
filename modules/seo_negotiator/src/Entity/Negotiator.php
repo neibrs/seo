@@ -18,6 +18,7 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
  *   id = "seo_negotiator",
  *   label = @Translation("Negotiator"),
  *   handlers = {
+ *     "storage" = "Drupal\seo_negotiator\NegotiatorStorage",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\seo_negotiator\NegotiatorListBuilder",
  *     "views_data" = "Drupal\seo_negotiator\Entity\NegotiatorViewsData",
