@@ -39,6 +39,9 @@ class StationModelForm extends ContentEntityForm {
     $form = parent::buildForm($form, $form_state);
 
     // placeholder
+    if (empty($this->getEntity()->id())) {
+      $this->getEntity()->save();
+    }
 
     $form['main']['widget'][0]['value']['#default_value'] = 'index,list,show';
     $form['main']['widget'][0]['value']['#disabled'] = TRUE;
