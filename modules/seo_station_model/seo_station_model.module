@@ -81,10 +81,9 @@ function seo_station_model_theme($existing, $type, $theme, $path) {
 function template_preprocess_seo_station_model_url_item_list(&$variables) {
   $types = \Drupal::entityTypeManager()->getStorage('seo_station_model_url_type')->loadMultiple();
 
+  /** @var \Drupal\seo_station_model\Entity\StationModelInterface $model */
   $model = $variables['content']['seo_model'];
-  if ($model->isNew()) {
-    $model->save();
-  }
+
   $items = [];
   foreach ($types as $type) {
     $items[] = [
@@ -121,5 +120,19 @@ function seo_station_model_entity_base_field_info(\Drupal\Core\Entity\EntityType
       ->setLabel('模型ID')
       ->setSetting('target_type', 'seo_station_model');
     return $fields;
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function seo_station_model_cron() {
+  $station_model_storage = \Drupal::entityTypeManager()->getStorage('seo_station_model');
+  $query = $station_model_storage->getQuery();
+  $query->condition('name', NULL, 'IS NULL');
+  $ids  = $query->execute();
+  if (!empty($ids)) {
+    $station_models = $station_model_storage->loadMultiple($ids);
+    $station_model_storage->delete($station_models);
   }
 }
