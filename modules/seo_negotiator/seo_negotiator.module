@@ -81,6 +81,6 @@ function seo_negotiator_theme($existing, $type, $theme, $path) {
 function seo_negotiator_theme_suggestions_views_view_list_alter(array &$suggestions, array $variables) {
   $view = $variables['view'];
   if (!empty($view)) {
-    $suggestions[] = 'views_view_list_' . $view->id();
+    $suggestions[] = 'views_view_list__' . $view->id();
   }
 }
