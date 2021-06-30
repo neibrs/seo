@@ -4,3 +4,6 @@
 [submodule "themes/news/ls"]
 	path = themes/news/ls
 	url = git@gitee.com:erel33/ls.git
+[submodule "themes/news/quwei"]
+	path = themes/news/quwei
+	url = git@api.gitee.com:erel33/quwei.git

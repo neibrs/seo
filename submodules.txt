@@ -2,7 +2,7 @@ Git 工具 - 子模块
 
 https://git-scm.com/book/zh/v2/Git-%E5%B7%A5%E5%85%B7-%E5%AD%90%E6%A8%A1%E5%9D%97
 1. 克隆含有子模块的项目
-git submodule add clone https://github.com/chaconinc/xxx.git
+git submodule add https://github.com/chaconinc/xxx.git
 2. 初始化本地子库的配置文件
 git submodule init
 git submodule update
