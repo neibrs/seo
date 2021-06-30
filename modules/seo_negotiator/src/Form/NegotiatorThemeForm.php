@@ -31,17 +31,17 @@ class NegotiatorThemeForm extends FormBase {
     $models = \Drupal::entityTypeManager()->getStorage('seo_station_model')->loadMultiple();
     $types = [];
     foreach ($models as $model) {
-      $types[$model->config_dir->value] = $model->label();
+      $types[$model->config_dir->value] = $model->name->value;
     }
     foreach ($type_themes as $name => $type_theme) {
       $form['themes_container'][$name] = [
-        'machine_name' => [
+        'type' => [
           '#type' => 'item',
-          '#markup' => $name,
+          '#markup' => $types[$type_theme->info['seo_theme']],
         ],
         'machine_label' => [
           '#type' => 'item',
-          '#markup' => $type_theme->info['name'] . '(' . $types[$type_theme->info['seo_theme']] . ')',
+          '#markup' => '<span class="description-blue">' . $type_theme->info['name'] . '</span>(<span class="text-muted">' . $name . '</span>)',
         ],
         'screen' => [
           '#type' => 'item',
@@ -59,7 +59,7 @@ class NegotiatorThemeForm extends FormBase {
       ];
     }
 
-    $form['#attached']['library'][] = 'seo_negotiator/theme';
+    $form['#attached']['library'][] = 'seo_negotiator/theme_page';
 
     return $form;
   }
