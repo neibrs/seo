@@ -46,7 +46,17 @@ class NegotiatorThemeForm extends FormBase {
     foreach ($models as $model) {
       $types[$model->config_dir->value] = $model->name->value;
     }
+    $negotiator_storage = \Drupal::entityTypeManager()->getStorage('seo_negotiator');
     foreach ($type_themes as $name => $type_theme) {
+      $negotiatories = $negotiator_storage->loadByProperties([
+        'theme' => $name,
+      ]);
+      $default_domains = [];
+      if (!empty($negotiatories)) {
+        $default_domains = array_map(function ($negotiator) {
+          return $negotiator->name->value;
+        }, $negotiatories);
+      }
       $form['themes_container'][$name] = [
         'type' => [
           '#type' => 'item',
@@ -64,6 +74,7 @@ class NegotiatorThemeForm extends FormBase {
           '#type' => 'textarea',
           '#title' => '绑定域名(一行一个)：',
           '#rows' => 5,
+          '#default_value' => !empty($default_domains) ? implode("\r\n", $default_domains) : '',
         ],
         'type_theme_action' => [
           '#type' => 'submit',
@@ -85,29 +96,24 @@ class NegotiatorThemeForm extends FormBase {
         continue;
       }
       $domains = array_unique(explode(',', str_replace("\r\n",",", $theme['domains'])));
-      foreach ($domains as $domain) {
-        $values_condition = [
-          'name' => $domain,
-        ];
-        $values['themes'][] = $name;
-        $query = $negotiator_storage->getQuery();
 
-        $ar_values = $values + $values_condition;
-        foreach ($values_condition as $key => $value) {
-          $query->condition($key, $value);
-        }
-        $ids = $query->execute();
-        if (empty($ids)) {
-          $negotiator_storage->create($ar_values)
-            ->save();
+      foreach ($domains as $domain) {
+        $negotiator_value = [
+          'name' => $domain,
+          'theme' => $name,
+        ];
+        $negotiatories = $negotiator_storage->loadByProperties([
+          'name' => $domain,
+        ]);
+        // 更新
+        if (!empty($negotiatories)) {
+          $negotiatory = reset($negotiatories);
+          $negotiatory->theme->vlaue = $name;
+          $negotiatory->save();
         }
         else {
-          // Update
-          $negotiator = $negotiator_storage->load(reset($ids));
-          foreach ($ar_values as $key => $value) {
-            $negotiator->set($key, $value);
-          }
-          $negotiator->save();
+          $negotiator_storage->create($negotiator_value)
+            ->save();
         }
       }
 
