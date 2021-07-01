@@ -1,6 +1,6 @@
 
 seo_station.extract_links_form:
-  path: '/seo_station/extract_links'
+  path: '/admin/seo_station/extract_links'
   defaults:
     _title: '全站链接提取'
     _form: 'Drupal\seo_station\Form\ExtractLinksForm'
@@ -8,7 +8,7 @@ seo_station.extract_links_form:
     _permission: 'administer station entities'
 
 seo_station.extract_data:
-  path: '/seo_station/extract/{number}/number'
+  path: '/admin/seo_station/extract/{number}/number'
   defaults:
     _title: '地址列表'
     _controller: '\Drupal\seo_station\Controller\StationController::getExtract'
@@ -16,35 +16,35 @@ seo_station.extract_data:
     _permission: 'administer station entities'
 
 seo_station.cities_form:
-  path: '/seo_station/cities'
+  path: '/admin/seo_station/cities'
   defaults:
     _title: '泛域名城市标签'
     _form: '\Drupal\seo_station\Form\CitiesForm'
   requirements:
     _permission: 'administer station entities'
 seo_station.https_form:
-  path: '/seo_station/https'
+  path: '/admin/seo_station/https'
   defaults:
     _title: '自定义域名https'
     _form: '\Drupal\seo_station\Form\StationHttpsForm'
   requirements:
     _permission: 'administer station entities'
 seo_station.contact_form:
-  path: '/seo_station/contact'
+  path: '/admin/seo_station/contact'
   defaults:
     _title: '自定义联系方式'
     _form: '\Drupal\seo_station\Form\StationCustomContactForm'
   requirements:
     _permission: 'administer station entities'
 seo_station.custom_domain_tkd_form:
-  path: '/seo_station/custom_domain_tkd'
+  path: '/admin/seo_station/custom_domain_tkd'
   defaults:
     _title: '自定义域名TKD'
     _form: '\Drupal\seo_station\Form\StationCustomDomainTkdForm'
   requirements:
     _permission: 'administer station entities'
 seo_station.wildchar_domain:
-  path: '/seo_station/domain_index'
+  path: '/admin/seo_station/domain_index'
   defaults:
     _title: '域名索引列表'
     _controller: '\Drupal\seo_station\Controller\StationController::getDomainIndex'

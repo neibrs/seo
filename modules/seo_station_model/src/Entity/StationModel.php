@@ -44,11 +44,11 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/seo_station_model/{seo_station_model}",
- *     "add-form" = "/seo_station_model/add",
- *     "edit-form" = "/seo_station_model/{seo_station_model}/edit",
- *     "delete-form" = "/seo_station_model/{seo_station_model}/delete",
- *     "collection" = "/seo_station_model",
+ *     "canonical" = "/admin/seo_station_model/{seo_station_model}",
+ *     "add-form" = "/admin/seo_station_model/add",
+ *     "edit-form" = "/admin/seo_station_model/{seo_station_model}/edit",
+ *     "delete-form" = "/admin/seo_station_model/{seo_station_model}/delete",
+ *     "collection" = "/admin/seo_station_model",
  *   },
  *   field_ui_base_route = "seo_station_model.settings"
  * )

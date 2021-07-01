@@ -8,7 +8,7 @@ entity.seo_grant.add_form:
       data-dialog-type: modal
       data-dialog-options: '{"width":"50%"}'
     query:
-      destination: '/seo_grant'
+      destination: '/admin/seo_grant'
   appears_on:
     - entity.seo_grant.collection
 
@@ -21,6 +21,6 @@ entity.seo_grant_type.add_form:
       data-dialog-type: modal
       data-dialog-options: '{"width":"50%"}'
     query:
-      destination: '/seo_grant_type'
+      destination: '/admin/seo_grant_type'
   appears_on:
     - entity.seo_grant_type.collection

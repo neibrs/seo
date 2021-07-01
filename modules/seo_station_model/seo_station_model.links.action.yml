@@ -9,4 +9,4 @@ entity.seo_station_model.add_form:
       data-dialog-type: modal
       data-dialog-options: '{"width":"50%"}'
     query:
-      destination: '/seo_station_model'
+      destination: '/admin/seo_station_model'

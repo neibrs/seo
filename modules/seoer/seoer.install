@@ -13,6 +13,6 @@ function seoer_update_9001(&$sandbox) {
   $role_storage = \Drupal::entityTypeManager()->getStorage('user_role');
   /** @var \Drupal\user\RoleInterface $role */
   $role = $role_storage->load('admin');
-  $role->setThirdPartySetting('role_frontpage', 'frontpage', '/seo_workbench');
+  $role->setThirdPartySetting('role_frontpage', 'frontpage', '/admin/seo_workbench');
   $role->save();
 }

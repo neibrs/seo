@@ -32,11 +32,11 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/seo_grant_type/{seo_grant_type}",
- *     "add-form" = "/seo_grant_type/add",
- *     "edit-form" = "/seo_grant_type/{seo_grant_type}/edit",
- *     "delete-form" = "/seo_grant_type/{seo_grant_type}/delete",
- *     "collection" = "/seo_grant_type"
+ *     "canonical" = "/admin/seo_grant_type/{seo_grant_type}",
+ *     "add-form" = "/admin/seo_grant_type/add",
+ *     "edit-form" = "/admin/seo_grant_type/{seo_grant_type}/edit",
+ *     "delete-form" = "/admin/seo_grant_type/{seo_grant_type}/delete",
+ *     "collection" = "/admin/seo_grant_type"
  *   },
  *   config_export = {
  *     "id",
