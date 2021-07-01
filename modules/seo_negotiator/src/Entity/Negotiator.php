@@ -82,8 +82,7 @@ class Negotiator extends ContentEntityBase implements NegotiatorInterface {
     $fields += static::publishedBaseFieldDefinitions($entity_type);
 
     $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Negotiator entity.'))
+      ->setLabel('域名')
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -102,9 +101,8 @@ class Negotiator extends ContentEntityBase implements NegotiatorInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['themes'] = BaseFieldDefinition::create('string')
+    $fields['theme'] = BaseFieldDefinition::create('string')
       ->setLabel('主题')
-      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,

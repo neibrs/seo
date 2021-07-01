@@ -43,11 +43,11 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/seo_autoprefix/{seo_autoprefix}",
- *     "add-form" = "/seo_autoprefix/add",
- *     "edit-form" = "/seo_autoprefix/{seo_autoprefix}/edit",
- *     "delete-form" = "/seo_autoprefix/{seo_autoprefix}/delete",
- *     "collection" = "/seo_autoprefix",
+ *     "canonical" = "/admin/seo_autoprefix/{seo_autoprefix}",
+ *     "add-form" = "/admin/seo_autoprefix/add",
+ *     "edit-form" = "/admin/seo_autoprefix/{seo_autoprefix}/edit",
+ *     "delete-form" = "/admin/seo_autoprefix/{seo_autoprefix}/delete",
+ *     "collection" = "/admin/seo_autoprefix",
  *   },
  *   field_ui_base_route = "seo_autoprefix.settings"
  * )

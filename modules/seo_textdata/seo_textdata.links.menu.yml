@@ -31,14 +31,14 @@ seo_textdata.type.webname:
     seo_textdata_type: webname
   weight: 10
 
-#seo_textdata.type.typename:
-#  title: '栏目库'
-#  route_name: seo_textdata.type
-#  parent: entity.seo_textdata.collection
-#  route_parameters:
-#    seo_textdata_type: typename
-#  weight: 15
-#
+seo_textdata.type.typename:
+  title: '栏目库'
+  route_name: seo_textdata.type
+  parent: entity.seo_textdata.collection
+  route_parameters:
+    seo_textdata_type: typename
+  weight: 15
+
 #seo_textdata.type.content:
 #  title: '句子库'
 #  route_name: seo_textdata.type

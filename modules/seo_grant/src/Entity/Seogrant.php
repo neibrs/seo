@@ -46,12 +46,12 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/seo_grant/{seo_grant}",
- *     "add-page" = "/seo_grant/add",
- *     "add-form" = "/seo_grant/add/{seo_grant_type}",
- *     "edit-form" = "/seo_grant/{seo_grant}/edit",
- *     "delete-form" = "/seo_grant/{seo_grant}/delete",
- *     "collection" = "/seo_grant",
+ *     "canonical" = "/admin/seo_grant/{seo_grant}",
+ *     "add-page" = "/admin/seo_grant/add",
+ *     "add-form" = "/admin/seo_grant/add/{seo_grant_type}",
+ *     "edit-form" = "/admin/seo_grant/{seo_grant}/edit",
+ *     "delete-form" = "/admin/seo_grant/{seo_grant}/delete",
+ *     "collection" = "/admin/seo_grant",
  *   },
  *   bundle_entity_type = "seo_grant_type",
  *   field_ui_base_route = "entity.seo_grant_type.edit_form"

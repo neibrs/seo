@@ -49,12 +49,12 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/seo_textdata/{seo_textdata}",
- *     "add-page" = "/seo_textdata/add",
- *     "add-form" = "/seo_textdata/add/{seo_textdata_type}",
- *     "edit-form" = "/seo_textdata/{seo_textdata}/edit",
- *     "delete-form" = "/seo_textdata/{seo_textdata}/delete",
- *     "collection" = "/seo_textdata",
+ *     "canonical" = "/admin/seo_textdata/{seo_textdata}",
+ *     "add-page" = "/admin/seo_textdata/add",
+ *     "add-form" = "/admin/seo_textdata/add/{seo_textdata_type}",
+ *     "edit-form" = "/admin/seo_textdata/{seo_textdata}/edit",
+ *     "delete-form" = "/admin/seo_textdata/{seo_textdata}/delete",
+ *     "collection" = "/admin/seo_textdata",
  *   },
  *   bundle_entity_type = "seo_textdata_type",
  *   field_ui_base_route = "entity.seo_textdata_type.edit_form"

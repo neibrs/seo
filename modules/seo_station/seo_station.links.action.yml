@@ -9,7 +9,7 @@ entity.seo_station.add_form:
       data-dialog-type: modal
       data-dialog-options: '{"width":"80%"}'
     query:
-      destination: '/seo_station'
+      destination: '/admin/seo_station'
 
 seo_station.extract_links_form:
   route_name: seo_station.extract_links_form

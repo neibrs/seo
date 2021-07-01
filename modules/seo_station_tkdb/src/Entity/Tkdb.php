@@ -46,12 +46,12 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/seo_station_tkdb/{seo_station_tkdb}",
- *     "add-page" = "/seo_station_tkdb/add",
- *     "add-form" = "/seo_station_tkdb/add/{seo_station_tkdb_type}",
- *     "edit-form" = "/seo_station_tkdb/{seo_station_tkdb}/edit",
- *     "delete-form" = "/seo_station_tkdb/{seo_station_tkdb}/delete",
- *     "collection" = "/seo_station_tkdb",
+ *     "canonical" = "/admin/seo_station_tkdb/{seo_station_tkdb}",
+ *     "add-page" = "/admin/seo_station_tkdb/add",
+ *     "add-form" = "/admin/seo_station_tkdb/add/{seo_station_tkdb_type}",
+ *     "edit-form" = "/admin/seo_station_tkdb/{seo_station_tkdb}/edit",
+ *     "delete-form" = "/admin/seo_station_tkdb/{seo_station_tkdb}/delete",
+ *     "collection" = "/admin/seo_station_tkdb",
  *   },
  *   bundle_entity_type = "seo_station_tkdb_type",
  *   field_ui_base_route = "entity.seo_station_tkdb_type.edit_form"

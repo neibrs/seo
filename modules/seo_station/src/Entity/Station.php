@@ -46,11 +46,11 @@ use Drupal\Core\Field\FieldStorageDefinitionInterface;
  *     "published" = "status",
  *   },
  *   links = {
- *     "canonical" = "/seo_station/{seo_station}",
- *     "add-form" = "/seo_station/add",
- *     "edit-form" = "/seo_station/{seo_station}/edit",
- *     "delete-form" = "/seo_station/{seo_station}/delete",
- *     "collection" = "/seo_station",
+ *     "canonical" = "/admin/seo_station/{seo_station}",
+ *     "add-form" = "/admin/seo_station/add",
+ *     "edit-form" = "/admin/seo_station/{seo_station}/edit",
+ *     "delete-form" = "/admin/seo_station/{seo_station}/delete",
+ *     "collection" = "/admin/seo_station",
  *   },
  *   field_ui_base_route = "seo_station.settings"
  * )

@@ -7,6 +7,6 @@ seo.member.create:
       data-dialog-type: modal
       data-dialog-options: '{"width":"50%"}'
     query:
-      destination: '/seo/member'
+      destination: '/admin/seo/member'
   appears_on:
     - seoer.members.management

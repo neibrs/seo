@@ -30,11 +30,11 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *     "uuid" = "uuid"
  *   },
  *   links = {
- *     "canonical" = "/seo_station_model_url_type/{seo_station_model_url_type}",
- *     "add-form" = "/seo_station_model_url_type/add",
- *     "edit-form" = "/seo_station_model_url_type/{seo_station_model_url_type}/edit",
- *     "delete-form" = "/seo_station_model_url_type/{seo_station_model_url_type}/delete",
- *     "collection" = "/seo_station_model_url_type"
+ *     "canonical" = "/admin/seo_station_model_url_type/{seo_station_model_url_type}",
+ *     "add-form" = "/admin/seo_station_model_url_type/add",
+ *     "edit-form" = "/admin/seo_station_model_url_type/{seo_station_model_url_type}/edit",
+ *     "delete-form" = "/admin/seo_station_model_url_type/{seo_station_model_url_type}/delete",
+ *     "collection" = "/admin/seo_station_model_url_type"
  *   },
  *   config_export = {
  *     "id",

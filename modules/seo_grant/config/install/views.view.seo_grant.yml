@@ -700,7 +700,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: seo_grant
+      path: 'admin/seo_grant'
     cache_metadata:
       max-age: -1
       contexts:
