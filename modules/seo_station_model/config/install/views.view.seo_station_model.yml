@@ -747,7 +747,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: seo_station_model
+      path: 'admin/seo_station_model'
     cache_metadata:
       max-age: -1
       contexts:
