@@ -161,8 +161,8 @@ function seo_textdata_auto_read($file, $charset = 'UTF-8') {
   foreach ($list as $item) {
     $tmp = mb_convert_encoding($str, $item, $item);
     if (md5($tmp) == md5($str)) {
-//      return mb_convert_encoding($str, $charset, $item);
-      return mb_convert_encoding($str, $charset, 'auto');
+      return mb_convert_encoding($str, $charset, $item);
+//      return mb_convert_encoding($str, $charset, 'auto');
     }
   }
   return "";

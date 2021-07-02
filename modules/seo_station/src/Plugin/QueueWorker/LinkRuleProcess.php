@@ -21,11 +21,11 @@ class LinkRuleProcess extends QueueWorkerBase {
     // TODO， 暂时只做一个新闻类型的网站文章数据.
     $node_storage = \Drupal::entityTypeManager()->getStorage('node');
 
-    $body = $this->getBody();
+    $body = $this->getBody($data);
     if (empty($body)) {
       return;
     }
-    $title = $this->getTitle($body[0]);
+    $title = $this->getTitle($body[0], $data);
     if (empty($title)) {
       return;
     }
@@ -37,7 +37,7 @@ class LinkRuleProcess extends QueueWorkerBase {
       // 构造一个tid的数组.
       $rand_tids = [];
       if (!empty($taxonomies)) {
-        $rand_tids = array_rand($taxonomies, 2);
+        $rand_tids = array_rand($taxonomies, mt_rand(2, count($taxonomies)));
       }
       $tids = [];
       foreach ($rand_tids as $rand_tid) {
@@ -78,13 +78,19 @@ class LinkRuleProcess extends QueueWorkerBase {
   }
 
   // 随机获取title类型的标题库的文件一份
-  protected function getTitle($body_title = NULL) {
-    $storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
-    $title = $storage->loadByProperties([
-      'type' => 'title',
-    ]);
-    $title = reset($title);
-
+  protected function getTitle($body_title = NULL, $data = []) {
+    $station = \Drupal::entityTypeManager()->getStorage('seo_station')->load($data['station']);
+    $title = NULL;
+    if (empty($station->site_title->target_id)) {
+      $storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
+      $title = $storage->loadByProperties([
+        'type' => 'title',
+      ]);
+      $title = reset($title);
+    }
+    else {
+      $title = $station->site_title->entity;
+    }
     if (empty($title)) {
       return [];
     }
@@ -101,14 +107,24 @@ class LinkRuleProcess extends QueueWorkerBase {
     return explode('******', $dst);
   }
 
-  protected function getBody() {
-    $storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
-    $body = $storage->loadByProperties([
-      'type' => 'article',
-    ]);
-    $title = reset($body);
+  protected function getBody($data) {
+    $station = \Drupal::entityTypeManager()->getStorage('seo_station')->load($data['station']);
+    $body = NULL;
+    if (empty($station->site_node->target_id)) {
+      $storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
+      $body = $storage->loadByProperties([
+        'type' => 'article',
+      ]);
+      $body = reset($body);
+    }
+    else {
+      $body = $station->site_node->entity;
+    }
 
-    $uri = $title->get('attachment')->entity->getFileUri();
+    if (empty($body)) {
+      return [];
+    }
+    $uri = $body->get('attachment')->entity->getFileUri();
 
     // 随机模式
     $data = seo_textdata_auto_read($uri);
@@ -191,7 +207,15 @@ class LinkRuleProcess extends QueueWorkerBase {
 
   public function getTaxonomyValues($data) {
     $station = \Drupal::entityTypeManager()->getStorage('seo_station')->load($data['station']);
-    $typename_uri = $station->site_column->entity->get('attachment')->entity->getFileUri();
+    $textdata = NULL;
+    if (empty($station->site_column->target_id)) {
+      $textdata = \Drupal::entityTypeManager()->getStorage('seo_textdata')->loadMultiple();
+      $textdata = reset($textdata);
+    }
+    else {
+      $textdata = $station->site_column->entity;
+    }
+    $typename_uri = $textdata->get('attachment')->entity->getFileUri();
     $ds = getTextdataArrayFromUri($typename_uri);
     $tids = [];
     foreach ($ds as $name) {
