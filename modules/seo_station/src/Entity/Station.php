@@ -320,10 +320,10 @@ class Station extends ContentEntityBase implements StationInterface {
         'weight' => 0,
         'label' => 'inline',
       ])
-//      ->setDisplayOptions('form', [
-//        'type' => 'options_select',
-//        'weight' => 0,
-//      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_select',
+        'weight' => 0,
+      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义标题库(site_title)

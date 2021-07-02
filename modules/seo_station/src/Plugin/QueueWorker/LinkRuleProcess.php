@@ -2,7 +2,11 @@
 
 namespace Drupal\seo_station\Plugin\QueueWorker;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @QueueWorker(
@@ -11,26 +15,66 @@ use Drupal\Core\Queue\QueueWorkerBase;
  *   cron = {"time" = 60}
  * )
  */
-class LinkRuleProcess extends QueueWorkerBase {
+class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginInterface {
+
+  /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
+  protected $entityTypeManager;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, EntityTypeManagerInterface $entity_type_manger) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entity_type_manger;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
    */
   public function processItem($data) {
     // TODO， 暂时只做一个新闻类型的网站文章数据.
-    $node_storage = \Drupal::entityTypeManager()->getStorage('node');
+    $node_storage = $this->entityTypeManager->getStorage('node');
 
-    $body = $this->getBody();
+    $body = $this->getBody($data);
     if (empty($body)) {
       return;
     }
-    $title = $this->getTitle($body[0]);
+    $title = $this->getTitle($body[0], $data);
     if (empty($title)) {
       return;
     }
     try {
       // 初始化node的值
       $tkdb_values = $this->getTkdbValues($data);
+      $taxonomies = $this->getTaxonomyValues($data);
+
+      // 构造一个tid的数组.
+      $rand_tids = [];
+      if (!empty($taxonomies)) {
+        $rand_tids = array_rand($taxonomies, 2);
+      }
+      if (!is_array($rand_tids)) {
+        $rand_tids[] = $rand_tids;
+      }
+      $tids = [];
+      foreach ($rand_tids as $rand_tid) {
+        $tids[$rand_tid] = Term::load($rand_tid);
+//        [
+//          'target_id' => Term::load($rand_tid),
+//        ];
+      }
       $values = [
         'type' => 'article',
         'title' => is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60),
@@ -41,10 +85,12 @@ class LinkRuleProcess extends QueueWorkerBase {
           'format' => 'basic_html',
         ],
         'path' => '/'.$data['replacement'],//Alias
-//        'domain' => $data['domain'], //domain
-//        'field_metatag' => [
-//          'value' => serialize($tkdb_values),
-//        ],
+//        'domain' => $data['domain'], //domain该字段未添加
+        'field_metatag' => [
+          'value' => serialize($tkdb_values),
+        ],
+        // TODO, Add taxonomy
+        'field_tags' => $tids,
       ];
       // 创建该别名的文章数据.
       $node = $node_storage->create(['type' => 'article']);
@@ -60,13 +106,19 @@ class LinkRuleProcess extends QueueWorkerBase {
   }
 
   // 随机获取title类型的标题库的文件一份
-  protected function getTitle($body_title = NULL) {
-    $storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
-    $title = $storage->loadByProperties([
-      'type' => 'title',
-    ]);
-    $title = reset($title);
-
+  protected function getTitle($body_title = NULL, $data = []) {
+    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
+    $title = NULL;
+    if (empty($station->site_title->target_id)) {
+      $storage = $this->entityTypeManager->getStorage('seo_textdata');
+      $title = $storage->loadByProperties([
+        'type' => 'title',
+      ]);
+      $title = reset($title);
+    }
+    else {
+      $title = $station->site_title->entity;
+    }
     if (empty($title)) {
       return [];
     }
@@ -74,11 +126,7 @@ class LinkRuleProcess extends QueueWorkerBase {
     $uri = $title->get('attachment')->entity->getFileUri();
 
     // 随机模式
-    $data = seo_textdata_auto_read($uri);
-    $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
-    if ($sub_data = str_replace("\n","-||-", $data)) {
-      $ds = array_unique(explode('-||-', $sub_data));
-    }
+    $ds = getTextdataArrayFromUri($uri);
     if (in_array($body_title, $ds)) {
       return $body_title;
     }
@@ -87,14 +135,24 @@ class LinkRuleProcess extends QueueWorkerBase {
     return explode('******', $dst);
   }
 
-  protected function getBody() {
-    $storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
-    $body = $storage->loadByProperties([
-      'type' => 'article',
-    ]);
-    $title = reset($body);
+  protected function getBody($data) {
+    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
+    $body = NULL;
+    if (empty($station->site_node->target_id)) {
+      $storage = $this->entityTypeManager->getStorage('seo_textdata');
+      $body = $storage->loadByProperties([
+        'type' => 'article',
+      ]);
+      $body = reset($body);
+    }
+    else {
+      $body = $station->site_node->entity;
+    }
 
-    $uri = $title->get('attachment')->entity->getFileUri();
+    if (empty($body)) {
+      return [];
+    }
+    $uri = $body->get('attachment')->entity->getFileUri();
 
     // 随机模式
     $data = seo_textdata_auto_read($uri);
@@ -163,15 +221,52 @@ class LinkRuleProcess extends QueueWorkerBase {
         $wild_string = substr($rule_domain[0], 2);
         $pos = strpos($rule, $wild_string);
         if (!$pos) {
-          return false;
+          return FALSE;
         }
         // 找到了主要的泛域名
-        return true;
+        return TRUE;
       }
       else {
-        return false;
+        return FALSE;
       }
     }
-    return true;
+    return TRUE;
+  }
+
+  public function getTaxonomyValues($data) {
+    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
+    $textdata = NULL;
+    if (empty($station->site_column->target_id)) {
+      $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadMultiple();
+      $textdata = reset($textdata);
+    }
+    else {
+      $textdata = $station->site_column->entity;
+    }
+    $typename_uri = $textdata->get('attachment')->entity->getFileUri();
+    $ds = getTextdataArrayFromUri($typename_uri);
+    $tids = [];
+    $storage = $this->entityTypeManager->getStorage('taxonomy_term');
+    foreach ($ds as $name) {
+      $query = $storage->getQuery();
+      $query->condition('name', $name);
+      $query->condition('vid', 'typename');
+      $ids = $query->execute();
+      $taxonomy = NULL;
+      if (empty($ids)) {
+        $taxonomy = Term::create([
+          'name' => $name,
+          'vid' => 'typename',
+          // TODO, 添加station来标识?
+        ]);
+      }
+      else {
+        $taxonomy = $storage->load(reset($ids));
+      }
+      $taxonomy->save();
+      $tids[] = $taxonomy->id();
+    }
+
+    return $tids;
   }
 }
