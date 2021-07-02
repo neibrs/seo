@@ -3,6 +3,7 @@
 namespace Drupal\seo_station\Plugin\QueueWorker;
 
 use Drupal\Core\Queue\QueueWorkerBase;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * @QueueWorker(
@@ -31,6 +32,19 @@ class LinkRuleProcess extends QueueWorkerBase {
     try {
       // 初始化node的值
       $tkdb_values = $this->getTkdbValues($data);
+      $taxonomies = $this->getTaxonomyValues($data);
+
+      // 构造一个tid的数组.
+      $rand_tids = [];
+      if (!empty($taxonomies)) {
+        $rand_tids = array_rand($taxonomies, 2);
+      }
+      $tids = [];
+      foreach ($rand_tids as $rand_tid) {
+        $tids[] = [
+          'target_id' => $rand_tid,
+        ];
+      }
       $values = [
         'type' => 'article',
         'title' => is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60),
@@ -41,10 +55,14 @@ class LinkRuleProcess extends QueueWorkerBase {
           'format' => 'basic_html',
         ],
         'path' => '/'.$data['replacement'],//Alias
-//        'domain' => $data['domain'], //domain
-//        'field_metatag' => [
-//          'value' => serialize($tkdb_values),
-//        ],
+        'domain' => $data['domain'], //domain
+        'field_metatag' => [
+          'value' => serialize($tkdb_values),
+        ],
+        // TODO, Add taxonomy
+        'field_tags' => [
+          'target_id' => $tids,
+        ]
       ];
       // 创建该别名的文章数据.
       $node = $node_storage->create(['type' => 'article']);
@@ -74,11 +92,7 @@ class LinkRuleProcess extends QueueWorkerBase {
     $uri = $title->get('attachment')->entity->getFileUri();
 
     // 随机模式
-    $data = seo_textdata_auto_read($uri);
-    $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
-    if ($sub_data = str_replace("\n","-||-", $data)) {
-      $ds = array_unique(explode('-||-', $sub_data));
-    }
+    $ds = getTextdataArrayFromUri($uri);
     if (in_array($body_title, $ds)) {
       return $body_title;
     }
@@ -173,5 +187,23 @@ class LinkRuleProcess extends QueueWorkerBase {
       }
     }
     return true;
+  }
+
+  public function getTaxonomyValues($data) {
+    $station = \Drupal::entityTypeManager()->getStorage('seo_station')->load($data['station']);
+    $typename_uri = $station->site_column->entity->get('attachment')->entity->getFileUri();
+    $ds = getTextdataArrayFromUri($typename_uri);
+    $tids = [];
+    foreach ($ds as $name) {
+      $taxonomy = Term::create([
+        'name' => $name,
+        'vid' => 'typename',
+        // TODO, 添加station来标识?
+      ]);
+      $taxonomy->save();
+      $tids[] = $taxonomy->id();
+    }
+
+    return $tids;
   }
 }

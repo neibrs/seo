@@ -138,7 +138,6 @@ function seo_textdata_entity_operation(\Drupal\Core\Entity\EntityInterface $enti
         'url' => Url::fromRoute('seo_textdata.force_download', [
           'seo_textdata' => $entity->id(),
         ]),
-//        'url' => Url::fromUri(file_create_url($entity->attachment->entity->getFileUri())),
         'weight' => 0,
       ];
       break;
@@ -167,4 +166,14 @@ function seo_textdata_auto_read($file, $charset = 'UTF-8') {
     }
   }
   return "";
+}
+
+function getTextdataArrayFromUri($uri) {
+  $data = seo_textdata_auto_read($uri);
+  $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
+  if ($sub_data = str_replace("\n","-||-", $data)) {
+    $ds = array_unique(explode('-||-', $sub_data));
+  }
+
+  return $ds;
 }

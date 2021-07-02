@@ -8,3 +8,4 @@ dependencies:
   - lookup
   - metatag
   - seo_station_model
+  - seo_textdata
