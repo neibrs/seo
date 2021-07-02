@@ -24,7 +24,10 @@ vendor/bin/drush en -y entity_plus \
   field_group \
   views_plus \
   views_template \
-  xmlsitemap
+  xmlsitemap \
+  metatag \
+  pathauto \
+  image_resize_filter
 
 #  为了添加option_button_with_none_label插件
 vendor/bin/drush en -y eabax_core
@@ -40,10 +43,12 @@ vendor/bin/drush en -y seoer \
   seo_station \
   seo_station_tkdb \
   seo_textdata \
-  seo_site
+  seo_site \
+  seo_negotiator \
+  seo_station_address
 
 vendor/bin/drush en -y seo_front
-vendor/bin/drush en -y seo_content
+#vendor/bin/drush en -y seo_content
 vendor/bin/drush en -y dsi_block
 vendor/bin/drush pmu -y toolbar
 
