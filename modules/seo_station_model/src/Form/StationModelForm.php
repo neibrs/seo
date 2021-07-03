@@ -38,11 +38,6 @@ class StationModelForm extends ContentEntityForm {
     /* @var \Drupal\seo_station_model\Entity\StationModel $entity */
     $form = parent::buildForm($form, $form_state);
 
-    // placeholder
-    if (empty($this->getEntity()->id())) {
-      $this->getEntity()->save();
-    }
-
     $form['main']['widget'][0]['value']['#default_value'] = 'index,list,show';
     $form['main']['widget'][0]['value']['#disabled'] = TRUE;
 
@@ -63,26 +58,29 @@ class StationModelForm extends ContentEntityForm {
         unset($form[$child]);
       }
     }
-    $form['advanced'] = [
-      '#type' => 'details',
-      '#title' => '模板URL规则列表 (<span class="description-red">先保存，再设置url规则</span> )',
-      '#open' => TRUE,
-    ];
-    $form['advanced']['rule_url_help'] = [
-      '#type' => 'item',
-      '#markup' => '<span class="description-red">随机模式：即生成的url地址里包含有随机参数，生成的url就是无限模式</span><br/>
+    if (!$this->getEntity()->isNew()) {
+      $form['advanced'] = [
+        '#type' => 'details',
+        '#title' => '模板URL规则列表 (<span class="description-red">先保存，再设置url规则</span> )',
+        '#open' => TRUE,
+      ];
+      $form['advanced']['rule_url_help'] = [
+        '#type' => 'item',
+        '#markup' => '<span class="description-red">随机模式：即生成的url地址里包含有随机参数，生成的url就是无限模式</span><br/>
                     <span class="description-red">固定模式：生成的url地址随内容库的条数所定，例如：文章库的txt有999行，则内容页url最多为999条。</span><br/>
                     <span class="description-red">注：修改url规则后，需清除url规则缓存才生效</span>',
-      '#weight' => -10,
-      '#attributes' => [
-        'class' => [
-          'xxx--yy',
+        '#weight' => -10,
+        '#attributes' => [
+          'class' => [
+            'xxx--yy',
+          ],
         ],
-      ],
-    ];
-    $form['rule_url']['#content']['seo_model'] = $form_state->getFormObject()->getEntity();
-    $form['rule_url']['#theme'] = 'seo_station_model_url_item_list';
-    $form['advanced']['rule_url'] = $form['rule_url'];
+      ];
+      $form['rule_url']['#content']['seo_model'] = $form_state->getFormObject()->getEntity();
+      $form['rule_url']['#theme'] = 'seo_station_model_url_item_list';
+      $form['advanced']['rule_url'] = $form['rule_url'];
+    }
+
     unset($form['rule_url']);
 
     return $form;
