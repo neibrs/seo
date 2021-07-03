@@ -1,6 +1,6 @@
 
 entity.seo_station_model.collection:
-  title: '模型管理'
+  title: '站群模型'
   route_name: entity.seo_station_model.collection
   parent: entity.seo_station.administer
   weight: 1
