@@ -65,6 +65,7 @@ class StationForm extends ContentEntityForm {
     }
     $form['site_mode']['widget']['#default_value'] = $this->entity->site_mode->value;
     $form['content_type']['widget']['#default_value'] = 0;
+    $form['prefix_multi']['widget']['#default_value'] = 0;
 
     $form['tabs'] = [
       '#type' => 'horizontal_tabs',
