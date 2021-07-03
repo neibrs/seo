@@ -267,10 +267,10 @@ class Station extends ContentEntityBase implements StationInterface {
 2. 选择句子拼凑时，标题是从标题库中提取<br/>
 3. 句子拼凑的格式可在</span> TKDB调用模板->内容模板中设置')
       ->setDefaultValue(FALSE)
-      ->setDisplayOptions('form', [
-        'type' => 'options_buttons_with_none',
-        'weight' => 10,
-      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_buttons_with_none',
+//        'weight' => 10,
+//      ])
       ->setSetting('on_label', '句子拼凑')
       ->setSetting('off_label', '文章库内容');
 //---------
