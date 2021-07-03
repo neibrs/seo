@@ -17,5 +17,3 @@ git clone --recurse-submodules https://github.com/chaconinc/xxx.git
  合并成一步(3.1) ===等同于===（3.2，3.3）
 
     
-git submodule foreach git status
-
