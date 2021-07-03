@@ -1,1 +1,45 @@
-<?phpuse Drupal\Core\File\FileSystemInterface;/** * Implements hook_install(). */function seo_textdata_install($is_syncing) {  user_role_grant_permissions('seo', [    'add text data entities',    'administer text data entities',    'delete text data entities',    'edit text data entities',    'view published text data entities',    'view unpublished text data entities',  ]);  $directory = "public://textdata";  \Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);  $types = \Drupal::entityTypeManager()->getStorage('seo_textdata_type')->loadMultiple();  foreach ($types as $id => $type) {    $directory = "public://textdata/" . $type->id();    \Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);  }}
+<?php
+
+use Drupal\Core\File\FileSystemInterface;
+
+/**
+ * Implements hook_install().
+ */
+function seo_textdata_install($is_syncing) {
+  user_role_grant_permissions('seo', [
+    'add text data entities',
+    'administer text data entities',
+    'delete text data entities',
+    'edit text data entities',
+    'view published text data entities',
+    'view unpublished text data entities',
+  ]);
+
+  $directory = "public://textdata";
+  \Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+
+  $types = \Drupal::entityTypeManager()->getStorage('seo_textdata_type')->loadMultiple();
+  foreach ($types as $id => $type) {
+    $directory = "public://textdata/" . $type->id();
+    \Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+  }
+
+  $field_config_storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $field_tags = $field_config_storage->load('node.article.field_tags');
+  $settings = $field_tags->get('settings');
+  $settings['handler_settings']['target_bundles']['typename'] = 'typename';
+  $field_tags->set('settings', $settings)
+    ->save();
+}
+
+/**
+ * Implements hook_update_N() for 添加node.article typename tag.
+ */
+function seo_textdata_update_9001(&$sandbox) {
+  $field_config_storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $field_tags = $field_config_storage->load('node.article.field_tags');
+  $settings = $field_tags->get('settings');
+  $settings['handler_settings']['target_bundles']['typename'] = 'typename';
+  $field_tags->set('settings', $settings)
+    ->save();
+}
