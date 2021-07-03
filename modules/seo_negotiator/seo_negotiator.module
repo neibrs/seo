@@ -102,3 +102,20 @@ function seo_negotiator_theme_suggestions_views_view_alter(array &$suggestions, 
     }
   }
 }
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function seo_negotiator_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+  $view = $variables['view'];
+  if (!empty($view)) {
+    $suggestions[] = 'views_view_unformatted__' . $view->id();
+    if ($view->id() == 'taxonomy_term') {
+      $args = $view->args;
+      if (is_numeric($args[0])) {
+        $suggestions[] = 'views_view_unformatted__' . $view->id() . '_%';
+      }
+      $suggestions[] = 'views_view_unformatted__' . $view->id() . '_' . $args[0];
+    }
+  }
+}
