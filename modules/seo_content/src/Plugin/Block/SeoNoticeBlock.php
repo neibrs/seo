@@ -2,6 +2,7 @@
 namespace Drupal\seo_content\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 
 /**
  * 提供站点公告区块
@@ -46,6 +47,10 @@ class SeoNoticeBlock extends BlockBase {
     $build['#attached']['library'][] = 'seo_content/block';
     $build['#theme'] = 'seo_content_notice';
     return $build;
+  }
+
+  public function getCacheTags() {
+    return Cache::mergeTags(parent::getCacheTags(), \Drupal::entityTypeManager()->getDefinition('node')->getListCacheTags());
   }
 
 }
