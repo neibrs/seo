@@ -56,7 +56,15 @@ class StationForm extends ContentEntityForm {
       $form['custom_prefix_multi']['widget'][0]['#type'] = 'text_format';
       $form['custom_prefix_multi']['widget'][0]['#format'] = 'plain_text';
     }
+
+    // Get station model list.
+    $models = $this->entityTypeManager->getStorage('seo_station_model')->loadMultiple();
+    $model = reset($models);
+    if (!empty($model)) {
+      $form['model']['widget']['#default_value'] = $model->id();
+    }
     $form['site_mode']['widget']['#default_value'] = $this->entity->site_mode->value;
+    $form['content_type']['widget']['#default_value'] = 0;
 
     $form['tabs'] = [
       '#type' => 'horizontal_tabs',
