@@ -6,7 +6,7 @@ SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 git update-index --assume-unchanged web/sites/default/settings.php
 
 # 确认数据库用户名和密码(当前是root,root)
-vendor/bin/drush site:install -y --site-name="艾瑞seo" --account-pass=admin --db-url=mysql://root:root@127.0.0.1:3306/sox
+vendor/bin/drush site:install standard -y --site-name="艾瑞seo" --account-pass=admin --db-url=mysql://root:@localhost:3306/airui
 
 # Enable modules
 vendor/bin/drush en -y \
