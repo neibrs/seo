@@ -93,7 +93,9 @@ class StationController extends ControllerBase {
     $data = [];
     foreach ($stations as $station) {
       list($domains,) = $this->getWildDomains($station);
-      $data = array_merge($data, $domains);
+      if (!empty($domains)) {
+        $data = array_merge($data, $domains);
+      }
     }
 
     $build = [];
@@ -105,7 +107,10 @@ class StationController extends ControllerBase {
 
   /**
    * @param $station
-   * @param bool $wild true: 泛域名，false：单域名
+   * @param int $number
+   * @return array
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
   public function getWildDomains($station, $number = 1) {
     $conditions = [
@@ -121,6 +126,10 @@ class StationController extends ControllerBase {
     $url_rules = \Drupal::entityTypeManager()->getStorage('seo_station_model_url')->loadByProperties($conditions);
     $url_rules = reset($url_rules);
 
+    if (empty($url_rules) || !$url_rules) {
+      \Drupal::messenger()->addError('站群URL规则没有设置');
+      return [];
+    }
 
     // url 规则
     $rules = array_unique(explode(',', str_replace("\r\n",",", $url_rules->rule_url_content->value)));

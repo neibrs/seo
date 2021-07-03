@@ -32,3 +32,15 @@ function seoer_sidebar_tee_menu_alter(&$data) {
   ];
   _eabax_core_set_menu_items_icon($data, $icons);
 }
+
+/**
+ * Implements hook_theme().
+ */
+function seoer_theme($existing, $type, $theme, $path) {
+  $theme = [];
+  $theme['seoer_workbench'] = [
+    'variables' => [ 'content' => NULL ],
+    'render element' => 'children',
+  ];
+  return $theme;
+}

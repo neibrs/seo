@@ -60,6 +60,7 @@ function seo_negotiator_block_access(\Drupal\block\Entity\Block $block, $operati
         return \Drupal\Core\Access\AccessResult::forbidden();
       }
     }
+    return \Drupal\Core\Access\AccessResult::neutral();
   }
 }
 
@@ -82,5 +83,39 @@ function seo_negotiator_theme_suggestions_views_view_list_alter(array &$suggesti
   $view = $variables['view'];
   if (!empty($view)) {
     $suggestions[] = 'views_view_list__' . $view->id();
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter() for views_view.
+ */
+function seo_negotiator_theme_suggestions_views_view_alter(array &$suggestions, array $variables) {
+  $view = $variables['view'];
+  if (!empty($view)) {
+    $suggestions[] = 'views_view__' . $view->id();
+    if ($view->id() == 'taxonomy_term') {
+      $args = $view->args;
+      if (is_numeric($args[0])) {
+        $suggestions[] = 'views_view__' . $view->id() . '_%';
+      }
+      $suggestions[] = 'views_view__' . $view->id() . '_' . $args[0];
+    }
+  }
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK_alter().
+ */
+function seo_negotiator_theme_suggestions_views_view_unformatted_alter(array &$suggestions, array $variables) {
+  $view = $variables['view'];
+  if (!empty($view)) {
+    $suggestions[] = 'views_view_unformatted__' . $view->id();
+    if ($view->id() == 'taxonomy_term') {
+      $args = $view->args;
+      if (is_numeric($args[0])) {
+        $suggestions[] = 'views_view_unformatted__' . $view->id() . '_%';
+      }
+      $suggestions[] = 'views_view_unformatted__' . $view->id() . '_' . $args[0];
+    }
   }
 }
