@@ -86,6 +86,15 @@ class StationModelForm extends ContentEntityForm {
     return $form;
   }
 
+  public function validateForm(array &$form, FormStateInterface $form_state) {
+    $config_dirs = $this->entityTypeManager->getStorage('seo_station_model')->loadByProperties([
+      'config_dir' => $form_state->getValue('config_dir')[0]['value'],
+    ]);
+    if (!empty($config_dirs)) {
+      $form_state->setError($form['base']['config_dir'], '配置文件夹名称不能重复，请重新命名');
+    }
+  }
+
   /**
    * {@inheritdoc}
    */
