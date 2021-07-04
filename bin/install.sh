@@ -54,8 +54,6 @@ vendor/bin/drush pmu -y toolbar
 
 # 以下部分，始终放到最后处理.
 #==============================
-vendor/bin/drupal user:create seo seo --roles='seo' --email="seo@example.com" --status="1"
-
 # Install zh-hans language
 vendor/bin/drush language:add zh-hans
 
