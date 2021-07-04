@@ -93,6 +93,9 @@ class StationModelForm extends ContentEntityForm {
     if (!empty($config_dirs)) {
       $form_state->setError($form['base']['config_dir'], '配置文件夹名称不能重复，请重新命名');
     }
+    if (preg_match("/([\x81-\xfe][\x40-\xfe])/", $form_state->getValue('config_dir')[0]['value'], $match)) {
+      $form_state->setError($form['base']['config_dir'], '配置文件夹名称不能是汉字');
+    }
   }
 
   /**
