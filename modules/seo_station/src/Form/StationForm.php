@@ -58,11 +58,17 @@ class StationForm extends ContentEntityForm {
     }
 
     // Get station model list.
-    $models = $this->entityTypeManager->getStorage('seo_station_model')->loadMultiple();
-    $model = reset($models);
-    if (!empty($model)) {
-      $form['model']['widget']['#default_value'] = $model->id();
+    if (empty($this->getEntity()->model->target_id)) {
+      $models = $this->entityTypeManager->getStorage('seo_station_model')->loadMultiple();
+      $model = reset($models);
+      if (!empty($model)) {
+        $form['model']['widget']['#default_value'] = $model->id();
+      }
     }
+    else {
+      $form['model']['widget']['#default_value'] = $this->getEntity()->model->target_id;
+    }
+
     $form['site_mode']['widget']['#default_value'] = $this->entity->site_mode->value;
     $form['content_type']['widget']['#default_value'] = 0;
     $form['prefix_multi']['widget']['#default_value'] = 0;
