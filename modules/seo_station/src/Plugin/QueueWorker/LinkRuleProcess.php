@@ -68,13 +68,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       if (!is_array($rand_tids)) {
         $rand_tids[] = $rand_tids;
       }
-      $tids = [];
-      foreach ($rand_tids as $rand_tid) {
-        $tids[$rand_tid] = Term::load($rand_tid);
-//        [
-//          'target_id' => Term::load($rand_tid),
-//        ];
-      }
+
       $values = [
         'type' => 'article',
         'title' => is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60),
@@ -90,7 +84,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
           'value' => serialize($tkdb_values),
         ],
         // TODO, Add taxonomy
-        'field_tags' => $tids,
+        'field_tags' => $rand_tids, //$tids,
       ];
       // 创建该别名的文章数据.
       $node = $node_storage->create(['type' => 'article']);
@@ -266,11 +260,11 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
           'vid' => 'typename',
           // TODO, 添加station来标识?
         ]);
+        $taxonomy->save();
       }
       else {
         $taxonomy = $storage->load(reset($ids));
       }
-      $taxonomy->save();
       $tids[] = $taxonomy->id();
     }
 
