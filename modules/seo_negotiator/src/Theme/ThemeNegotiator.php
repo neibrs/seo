@@ -6,38 +6,38 @@ use Drupal\Core\Theme\ThemeNegotiatorInterface;
 
 class ThemeNegotiator implements ThemeNegotiatorInterface {
 
+  /**
+   * {@inheritDoc}
+   */
   public function applies(RouteMatchInterface $route_match) {
     return $this->negotiateRoute($route_match) ? TRUE : FALSE;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public function determineActiveTheme(RouteMatchInterface $route_match) {
     return $this->negotiateRoute($route_match) ?: NULL;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   private function negotiateRoute(RouteMatchInterface $route_match) {
-    $address = \Drupal::moduleHandler()->moduleExists('seo_station_address');
-
     $request = \Drupal::request();
-    $url = $request->getHttpHost() . $request->getRequestUri();
-    if ($address) {
-      $query = \Drupal::entityTypeManager()->getStorage('seo_negotiator')->getQuery();
-      $query->condition('name', $url);
-      $ids = $query->execute();
-      if (!empty($ids)) {
-        $negotiator = \Drupal::entityTypeManager()->getStorage('seo_negotiator')->load(reset($ids));
-
-        $theme_active = FALSE;
-        // If theme is active.
-        if ($theme_active) {
-
-        }
-        else {
-          // Theme not active, and install it.
-          \Drupal::service('theme_installer')->install([$negotiator->get('theme')->value]);
-        }
-
-        return $negotiator->theme->value;
+    $url = $request->getSchemeAndHttpHost() . $request->getRequestUri();
+    $negotiators = \Drupal::entityTypeManager()->getStorage('seo_negotiator')->loadByProperties([
+      'name' => $url,
+    ]);
+    if (!empty($negotiators)) {
+      $negotiator = reset($negotiators);
+      // If theme is active.
+      $theme_name = $negotiator->get('theme')->value;
+      if (!\Drupal::service('theme_handler')->themeExists($theme_name)) {
+        // Theme not active, and install it.
+        \Drupal::service('theme_installer')->install([$negotiator->get('theme')->value]);
       }
+      return $theme_name;
     }
 
     return FALSE;
