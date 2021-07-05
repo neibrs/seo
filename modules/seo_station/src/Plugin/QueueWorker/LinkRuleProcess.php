@@ -98,6 +98,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
         $node->set($key, $val);
       }
       $node->save();
+      $x = 'a';
     }
     catch (\Exception $e) {
       \Drupal::messenger()->addWarning($e);
@@ -237,7 +238,9 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
     $textdata = NULL;
     if (empty($station->site_column->target_id)) {
-      $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadMultiple();
+      $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
+        'type' => 'typename'
+      ]);
       $textdata = reset($textdata);
     }
     else {
@@ -248,6 +251,10 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     $tids = [];
     $storage = $this->entityTypeManager->getStorage('taxonomy_term');
     foreach ($ds as $name) {
+      if (strlen($name) > 100) {
+        \Drupal::messenger()->addError('栏目名称太长.');
+        return [];
+      }
       $query = $storage->getQuery();
       $query->condition('name', $name);
       $query->condition('vid', 'typename');
