@@ -88,6 +88,9 @@ class DynamicNavigationBlock extends BlockBase implements ContainerFactoryPlugin
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties([
       'vid' => 'typename',
     ]);
+    if (empty($rand_terms)) {
+      return $build;
+    }
     $rand_terms = array_rand($terms, $this->configuration['items']);
     foreach ($rand_terms as $term) {
       $build['items'][] = [
