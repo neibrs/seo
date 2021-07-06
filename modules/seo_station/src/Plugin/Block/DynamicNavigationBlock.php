@@ -93,7 +93,7 @@ class DynamicNavigationBlock extends BlockBase implements ContainerFactoryPlugin
     }
     $rand_terms = array_rand($terms, $this->configuration['items']);
     foreach ($rand_terms as $term) {
-      $build['#items'][] = [
+      $build['items'][] = [
         'id' => $terms[$term]->id(),
         'name' => $terms[$term]->label(),
         'link' => $terms[$term]->toUrl(),
