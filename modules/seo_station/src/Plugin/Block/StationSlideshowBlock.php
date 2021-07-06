@@ -33,11 +33,12 @@ class StationSlideshowBlock extends BlockBase {
 
     $pend_nodes = array_rand($nodes, $this->configuration['items']);
     foreach ($pend_nodes as $node) {
+      $file_uri = isset($nodes[$node]->field_image->target_id) ? $nodes[$node]->field_image->entity->createFileUrl() : '';
       $build['items'][] = [
         'id' => $nodes[$node]->id(),
         'name' => $nodes[$node]->label(),
         'link' => $nodes[$node]->toUrl(),
-//        'image' => $pend_nodes[$node]->field_image->
+        'image' => $file_uri,
       ];
     }
 
