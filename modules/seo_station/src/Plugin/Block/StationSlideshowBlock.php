@@ -34,9 +34,10 @@ class StationSlideshowBlock extends BlockBase {
     $pend_nodes = array_rand($nodes, $this->configuration['items']);
     foreach ($pend_nodes as $node) {
       $build['items'][] = [
-        'id' => $pend_nodes[$node]->id(),
-        'name' => $pend_nodes[$node]->label(),
-        'link' => $pend_nodes[$node]->toUrl(),
+        'id' => $nodes[$node]->id(),
+        'name' => $nodes[$node]->label(),
+        'link' => $nodes[$node]->toUrl(),
+//        'image' => $pend_nodes[$node]->field_image->
       ];
     }
 

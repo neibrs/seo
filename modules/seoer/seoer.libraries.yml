@@ -4,5 +4,5 @@ workbench:
     theme:
       css/workbench.css: { }
   js:
-#    https://gw.alipayobjects.com/os/lib/antv/g6/4.3.4/dist/g6.min.js: { type: 'external' }
+    https://gw.alipayobjects.com/os/lib/antv/g6/4.3.4/dist/g6.min.js: { type: 'external' }
     js/workbench.js: { }

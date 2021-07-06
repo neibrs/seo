@@ -17,6 +17,7 @@
         "drupal/encrypt": "^3.0",
         "drupal/metatag": "^1.16",
         "drupal/xmlsitemap": "^1.0",
+        "drupal/views_slideshow": "^4.8",
         "ext-mbstring": "*"
     },
     "extra": {
