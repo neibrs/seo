@@ -762,6 +762,11 @@ class Station extends ContentEntityBase implements StationInterface {
     $number = 0;
     foreach ($stations as $station) {
       $domain = array_unique(explode(',', str_replace("\r\n",",", $station->domain->value)));
+      $domain = array_filter($domain, function ($item) {
+        if (!empty($item)) {
+          return $item;
+        }
+      });
       $number += count($domain);
     }
     $this->model->entity->domains->value = $number;
