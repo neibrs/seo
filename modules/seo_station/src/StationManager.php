@@ -5,6 +5,7 @@ namespace Drupal\seo_station;
 use Drupal\Component\Utility\Random;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\NodeInterface;
 
 class StationManager implements StationManagerInterface {
 
@@ -123,5 +124,29 @@ class StationManager implements StationManagerInterface {
       // TODO
     }
     return $doms;
+  }
+
+  public function getNode(NodeInterface $node) {
+    $field_tag = $this->getNodeOneTag($node);
+    $file_uri = isset($node->field_image->target_id) ? $node->field_image->entity->createFileUrl() : '';
+    return [
+      'id' => $node->id(),
+      'name' => $node->label(),
+      'link' => $node->toUrl(),
+      'image' => $file_uri,
+      'description' => $node->get('body')->summary,
+      'created' => date('Y-m-d', $node->created->value),
+      'field_tag' => $field_tag->label(),
+      'field_tag_link' => $field_tag->toUrl(),
+    ];
+  }
+
+  protected function getNodeOneTag($node) {
+    $field_tags = $node->field_tags->referencedEntities();
+    $field_tag = '';
+    if (!empty($field_tags)) {
+      $field_tag = reset($field_tags);
+    }
+    return $field_tag;
   }
 }

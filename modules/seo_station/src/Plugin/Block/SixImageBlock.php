@@ -96,15 +96,7 @@ class SixImageBlock extends BlockBase implements ContainerFactoryPluginInterface
 
     $pend_nodes = array_rand($nodes, $this->configuration['items']);
     foreach ($pend_nodes as $node) {
-      $file_uri = isset($nodes[$node]->field_image->target_id) ? $nodes[$node]->field_image->entity->createFileUrl() : '';
-      $build['items'][] = [
-        'id' => $nodes[$node]->id(),
-        'name' => $nodes[$node]->label(),
-        'link' => $nodes[$node]->toUrl(),
-        'image' => $file_uri,
-        'description' => $nodes[$node]->get('body')->summary,
-        'created' => date('Y-m-d', $nodes[$node]->created->value),
-      ];
+      $build['items'][] = \Drupal::service('seo_station.manager')->getNode($nodes[$node]);
     }
 
     return $build;
