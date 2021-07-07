@@ -136,8 +136,8 @@ class StationManager implements StationManagerInterface {
       'image' => ['#markup' => $file_uri,],
       'description' => ['#markup' => $node->get('body')->summary],
       'created' => ['#markup' => date('Y-m-d', $node->created->value)],
-      'field_tag' => ['#markup' => $field_tag->label()],
-      'field_tag_link' => $field_tag->toUrl(),
+      'field_tag' => ['#markup' => empty($field_tags) ? '' : $field_tag->label()],
+      'field_tag_link' =>empty($field_tags) ? '' :  $field_tag->toUrl(),
     ];
   }
 

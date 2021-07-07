@@ -96,7 +96,7 @@ class SixImageBlock extends BlockBase implements ContainerFactoryPluginInterface
 
     $pend_nodes = array_rand($nodes, $this->configuration['items']);
     foreach ($pend_nodes as $node) {
-      $build['items'][] = \Drupal::service('seo_station.manager')->getNode($pend_nodes[$node]);
+      $build['items'][] = \Drupal::service('seo_station.manager')->getNode($nodes[$node]);
     }
 
     return $build;
