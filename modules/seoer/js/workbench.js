@@ -9,7 +9,6 @@
 
   Drupal.behaviors.seoer_workbench = {
     attach: function (context, settings) {
-      alert('xyfdsalkd')
     }
   };
 
