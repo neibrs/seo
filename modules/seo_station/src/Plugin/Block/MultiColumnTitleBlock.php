@@ -69,7 +69,16 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $form_state) {
-    // Get the theme.
+    $form['column'] = [
+      '#type' => 'number',
+      '#title' => '栏目个数',
+      '#default_value' => $this->configuration['column'],
+    ];
+    $form['items'] = [
+      '#type' => 'number',
+      '#title' => '文章个数',
+      '#default_value' => $this->configuration['items'],
+    ];
 
     return $form;
   }
@@ -78,6 +87,8 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
+    $this->configuration['column'] = $form_state->getValue('column');
+    $this->configuration['items'] = $form_state->getValue('items');
   }
 
   /**

@@ -68,7 +68,11 @@ class SixImageBlock extends BlockBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function blockForm($form, FormStateInterface $form_state) {
-    // Get the theme.
+    $form['items'] = [
+      '#type' => 'number',
+      '#title' => '文章个数',
+      '#default_value' => $this->configuration['items'],
+    ];
 
     return $form;
   }
@@ -77,7 +81,9 @@ class SixImageBlock extends BlockBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function blockSubmit($form, FormStateInterface $form_state) {
+    $this->configuration['items'] = $form_state->getValue('items');
   }
+
 
   /**
    * {@inheritdoc}
