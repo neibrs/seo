@@ -100,7 +100,7 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
     // Find column
     $taxonomy_query = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->getQuery();
     $taxonomy_query->condition('vid', 'typename');
-    $taxonomy_query->range(NULL, $this->configuration['column']);
+    $taxonomy_query->range(0, $this->configuration['column']);
     $taxonomy_ids = $taxonomy_query->execute();
 
     $data = [];
@@ -111,7 +111,7 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
         // Find nodes.
         $query = $node_storage->getQuery();
         $query->condition('type', 'article');
-        $query->range(NULL, $this->configuration['items']);
+        $query->range(0, $this->configuration['items']);
         $ids = $query->execute();
 
         $nodes = $node_storage->loadMultiple($ids);
