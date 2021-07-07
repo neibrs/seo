@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Block(
  *   id = "six_image_block",
- *   admin_label = @Translation("6张图片区块"),
+ *   admin_label = @Translation("图文区块"),
  * )
  */
 class SixImageBlock extends BlockBase implements ContainerFactoryPluginInterface {
