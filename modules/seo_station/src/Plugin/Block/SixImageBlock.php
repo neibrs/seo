@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  *
  * @Block(
  *   id = "six_image_block",
- *   admin_label = @Translation("6张图片区块"),
+ *   admin_label = @Translation("图文区块"),
  * )
  */
 class SixImageBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -96,7 +96,7 @@ class SixImageBlock extends BlockBase implements ContainerFactoryPluginInterface
 
     $pend_nodes = array_rand($nodes, $this->configuration['items']);
     foreach ($pend_nodes as $node) {
-      $build['items'][] = \Drupal::service('seo_station.manager')->getNode($nodes[$node]);
+      $build['items'][] = \Drupal::service('seo_station.manager')->getNode($pend_nodes[$node]);
     }
 
     return $build;

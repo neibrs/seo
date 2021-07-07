@@ -130,14 +130,14 @@ class StationManager implements StationManagerInterface {
     $field_tag = $this->getNodeOneTag($node);
     $file_uri = isset($node->field_image->target_id) ? $node->field_image->entity->createFileUrl() : '';
     return [
-      'id' => $node->id(),
-      'name' => $node->label(),
+      'id' => ['#markup' => $node->id()],
+      'name' => ['#markup' => $node->label()],
       'link' => $node->toUrl(),
-      'image' => $file_uri,
-      'description' => $node->get('body')->summary,
-      'created' => date('Y-m-d', $node->created->value),
-      'field_tag' => !empty($field_tag) ? $field_tag->label() : '',
-      'field_tag_link' => !empty($field_tag) ? $field_tag->toUrl() : '',
+      'image' => ['#markup' => $file_uri,],
+      'description' => ['#markup' => $node->get('body')->summary],
+      'created' => ['#markup' => date('Y-m-d', $node->created->value)],
+      'field_tag' => ['#markup' => $field_tag->label()],
+      'field_tag_link' => $field_tag->toUrl(),
     ];
   }
 
