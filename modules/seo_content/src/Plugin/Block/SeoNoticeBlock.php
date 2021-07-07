@@ -37,6 +37,7 @@ class SeoNoticeBlock extends BlockBase {
     $nodes = $node_storage->loadMultiple($nids);
 
     $nodes = array_map(function ($node) {
+
       return [
         'tag' => $node->field_tags->entity->label(),
         'title' => $node->toLink(),
