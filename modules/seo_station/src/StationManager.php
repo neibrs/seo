@@ -129,14 +129,25 @@ class StationManager implements StationManagerInterface {
   public function getNode(NodeInterface $node) {
     $field_tag = $this->getNodeOneTag($node);
     $file_uri = isset($node->field_image->target_id) ? $node->field_image->entity->createFileUrl() : '';
+//    return [
+//      'id' => ['#markup' => $node->id()],
+//      'name' => ['#markup' => $node->label()],
+//      'link' => $node->toUrl(),
+//      'image' => ['#markup' => $file_uri,],
+//      'description' => ['#markup' => $node->get('body')->summary],
+//      'created' => ['#markup' => date('Y-m-d', $node->created->value)],
+//      'field_tag' => ['#markup' => empty($field_tags) ? '' : $field_tag->label()],
+//      'field_tag_link' =>empty($field_tags) ? '' :  $field_tag->toUrl(),
+//    ];
+
     return [
-      'id' => ['#markup' => $node->id()],
-      'name' => ['#markup' => $node->label()],
+      'id' => $node->id(),
+      'name' => $node->label(),
       'link' => $node->toUrl(),
-      'image' => ['#markup' => $file_uri,],
-      'description' => ['#markup' => $node->get('body')->summary],
-      'created' => ['#markup' => date('Y-m-d', $node->created->value)],
-      'field_tag' => ['#markup' => empty($field_tags) ? '' : $field_tag->label()],
+      'image' => $file_uri,
+      'description' => $node->get('body')->summary,
+      'created' => date('Y-m-d', $node->created->value),
+      'field_tag' => empty($field_tags) ? '' : $field_tag->label(),
       'field_tag_link' =>empty($field_tags) ? '' :  $field_tag->toUrl(),
     ];
   }
