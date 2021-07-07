@@ -121,7 +121,7 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
           'link' => $term->toUrl(),
         ];
         foreach ($nodes as $node) {
-          $data[$term->id()]['nodes'][] = \Drupal::service('seo_station.manager')->getNode($nodes[$node]);
+          $data[$term->id()]['nodes'][] = \Drupal::service('seo_station.manager')->getNode($node);
         }
       }
     }

@@ -136,12 +136,12 @@ class StationManager implements StationManagerInterface {
       'image' => $file_uri,
       'description' => $node->get('body')->summary,
       'created' => date('Y-m-d', $node->created->value),
-      'field_tag' => $field_tag->label(),
-      'field_tag_link' => $field_tag->toUrl(),
+      'field_tag' => !empty($field_tag) ? $field_tag->label() : '',
+      'field_tag_link' => !empty($field_tag) ? $field_tag->toUrl() : '',
     ];
   }
 
-  protected function getNodeOneTag($node) {
+  protected function getNodeOneTag(NodeInterface $node) {
     $field_tags = $node->field_tags->referencedEntities();
     $field_tag = '';
     if (!empty($field_tags)) {
