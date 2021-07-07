@@ -128,6 +128,7 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
             'description' => $node->get('body')->summary,
             'link' => $node->toUrl(),
             'image' => $file_uri,
+            'created' => date('Y-m-d', $node->created->value),
           ];
         }
       }
