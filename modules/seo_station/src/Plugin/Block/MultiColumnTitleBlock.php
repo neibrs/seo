@@ -14,7 +14,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 /**
  *
  * @Block(
- *   id = "three_image_block",
+ *   id = "multi_column_title_block",
  *   admin_label = @Translation("多栏目标题区块"),
  * )
  */
