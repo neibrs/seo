@@ -8,6 +8,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\xmlsitemap\Entity\XmlSitemap;
 
 /**
  * Defines the Station address entity.
@@ -138,19 +139,18 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
 
   public function postSave(EntityStorageInterface $storage, $update = TRUE) {
     parent::postSave($storage, $update);
-    $x = 'a';
-    $xmlsitemap = $this->entityTypeManager()->getStorage('xmlsitemap');
+
+    // Append data for xmlsitemap.
     $domain = parse_url($this->label());
     $values = [
       'context' => [
         'language' => 'zh-hans',
         'domain' => $domain['host'],
       ],
-      'label' => $this->label(),
+      'label' => $domain['scheme'] . '://' . $domain['host'],
     ];
-    $values['id'] = xmlsitemap_sitemap_get_context_hash($values['context']);
-//    $xmlsitemap->create($values)
-//      ->save();
+    $queue = \Drupal::queue('station_address_xmlsitemap');
+    $queue->createItem($values);
   }
 
 }
