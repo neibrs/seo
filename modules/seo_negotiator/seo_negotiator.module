@@ -23,8 +23,6 @@ function seo_negotiator_help($route_name, RouteMatchInterface $route_match) {
       $output .= '<p>注：未绑定模板的域名将会随机调用，支持泛域名绑定，如: *.abc.com，注：域名必须是对应模型下的才有效</p>';
 
       return $output;
-      break;
-    default:
   }
 }
 /**
@@ -136,18 +134,21 @@ function seo_negotiator_xmlsitemap_context_info() {
  * Implements hook_form_FORM_ID_alter() for xmlsitemap_sitemap_edit_form.
  */
 function seo_negotiator_form_xmlsitemap_sitemap_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  $addresses = \Drupal::entityTypeManager()->getStorage('seo_station_address')->loadMultiple();
-  $domains = array_map(function ($address) {
-    $domain = parse_url($address->name->value);
-    return $domain['host'];
-  }, $addresses);
+  $options = \Drupal::service('seo_negotiator.manager')->getDynamicDomains();
 
-  $options = array_combine($domains, $domains);
+  $entity = $form_state->getFormObject()->getEntity();
+
+  $domain = '';
+  if (!empty($entity->getContext())) {
+    $context = $entity->getContext();
+    $domain = isset($context['domain']) ? $context['domain'] : '';
+  }
 
   $form['context']['domain'] = [
     '#type' => 'select',
     '#title' => '域名',
     '#options' => $options,
+    '#default_value' => $domain,
   ];
 }
 
@@ -159,6 +160,7 @@ function seo_negotiator_xmlsitemap_context_url_options(array $context) {
 
   if (isset($context['domain'])) {
     $options['domain'] = seo_negotiator_domain_load($context['domain']);
+    // TODO
     $options['base_url'] = 'http://' . $options['domain'];
   }
 
@@ -166,13 +168,7 @@ function seo_negotiator_xmlsitemap_context_url_options(array $context) {
 }
 
 function seo_negotiator_domain_load($domain = 'localhost') {
-  $addresses = \Drupal::entityTypeManager()->getStorage('seo_station_address')->loadMultiple();
-  $domains = array_map(function ($address) {
-    $domain = parse_url($address->name->value);
-    return $domain['host'];
-  }, $addresses);
-
-  $options = array_combine($domains, $domains);
+  $options = \Drupal::service('seo_negotiator.manager')->getDynamicDomains();
 
   return isset($options[$domain]) ? $options[$domain] : NULL;
 }
@@ -191,7 +187,7 @@ function seo_negotiator_domain_load($domain = 'localhost') {
  * Implements hook_xmlsitemap_context().
  */
 function seo_negotiator_xmlsitemap_context() {
-  $host = \Drupal::request()->getSchemeAndHttpHost();
+  $host = \Drupal::request()->getHost();//getSchemeAndHttpHost();
   $context['domain'] = $host;
 
   return $context;
