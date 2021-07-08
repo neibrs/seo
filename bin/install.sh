@@ -3,11 +3,9 @@ DRUPAL="$(pwd)"
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 #git 忽略提交某个指定的文件(不从版本库中删除)
-git update-index --assume-unchanged web/sites/default/settings.php
-
+#git update-index --assume-unchanged sites/default/settings.php
 # 确认数据库用户名和密码(当前是root,root)
-vendor/bin/drush site:install standard -y --site-name="艾瑞seo" --account-pass=admin --db-url=mysql://root:@localhost:3306/airui
-
+vendor/bin/drush site:install standard -y --site-name="艾瑞seo" --account-pass=admin --db-url=mysql://root:root@localhost:3306/airui
 # Enable modules
 vendor/bin/drush en -y \
   config_translation \
@@ -35,7 +33,7 @@ vendor/bin/drush en -y eabax_core
 #提前启用,以便于其他模块给seo角色赋予权限
 vendor/bin/drush en -y seoer
 
-vendor/bin/drush en -y seoer \
+vendor/bin/drush en -y \
   dsi_login \
   seo_grant \
   seo_station_model \

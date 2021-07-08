@@ -68,3 +68,4 @@ function _install_module_dependencies_batch($module, $module_name, &$context) {
   $context['results'][] = $module;
   $context['message'] = t('Installed %module module.', ['%module' => $module_name]);
 }
+
