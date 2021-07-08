@@ -2,6 +2,7 @@
 
 namespace Drupal\seo_station_address\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
@@ -133,6 +134,23 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
       ->setDescription(t('The time that the entity was last edited.'));
 
     return $fields;
+  }
+
+  public function postSave(EntityStorageInterface $storage, $update = TRUE) {
+    parent::postSave($storage, $update);
+    $x = 'a';
+    $xmlsitemap = $this->entityTypeManager()->getStorage('xmlsitemap');
+    $domain = parse_url($this->label());
+    $values = [
+      'context' => [
+        'language' => 'zh-hans',
+        'domain' => $domain['host'],
+      ],
+      'label' => $this->label(),
+    ];
+    $values['id'] = xmlsitemap_sitemap_get_context_hash($values['context']);
+//    $xmlsitemap->create($values)
+//      ->save();
   }
 
 }

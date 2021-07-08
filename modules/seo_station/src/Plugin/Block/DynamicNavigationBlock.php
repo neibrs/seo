@@ -97,10 +97,22 @@ class DynamicNavigationBlock extends BlockBase implements ContainerFactoryPlugin
         break;
       }
       $build['items'][$term->id()] = [
-        'id' => $term->id(),
-        'name' => $term->label(),
-        'link' => $term->toUrl(),
-        'active' => FALSE,
+        'id' => [
+          '#type' => 'item',
+          '#plain_text' => $term->id(),
+        ],
+        'name' => [
+          '#type' => 'markup',
+          '#markup' => $term->label(),
+        ],
+        'link' =>  [
+          '#type' => 'markup',
+          '#markup' => $term->toUrl()->toString(),
+        ],
+        'active' => [
+          '#type' => 'item',
+          '#plain_text' => FALSE,
+        ],
       ];
       $parameters = \Drupal::routeMatch()->getParameters();
       if(isset($parameters->all()['taxonomy_term']) && $parameters->all()['taxonomy_term']->id() == $term->id()) {
