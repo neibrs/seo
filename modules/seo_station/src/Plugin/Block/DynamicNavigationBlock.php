@@ -96,6 +96,26 @@ class DynamicNavigationBlock extends BlockBase implements ContainerFactoryPlugin
       if ($i > $this->configuration['items']) {
         break;
       }
+
+//      $build['items'][$term->id()] = [
+//        'id' => [
+//          '#type' => 'item',
+//          '#plain_text' => $term->id(),
+//        ],
+//        'name' => [
+//          '#type' => 'markup',
+//          '#markup' => $term->label(),
+//        ],
+//        'link' =>  [
+//          '#type' => 'markup',
+//          '#markup' => $term->toUrl()->toString(),
+//        ],
+//        'active' => [
+//          '#type' => 'item',
+//          '#plain_text' => FALSE,
+//        ],
+//      ];
+
       $build['items'][$term->id()] = [
         'id' => $term->id(),
         'name' => $term->label(),

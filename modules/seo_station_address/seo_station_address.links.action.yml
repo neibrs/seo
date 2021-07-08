@@ -3,3 +3,9 @@ entity.seo_station_address.add_form:
   title: 'Add Station address'
   appears_on:
     - entity.seo_station_address.collection
+
+seo_station.xmlsitemap.rebuild:
+  route_name: seo_station_address.xmlsitemap_rebuild
+  title: 'Rebuild sitemap'
+  appears_on:
+    - entity.seo_station.collection

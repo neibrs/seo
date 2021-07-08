@@ -130,13 +130,28 @@ class StationManager implements StationManagerInterface {
     $field_tag = $this->getNodeOneTag($node);
     $file_uri = isset($node->field_image->target_id) ? $node->field_image->entity->createFileUrl() : '';
 //    return [
-//      'id' => ['#markup' => $node->id()],
-//      'name' => ['#markup' => $node->label()],
-//      'link' => $node->toUrl(),
-//      'image' => ['#markup' => $file_uri,],
-//      'description' => ['#markup' => $node->get('body')->summary],
-//      'created' => ['#markup' => date('Y-m-d', $node->created->value)],
-//      'field_tag' => ['#markup' => empty($field_tags) ? '' : $field_tag->label()],
+//      'id' => [
+//        '#type' => 'item',
+//        '#plain_text' => $node->id()
+//      ],
+//      'name' =>  $node->label(),
+//      'link' => $node->toUrl()->toString(),
+//      'image' => [
+//        '#type' => 'item',
+//        '#plain_text' => $file_uri,
+//      ],
+//      'description' => [
+//        '#type' => 'item',
+//        '#plain_text' => $node->get('body')->summary
+//      ],
+//      'created' => [
+//        '#type' => 'item',
+//        '#plain_text' => date('Y-m-d', $node->created->value)
+//      ],
+//      'field_tag' => [
+//        '#type' => 'item',
+//        '#plain_text' => empty($field_tags) ? '' : $field_tag->label()
+//      ],
 //      'field_tag_link' =>empty($field_tags) ? '' :  $field_tag->toUrl(),
 //    ];
 

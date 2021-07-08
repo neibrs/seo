@@ -2,11 +2,13 @@
 
 namespace Drupal\seo_station_address\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\xmlsitemap\Entity\XmlSitemap;
 
 /**
  * Defines the Station address entity.
@@ -133,6 +135,22 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
       ->setDescription(t('The time that the entity was last edited.'));
 
     return $fields;
+  }
+
+  public function postSave(EntityStorageInterface $storage, $update = TRUE) {
+    parent::postSave($storage, $update);
+
+    // Append data for xmlsitemap.
+    $domain = parse_url($this->label());
+    $values = [
+      'context' => [
+        'language' => 'zh-hans',
+        'domain' => $domain['host'],
+      ],
+      'label' => $domain['scheme'] . '://' . $domain['host'],
+    ];
+    $queue = \Drupal::queue('station_address_xmlsitemap');
+    $queue->createItem($values);
   }
 
 }

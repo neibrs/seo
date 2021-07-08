@@ -9,3 +9,6 @@ services:
     class: Drupal\seo_negotiator\TwigExtension\TwigMbSliceExtension
     tags:
       - { name: twig.extension }
+  seo_negotiator.manager:
+    class: Drupal\seo_negotiator\NegotiatorManager
+    arguments: ['@entity_type.manager']
