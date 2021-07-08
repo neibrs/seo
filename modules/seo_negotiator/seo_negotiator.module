@@ -119,3 +119,70 @@ function seo_negotiator_theme_suggestions_views_view_unformatted_alter(array &$s
     }
   }
 }
+
+/**
+ * Implements hook_xmlsitemap_context_info().
+ */
+function seo_negotiator_xmlsitemap_context_info() {
+  $context['domain'] = [
+    'label' => '域名',
+//    'summary callback' => 'language_name',
+    'default' => 'localhost',
+  ];
+  return $context;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter() for xmlsitemap_sitemap_edit_form.
+ */
+function seo_negotiator_form_xmlsitemap_sitemap_edit_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $addresses = \Drupal::entityTypeManager()->getStorage('seo_station_address')->loadMultiple();
+  $domains = array_map(function ($address) {
+    $domain = parse_url($address->name->value);
+    return $domain['host'];
+  }, $addresses);
+
+  $options = array_combine($domains, $domains);
+
+  $form['context']['domain'] = [
+    '#type' => 'select',
+    '#title' => '域名',
+    '#options' => $options,
+  ];
+}
+
+/**
+ * Implements hook_xmlsitemap_context_url_options().
+ */
+function seo_negotiator_xmlsitemap_context_url_options(array $context) {
+  $options = [];
+
+  if (isset($context['domain'])) {
+    $options['domain'] = seo_negotiator_domain_load($context['domain']);
+    $options['base_url'] = 'http://' . $options['domain'];
+  }
+
+  return $options;
+}
+
+function seo_negotiator_domain_load($domain = 'localhost') {
+  $addresses = \Drupal::entityTypeManager()->getStorage('seo_station_address')->loadMultiple();
+  $domains = array_map(function ($address) {
+    $domain = parse_url($address->name->value);
+    return $domain['host'];
+  }, $addresses);
+
+  $options = array_combine($domains, $domains);
+
+  return isset($options[$domain]) ? $options[$domain] : NULL;
+}
+
+// Create xmlsitemap
+//$values = [
+//  'context' => [
+//    'language' => 'zh-hans',
+//    'domain' => 'xxxxy',
+//  ],
+//  'label' => 'xxxxy',
+//];
+//'id' => xmlsitemap_sitemap_get_context_hash($context);
