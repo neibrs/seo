@@ -115,11 +115,17 @@ class DynamicNavigationBlock extends BlockBase implements ContainerFactoryPlugin
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags() {
-    return Cache::mergeTags(
-      parent::getCacheTags(),
-      \Drupal::entityTypeManager()->getDefinition('taxonomy_term')->getListCacheTags()
-    );
-  }
+//  public function getCacheTags() {
+//    return Cache::mergeTags(
+//      parent::getCacheTags(),
+//      \Drupal::entityTypeManager()->getDefinition('taxonomy_term')->getListCacheTags()
+//    );
+//  }
+//  public function getCacheMaxAge(){
+//    return 0;
+//  }
 
+  public function getCacheContexts() {
+    return Cache::mergeContexts(parent::getCacheContexts(), ['url']);
+  }
 }
