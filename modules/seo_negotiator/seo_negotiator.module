@@ -186,3 +186,14 @@ function seo_negotiator_domain_load($domain = 'localhost') {
 //  'label' => 'xxxxy',
 //];
 //'id' => xmlsitemap_sitemap_get_context_hash($context);
+
+/**
+ * Implements hook_xmlsitemap_context().
+ */
+function seo_negotiator_xmlsitemap_context() {
+  $host = \Drupal::request()->getSchemeAndHttpHost();
+  $context['domain'] = $host;
+
+  return $context;
+}
+
