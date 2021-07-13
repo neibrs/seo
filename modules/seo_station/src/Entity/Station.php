@@ -450,7 +450,50 @@ class Station extends ContentEntityBase implements StationInterface {
 //      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-//
+
+    $fields['tags'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('行业')
+      ->setSetting('target_type', 'taxonomy_term')
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'textdata_tags' => 'textdata_tags',
+        ],
+        'sort' => [
+          'field' => '_none',
+        ],
+        'auto_create' => TRUE,
+      ])
+      ->setDisplayOptions('view', [
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'entity_reference_autocomplete_tags',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    // use official textdata. 是否使用官网数据
+    $fields['use_official'] = BaseFieldDefinition::create('boolean')
+      ->setLabel('是否使用官网数据')
+      ->setDescription('如果选用官网数据，则本地内容设置无效')
+      ->setDefaultValue(FALSE)
+      ->setDisplayOptions('view', [
+        'type' => 'boolean',
+        'weight' => 0,
+        'label' => 'inline',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'boolean_checkbox',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    //
 //URL设置
 //========
 //URL模式(url_mode)

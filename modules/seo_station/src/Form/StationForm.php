@@ -158,6 +158,8 @@ class StationForm extends ContentEntityForm {
         'site_node',
         'site_intro',
         'number',
+        'tags',
+        'use_official',
       ];
       if (in_array($child, $content_models)) {
         $form['content_models'][$child] = $form[$child];

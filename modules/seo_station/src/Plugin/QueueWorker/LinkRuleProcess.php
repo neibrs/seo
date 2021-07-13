@@ -102,18 +102,8 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
 
   // 随机获取title类型的标题库的文件一份
   protected function getTitle($body_title = NULL, $data = []) {
-    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
-    $title = NULL;
-    if (empty($station->site_title->target_id)) {
-      $storage = $this->entityTypeManager->getStorage('seo_textdata');
-      $title = $storage->loadByProperties([
-        'type' => 'title',
-      ]);
-      $title = reset($title);
-    }
-    else {
-      $title = $station->site_title->entity;
-    }
+    $body = $this->getFileUri($data, 'title', 'site_title');
+
     if (empty($title)) {
       return [];
     }
@@ -130,19 +120,40 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return explode('******', $dst);
   }
 
-  protected function getBody($data) {
+  protected function getFileUri($data, $type = 'article', $field = NULL) {
     $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
-    $body = NULL;
-    if (empty($station->site_node->target_id)) {
-      $storage = $this->entityTypeManager->getStorage('seo_textdata');
-      $body = $storage->loadByProperties([
-        'type' => 'article',
-      ]);
-      $body = reset($body);
+    $con = NULL;
+    $textdata_storage = $this->entityTypeManager->getStorage('seo_textdata');
+    if (!$station->get('use_official')->value) {
+      if (empty($station->{$field}->target_id)) {
+        $query = $textdata_storage->getQuery();
+        $query->condition('type', $type);
+        $tags = $station->get('tags')->referencedEntities();
+        $tags = array_map(function ($tag) {
+          return $tag->id();
+        }, $tags);
+        if (!empty($tags)) {
+          // TODO, check validate.
+          $query->condition('tags.entity.id', $tags, 'IN');
+        }
+        $ids = $query->execute();
+        $con = $textdata_storage->loadMultiple($ids);
+
+        $con = reset($con);
+      }
+      else {
+        $con = $station->{$field}->entity;
+      }
     }
     else {
-      $body = $station->site_node->entity;
+      // TODO, use official content.
     }
+
+    return $con;
+  }
+
+  protected function getBody($data) {
+    $body = $this->getFileUri($data, 'article', 'site_node');
 
     if (empty($body)) {
       return [];
