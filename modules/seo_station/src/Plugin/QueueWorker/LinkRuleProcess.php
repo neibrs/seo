@@ -6,6 +6,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\taxonomy\TermInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -44,6 +45,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
    * {@inheritdoc}
    */
   public function processItem($data) {
+    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
     // TODO， 暂时只做一个新闻类型的网站文章数据.
     $node_storage = $this->entityTypeManager->getStorage('node');
 
@@ -51,22 +53,37 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     if (empty($body)) {
       return;
     }
-    $title = $this->getTitle($body[0], $data);
+    $title = $this->getTitle($body[0], $station);
     if (empty($title)) {
       return;
     }
     try {
       // 初始化node的值
-      $tkdb_values = $this->getTkdbValues($data);
-      $taxonomies = $this->getTaxonomyValues($data);
+      $tkdb_values = $this->getTkdbValues($data, $station);
+      $taxonomies = $this->getTaxonomyValues($data, $station);
+
+      // Init sitename
+      $sitename = $this->getSiteNameValues($data, $station);
 
       // 构造一个tid的数组.
       $rand_tids = [];
       if (!empty($taxonomies)) {
-        $rand_tids = array_rand($taxonomies, 2);
+        $rand_tids = array_rand($taxonomies, 3);
       }
       if (!is_array($rand_tids)) {
         $rand_tids[] = $rand_tids;
+      }
+
+      // 提取文章分类到标题后缀
+      $rs_rand_tid = reset($rand_tids);
+      $term = $taxonomies[$rs_rand_tid];
+      if ($term instanceof TermInterface) {
+        $tkdb_values['title'] . $term->label();
+      }
+
+      // if not set tkdb
+      if (empty($tkdb_values['title'])) {
+        $tkdb_values['title'] = '[node:title]-' . $sitename;
       }
 
       $values = [
@@ -92,7 +109,6 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
         $node->set($key, $val);
       }
       $node->save();
-      $x = 'a';
     }
     catch (\Exception $e) {
       \Drupal::messenger()->addWarning($e);
@@ -101,19 +117,9 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
   }
 
   // 随机获取title类型的标题库的文件一份
-  protected function getTitle($body_title = NULL, $data = []) {
-    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
-    $title = NULL;
-    if (empty($station->site_title->target_id)) {
-      $storage = $this->entityTypeManager->getStorage('seo_textdata');
-      $title = $storage->loadByProperties([
-        'type' => 'title',
-      ]);
-      $title = reset($title);
-    }
-    else {
-      $title = $station->site_title->entity;
-    }
+  protected function getTitle($body_title = NULL, $station = NULL) {
+    $body = $this->getFileUri($station, 'title', 'site_title');
+
     if (empty($title)) {
       return [];
     }
@@ -130,19 +136,39 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return explode('******', $dst);
   }
 
-  protected function getBody($data) {
-    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
-    $body = NULL;
-    if (empty($station->site_node->target_id)) {
-      $storage = $this->entityTypeManager->getStorage('seo_textdata');
-      $body = $storage->loadByProperties([
-        'type' => 'article',
-      ]);
-      $body = reset($body);
+  protected function getFileUri($station, $type = 'article', $field = NULL) {
+    $con = NULL;
+    $textdata_storage = $this->entityTypeManager->getStorage('seo_textdata');
+    if (!$station->get('use_official')->value) {
+      if (empty($station->{$field}->target_id)) {
+        $query = $textdata_storage->getQuery();
+        $query->condition('type', $type);
+        $tags = $station->get('tags')->referencedEntities();
+        $tags = array_map(function ($tag) {
+          return $tag->id();
+        }, $tags);
+        if (!empty($tags)) {
+          // TODO, check validate.
+          $query->condition('tags.entity.id', $tags, 'IN');
+        }
+        $ids = $query->execute();
+        $con = $textdata_storage->loadMultiple($ids);
+
+        $con = reset($con);
+      }
+      else {
+        $con = $station->{$field}->entity;
+      }
     }
     else {
-      $body = $station->site_node->entity;
+      // TODO, use official content.
     }
+
+    return $con;
+  }
+
+  protected function getBody($data) {
+    $body = $this->getFileUri($data, 'article', 'site_node');
 
     if (empty($body)) {
       return [];
@@ -156,7 +182,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return explode('******', $dst);
   }
 
-  public function getTkdbValues($data) {
+  public function getTkdbValues($data, $station) {
     // 这里添加tkdb规则,用以对每个node进行定义。
     $tkdb_manager = \Drupal::service('seo_station_tkdb.manager');
     $tkdb_rules = $tkdb_manager->getTkdbShowRule($data);
@@ -193,19 +219,6 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       break;
     }
 
-//    foreach ($tkdb_rules as $tkdb_rule) {
-//      switch ($tkdb_rule->type->entity->id()) {
-//        case 'title':
-//        case 'keywords':
-//        case 'description':
-//        case 'content':
-//          $rule = strip_tags($tkdb_rule->content->value);
-//
-//          break;
-//      }
-//    }
-    // TODO
-
     return $field_metatag;
   }
 
@@ -228,8 +241,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return TRUE;
   }
 
-  public function getTaxonomyValues($data) {
-    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
+  public function getTaxonomyValues($data, $station) {
     $textdata = NULL;
     if (empty($station->site_column->target_id)) {
       $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
@@ -242,7 +254,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     }
     $typename_uri = $textdata->get('attachment')->entity->getFileUri();
     $ds = getTextdataArrayFromUri($typename_uri);
-    $tids = [];
+    $terms = [];
     $storage = $this->entityTypeManager->getStorage('taxonomy_term');
     foreach ($ds as $name) {
       if (strlen($name) > 100) {
@@ -265,9 +277,27 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       else {
         $taxonomy = $storage->load(reset($ids));
       }
-      $tids[] = $taxonomy->id();
+      $terms[] = $taxonomy;
     }
 
-    return $tids;
+    return $terms;
+  }
+
+  protected function getSiteNameValues($data, $station) {
+    $textdata = NULL;
+    if (empty($station->webname->target_id)) {
+      $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
+        'type' => 'webname',
+      ]);
+      // TODO, it would be an error: the reset textdata is same.
+      $textdata = reset($textdata);
+    }
+    else {
+      $textdata = $station->site_name->entity;
+    }
+
+    $site_name_uri = $textdata->get('attachment')->entity->getFileUri();
+    $ds = getTextdataArrayFromUri($site_name_uri);
+    return array_rand($ds, 1);
   }
 }

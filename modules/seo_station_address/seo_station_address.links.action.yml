@@ -1,11 +1,11 @@
 entity.seo_station_address.add_form:
   route_name: entity.seo_station_address.add_form
-  title: 'Add Station address'
+  title: 'Add'
   appears_on:
     - entity.seo_station_address.collection
 
 seo_station.xmlsitemap.rebuild:
   route_name: seo_station_address.xmlsitemap_rebuild
-  title: 'Rebuild sitemap'
+  title: '重建站点地图'
   appears_on:
     - entity.seo_station.collection

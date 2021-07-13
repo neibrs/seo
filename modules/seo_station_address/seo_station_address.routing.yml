@@ -2,6 +2,6 @@ seo_station_address.xmlsitemap_rebuild:
   path: '/seo_station/xmlsitemap/rebuild'
   defaults:
     _controller: '\Drupal\seo_station_address\Controller\StationAddressController::rebuildSitemapxml'
-    _title: 'Rebuild Sitemap.xml'
+    _title: '重建站点地图'
   requirements:
     _permission: 'administer station entities'
