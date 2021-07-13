@@ -53,7 +53,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     if (empty($body)) {
       return;
     }
-    $title = $this->getTitle($body[0], $data);
+    $title = $this->getTitle($body[0], $station);
     if (empty($title)) {
       return;
     }
@@ -117,8 +117,8 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
   }
 
   // 随机获取title类型的标题库的文件一份
-  protected function getTitle($body_title = NULL, $data = []) {
-    $body = $this->getFileUri($data, 'title', 'site_title');
+  protected function getTitle($body_title = NULL, $station = NULL) {
+    $body = $this->getFileUri($station, 'title', 'site_title');
 
     if (empty($title)) {
       return [];
@@ -136,8 +136,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return explode('******', $dst);
   }
 
-  protected function getFileUri($data, $type = 'article', $field = NULL) {
-    $station = $this->entityTypeManager->getStorage('seo_station')->load($data['station']);
+  protected function getFileUri($station, $type = 'article', $field = NULL) {
     $con = NULL;
     $textdata_storage = $this->entityTypeManager->getStorage('seo_textdata');
     if (!$station->get('use_official')->value) {
