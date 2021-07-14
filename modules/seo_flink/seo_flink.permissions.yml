@@ -1,0 +1,20 @@
+add flink entities:
+  title: 'Create new Flink entities'
+
+administer flink entities:
+  title: 'Administer Flink entities'
+  description: 'Allow to access the administration form to configure Flink entities.'
+  restrict access: true
+
+delete flink entities:
+  title: 'Delete Flink entities'
+
+edit flink entities:
+  title: 'Edit Flink entities'
+
+view published flink entities:
+  title: 'View published Flink entities'
+
+view unpublished flink entities:
+  title: 'View unpublished Flink entities'
+
