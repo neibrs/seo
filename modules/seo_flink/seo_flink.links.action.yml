@@ -1,0 +1,5 @@
+entity.seo_flink.add_form:
+  route_name: entity.seo_flink.add_form
+  title: 'Add Flink'
+  appears_on:
+    - entity.seo_flink.collection

@@ -1,0 +1,14 @@
+
+# Flink menu items definition
+entity.seo_flink.collection:
+  title: 'Flink list'
+  route_name: entity.seo_flink.collection
+  description: 'List Flink entities'
+  parent: system.admin_structure
+  weight: 100
+
+seo_flink.admin.structure.settings:
+  title: 'Flink settings'
+  description: 'Configure Flink entities'
+  route_name: seo_flink.settings
+  parent: system.admin_structure

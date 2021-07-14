@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains seo_flink.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function seo_flink_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the seo_flink module.
+    case 'help.page.seo_flink':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('友情链接管') . '</p>';
+      return $output;
+
+    default:
+  }
+}

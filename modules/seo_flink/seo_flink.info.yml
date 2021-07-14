@@ -1,0 +1,5 @@
+name: 'Flink'
+type: module
+description: '友情链接管'
+core: 8.x
+package: 'Dsi'
