@@ -97,8 +97,8 @@ class Flink extends ContentEntityBase implements FlinkInterface {
     $fields += static::publishedBaseFieldDefinitions($entity_type);
 
     $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Flink entity.'))
+      ->setLabel('配置名称')
+      ->setDescription('给本配置起个名字')
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -116,6 +116,69 @@ class Flink extends ContentEntityBase implements FlinkInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
+
+//友链开关
+    $fields['mode'] = BaseFieldDefinition::create('boolean')
+      ->setLabel('友链开关')
+      ->setDefaultValue(TRUE)
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons_with_none',
+        'weight' => 15,
+      ]);
+
+//页面显示
+    $fields['page'] = BaseFieldDefinition::create('boolean')
+      ->setLabel('页面显示')
+      ->setDefaultValue(TRUE)
+      ->setSetting('on_label', '仅首页')
+      ->setSetting('off_label', '首页和内页')
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons_with_none',
+        'weight' => 15,
+      ]);
+//调用条数
+    $fields['number'] = BaseFieldDefinition::create('integer')
+      ->setLabel('调用条数')
+      ->setSetting('unsigned', TRUE)
+      ->setDisplayOptions('view', [
+        'type' => 'number_integer',
+        'weight' => 0,
+        'label' => 'inline',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'number',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+//开启调用的域名
+    $fields['domain'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('开启调用的域名')
+      ->setDisplayOptions('view', [
+        'label' => 'inline',
+        'type' => 'text_default',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+//友链URL
+    $fields['links'] = BaseFieldDefinition::create('text_long')
+      ->setLabel('友链URL')
+      ->setDisplayOptions('view', [
+        'label' => 'inline',
+        'type' => 'text_default',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'text_textarea',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['status']->setDescription(t('A boolean indicating whether the Flink is published.'))
       ->setDisplayOptions('form', [
