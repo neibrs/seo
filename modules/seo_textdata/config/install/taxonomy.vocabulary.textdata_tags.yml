@@ -3,5 +3,5 @@ status: true
 dependencies: {  }
 name: 行业
 vid: textdata_tags
-description: '内容'
+description: '内容的行业分类'
 weight: 0
