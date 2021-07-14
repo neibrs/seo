@@ -1,0 +1,11 @@
+
+seo_flink.tools:
+  title: 'Tools'
+  route_name: entity.seo_flink.collection
+  parent: system.seo
+  weight: 100
+entity.seo_flink.collection:
+  title: 'Flink'
+  route_name: entity.seo_flink.collection
+  parent: seo_flink.tools
+  weight: 10
