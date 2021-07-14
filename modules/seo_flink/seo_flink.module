@@ -22,3 +22,14 @@ function seo_flink_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
+
+/**
+ * Implements hook_sidebar_tee_menu_alter().
+ */
+function seo_flink_sidebar_tee_menu_alter(&$data) {
+  $icons = [
+    'seo_flink.tools' => 'gitee-icon icon project',
+    'entity.seo_flink.collection' => 'gitee-icon icon project',
+  ];
+  _eabax_core_set_menu_items_icon($data, $icons);
+}
