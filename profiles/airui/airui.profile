@@ -159,13 +159,15 @@ function airui_install_tasks_alter(&$tasks, $install_state) {
  *   The batch definition.
  */
 function airui_install_profile_modules(&$install_state) {
-  $sql_path = drupal_get_path('profile', 'airui') . '/init.tar.xz';
+  $sql_path = drupal_get_path('profile', 'airui') . '/airui.sql';
   $connection = \Drupal::database();
   $options = $connection->getConnectionOptions();
-  $sql_bash = 'gunzip < '. $sql_path .'| mysql -h ' . $options['host'] . ' -P' . $options['port']
+  $sql_bash = 'mysql -h ' . $options['host'] . ' -P' . $options['port']
     . ' -u' . $options['username'] . ' -p' . $options['password']
-    . ' ' . $options['database'];// . ' < ' . $sql_path;
+    . ' ' . $options['database'];
+  $sql_bash .= ' < ' . $sql_path;
 
-  exec($sql_bash);
+  $output = $result = '';
+  exec($sql_bash, $output, $result);
   return [];
 }
