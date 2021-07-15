@@ -290,3 +290,55 @@ function airui_install_download_additional_translations_operations(&$install_sta
   //  }
   return $operations;
 }
+
+
+/**
+ * Implements hook_install_tasks().
+ */
+function airui_install_tasks(&$install_state) {
+  $tasks = [
+    'install_airui_components' => [
+      'display_name' => '安装组件',
+      // TODO, 这里需要改为batch, 模块需要显示安装进度。
+      'type' => 'batch',
+    ],
+  ];
+  return $tasks;
+}
+
+function install_airui_components(&$install_state) {
+  $modules = [
+    'seoer',
+    'seo_textdata',
+    'dsi_login',
+    'seo_grant',
+    'seo_station_model',
+    'seo_station_model_url',
+    'seo_station',
+    'seo_station_tkdb',
+    'seo_textdata',
+    'seo_site',
+    'seo_front',
+    'seo_content',
+    'dsi_block',
+    'seo_station_address',
+    'seo_negotiator',
+  ];
+  $operations = [];
+  foreach ($modules as $module) {
+    $operations[] = ['_install_module_dependencies_batch', [$module, $module]];
+  }
+  $batch = [
+    'operations' => $operations,
+    'title' => t('Installing @drupal', ['@drupal' => drupal_install_profile_distribution_name()]),
+    'error_message' => t('The installation has encountered an error.'),
+  ];
+
+  return $batch;
+}
+
+function _install_module_dependencies_batch($module, $module_name, &$context) {
+  \Drupal::service('module_installer')->install([$module], TRUE);
+  $context['results'][] = $module;
+  $context['message'] = t('Installed %module module.', ['%module' => $module_name]);
+}
