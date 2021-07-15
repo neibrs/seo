@@ -142,11 +142,11 @@ function airui_install_tasks_alter(&$tasks, $install_state) {
   $tasks['install_settings_form']['display_name'] = '安装数据库';
   $tasks['install_profile_modules']['display_name'] = '初始化软件环境';
   $tasks['install_profile_modules']['function'] = 'airui_install_profile_modules';
-  $tasks['install_import_translations']['function'] = 'airui_install_import_translation';
+  $tasks['install_profile_themes']['run'] = INSTALL_TASK_SKIP;
+  $tasks['install_install_profile']['run'] = INSTALL_TASK_SKIP;
+  $tasks['install_import_translations']['run'] = INSTALL_TASK_SKIP;
   $tasks['install_configure_form']['display_name'] = '站点设置';
-
-  // 取消翻译文件下载,跳过此步骤.
-  //  $tasks['install_download_translation']['run'] = INSTALL_TASK_SKIP;
+  $tasks['install_finish_translations']['run'] = INSTALL_TASK_SKIP;
 }
 
 /**
@@ -159,186 +159,13 @@ function airui_install_tasks_alter(&$tasks, $install_state) {
  *   The batch definition.
  */
 function airui_install_profile_modules(&$install_state) {
-  // We need to manually trigger the installation of core-provided entity types,
-  // as those will not be handled by the module installer.
-  install_core_entity_type_definitions();
+  $sql_path = drupal_get_path('profile', 'airui') . '/init.tar.xz';
+  $connection = \Drupal::database();
+  $options = $connection->getConnectionOptions();
+  $sql_bash = 'gunzip < '. $sql_path .'| mysql -h ' . $options['host'] . ' -P' . $options['port']
+    . ' -u' . $options['username'] . ' -p' . $options['password']
+    . ' ' . $options['database'];// . ' < ' . $sql_path;
 
-  $modules = $install_state['profile_info']['install'];
-  $files = \Drupal::service('extension.list.module')->getList();
-
-  // Always install required modules first. Respect the dependencies between
-  // the modules.
-  $required = [];
-  $non_required = [];
-
-  // Add modules that other modules depend on.
-  foreach ($modules as $module) {
-    if ($files[$module]->requires) {
-      $modules = array_merge($modules, array_keys($files[$module]->requires));
-    }
-  }
-  // The System and User modules have already been installed by
-  // install_base_system().
-  $modules = array_diff(array_unique($modules), ['system', 'user']);
-  foreach ($modules as $module) {
-    if (!empty($files[$module]->info['required'])) {
-      $required[$module] = $files[$module]->sort;
-    }
-    else {
-      $non_required[$module] = $files[$module]->sort;
-    }
-  }
-  arsort($required);
-  arsort($non_required);
-
-  $operations = [];
-  foreach ($required + $non_required as $module => $weight) {
-    $operations[] = ['_airui_install_module_batch', [$module, $files[$module]->info['name']]];
-  }
-  $batch = [
-    'operations' => $operations,
-  // t('安装@drupal', ['@drupal' => drupal_install_profile_distribution_name()]),
-    'title' => '初始化软件环境',
-  // t('The installation has encountered an error.'),
-    'error_message' => '安装过程出错',
-  ];
-  return $batch;
-}
-
-/**
- * Implements callback_batch_operation().
- *
- * Performs batch installation of modules.
- */
-function _airui_install_module_batch($module, $module_name, &$context) {
-  \Drupal::service('module_installer')->install([$module], FALSE);
-  $context['results'][] = $module;
-  $context['message'] = t('已安装 %module 模块.', ['%module' => $module_name]);
-}
-
-// Fixed, 翻译文件安装过程，屏蔽下载功能.
-function airui_install_import_translation(&$install_state) {
-  \Drupal::moduleHandler()->loadInclude('locale', 'translation.inc');
-
-  // If there is more than one language or the single one is not English, we
-  // should import translations.
-  $operations = airui_install_download_additional_translations_operations($install_state);
-  $languages = \Drupal::languageManager()->getLanguages();
-  if (count($languages) > 1 || !isset($languages['en'])) {
-    //    $operations[] = ['_install_prepare_import', [array_keys($languages), $install_state['server_pattern']]];
-    //
-    //    // Set up a batch to import translations for drupal core. Translation import
-    //    // for contrib modules happens in install_import_translations_remaining.
-    //    foreach ($languages as $language) {
-    //      if (locale_translation_use_remote_source()) {
-    //        $operations[] = ['locale_translation_batch_fetch_download', ['drupal', $language->getId()]];
-    //      }
-    //      $operations[] = ['locale_translation_batch_fetch_import', ['drupal', $language->getId(), []]];
-    //    }
-
-    module_load_include('fetch.inc', 'locale');
-    $batch = [
-      'operations' => $operations,
-      'title' => t('Updating translations.'),
-      'progress_message' => '',
-      'error_message' => t('Error importing translation files'),
-      'finished' => 'locale_translation_batch_fetch_finished',
-      'file' => drupal_get_path('module', 'locale') . '/locale.batch.inc',
-    ];
-    return $batch;
-  }
-}
-
-function airui_install_download_additional_translations_operations(&$install_state) {
-  \Drupal::moduleHandler()->loadInclude('locale', 'bulk.inc');
-
-  $langcode = $install_state['parameters']['langcode'];
-  if (!($language = ConfigurableLanguage::load($langcode))) {
-    // Create the language if not already shipped with a profile.
-    $language = ConfigurableLanguage::createFromLangcode($langcode);
-  }
-  $language->save();
-
-  // If a non-English language was selected, change the default language and
-  // remove English.
-  if ($langcode != 'en') {
-    \Drupal::configFactory()->getEditable('system.site')
-      ->set('langcode', $langcode)
-      ->set('default_langcode', $langcode)
-      ->save();
-    \Drupal::service('language.default')->set($language);
-    if (empty($install_state['profile_info']['keep_english'])) {
-      if ($lang = ConfigurableLanguage::load('en')) {
-        $lang->delete();
-      }
-    }
-  }
-
-  // If there is more than one language or the single one is not English, we
-  // should download/import translations.
-  $languages = \Drupal::languageManager()->getLanguages();
-  $operations = [];
-  //  foreach ($languages as $langcode => $language) {
-  //    // The installer language was already downloaded. Available translations are
-  //    // stored in $install_state. Check downloads for the other languages if any.
-  //    // Ignore any download errors here, since we are in the middle of an install
-  //    // process and there is no way back. We will not import what we cannot
-  //    // download.
-  //    if (!isset($install_state['translations'][$langcode])) {
-  //      $operations[] = ['install_check_translations', [$langcode, $install_state['server_pattern']]];
-  //    }
-  //  }
-  return $operations;
-}
-
-
-/**
- * Implements hook_install_tasks().
- */
-function airui_install_tasks(&$install_state) {
-  $tasks = [
-    'install_airui_components' => [
-      'display_name' => '安装组件',
-      // TODO, 这里需要改为batch, 模块需要显示安装进度。
-      'type' => 'batch',
-    ],
-  ];
-  return $tasks;
-}
-
-function install_airui_components(&$install_state) {
-  $modules = [
-    'seoer',
-    'seo_textdata',
-    'dsi_login',
-    'seo_grant',
-    'seo_station_model',
-    'seo_station_model_url',
-    'seo_station',
-    'seo_station_tkdb',
-    'seo_textdata',
-    'seo_site',
-    'seo_front',
-    'seo_content',
-    'dsi_block',
-    'seo_station_address',
-    'seo_negotiator',
-  ];
-  $operations = [];
-  foreach ($modules as $module) {
-    $operations[] = ['_install_module_dependencies_batch', [$module, $module]];
-  }
-  $batch = [
-    'operations' => $operations,
-    'title' => t('Installing @drupal', ['@drupal' => drupal_install_profile_distribution_name()]),
-    'error_message' => t('The installation has encountered an error.'),
-  ];
-
-  return $batch;
-}
-
-function _install_module_dependencies_batch($module, $module_name, &$context) {
-  \Drupal::service('module_installer')->install([$module], TRUE);
-  $context['results'][] = $module;
-  $context['message'] = t('Installed %module module.', ['%module' => $module_name]);
+  exec($sql_bash);
+  return [];
 }

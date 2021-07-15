@@ -1,0 +1,5 @@
+name: 'Flink'
+type: module
+description: '友情链接管'
+package: 'Dsi'
+core_version_requirement: ^8 || ^9

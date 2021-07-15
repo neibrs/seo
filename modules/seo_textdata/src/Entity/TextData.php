@@ -188,6 +188,32 @@ class TextData extends ContentEntityBase implements TextDataInterface {
       ->setSetting('on_label', '有')
       ->setSetting('off_label', '无');
 
+    $fields['tags'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('行业')
+      ->setSetting('target_type', 'taxonomy_term')
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSetting('handler_settings', [
+        'target_bundles' => [
+          'textdata_tags' => 'textdata_tags',
+        ],
+        'sort' => [
+          'field' => '_none',
+        ],
+        'auto_create' => TRUE,
+      ])
+      ->setDisplayOptions('view', [
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'entity_reference_autocomplete_tags',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+
     $fields['status']
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
