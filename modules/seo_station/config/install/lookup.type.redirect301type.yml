@@ -1,0 +1,8 @@
+langcode: zh-hans
+status: true
+dependencies:
+  enforced:
+    module:
+      - seo_station
+id: redirect301type
+label: 301重定向类型
