@@ -159,42 +159,16 @@ function airui_install_tasks_alter(&$tasks, $install_state) {
  *   The batch definition.
  */
 function airui_install_profile_modules(&$install_state) {
-  // We need to manually trigger the installation of core-provided entity types,
-  // as those will not be handled by the module installer.
-  install_core_entity_type_definitions();
-
-  $modules = $install_state['profile_info']['install'];
-  $files = \Drupal::service('extension.list.module')->getList();
-
-  // Always install required modules first. Respect the dependencies between
-  // the modules.
-  $required = [];
-  $non_required = [];
-
-  // Add modules that other modules depend on.
-  foreach ($modules as $module) {
-    if ($files[$module]->requires) {
-      $modules = array_merge($modules, array_keys($files[$module]->requires));
-    }
-  }
-  // The System and User modules have already been installed by
-  // install_base_system().
-  $modules = array_diff(array_unique($modules), ['system', 'user']);
-  foreach ($modules as $module) {
-    if (!empty($files[$module]->info['required'])) {
-      $required[$module] = $files[$module]->sort;
-    }
-    else {
-      $non_required[$module] = $files[$module]->sort;
-    }
-  }
-  arsort($required);
-  arsort($non_required);
+//  $sql_path = drupal_get_path('profile', 'airui') . '/airui.sql';
+//  $connection = \Drupal::database();
+//  $options = $connection->getConnectionOptions();
+//  $sql_bash = 'mysql -h ' . $options['host'] . ' -P' . $options['port']
+//    . ' -u' . $options['username'] . ' -p' . $options['password']
+//    . ' ' . $options['database'] . ' < ' . $sql_path;
+//
+//  exec($sql_bash);
 
   $operations = [];
-  foreach ($required + $non_required as $module => $weight) {
-    $operations[] = ['_airui_install_module_batch', [$module, $files[$module]->info['name']]];
-  }
   $batch = [
     'operations' => $operations,
   // t('安装@drupal', ['@drupal' => drupal_install_profile_distribution_name()]),

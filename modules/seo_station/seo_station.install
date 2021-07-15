@@ -29,7 +29,7 @@ function seo_station_install($is_syncing) {
     '2' => '全部重定向',
     '3' => '顶级域名重定向',
   ];
-  generateLookup($data, '301_redirect_type');
+  generateLookup($data, 'redirect301type');
 }
 
 function generateLookup($data, $type) {
