@@ -123,8 +123,15 @@ class Flink extends ContentEntityBase implements FlinkInterface {
       ->setDefaultValue(TRUE)
       ->setDisplayOptions('form', [
         'type' => 'options_buttons_with_none',
-        'weight' => 15,
-      ]);
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
 //页面显示
     $fields['page'] = BaseFieldDefinition::create('boolean')
@@ -134,8 +141,15 @@ class Flink extends ContentEntityBase implements FlinkInterface {
       ->setSetting('off_label', '首页和内页')
       ->setDisplayOptions('form', [
         'type' => 'options_buttons_with_none',
-        'weight' => 15,
-      ]);
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 //调用条数
     $fields['number'] = BaseFieldDefinition::create('integer')
       ->setLabel('调用条数')
@@ -179,12 +193,6 @@ class Flink extends ContentEntityBase implements FlinkInterface {
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-
-    $fields['status']->setDescription(t('A boolean indicating whether the Flink is published.'))
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => -3,
-      ]);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
