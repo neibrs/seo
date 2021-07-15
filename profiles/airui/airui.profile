@@ -142,11 +142,12 @@ function airui_install_tasks_alter(&$tasks, $install_state) {
   $tasks['install_settings_form']['display_name'] = '安装数据库';
   $tasks['install_profile_modules']['display_name'] = '初始化软件环境';
   $tasks['install_profile_modules']['function'] = 'airui_install_profile_modules';
-  $tasks['install_import_translations']['function'] = 'airui_install_import_translation';
+  $tasks['install_profile_themes']['run'] = INSTALL_TASK_SKIP;
+  $tasks['install_install_profile']['run'] = INSTALL_TASK_SKIP;
+  $tasks['install_import_translations']['run'] = INSTALL_TASK_SKIP;
+//  $tasks['install_import_translations']['function'] = 'airui_install_import_translation';
   $tasks['install_configure_form']['display_name'] = '站点设置';
-
-  // 取消翻译文件下载,跳过此步骤.
-  //  $tasks['install_download_translation']['run'] = INSTALL_TASK_SKIP;
+  $tasks['install_finish_translations']['run'] = INSTALL_TASK_SKIP;
 }
 
 /**
@@ -159,24 +160,15 @@ function airui_install_tasks_alter(&$tasks, $install_state) {
  *   The batch definition.
  */
 function airui_install_profile_modules(&$install_state) {
-//  $sql_path = drupal_get_path('profile', 'airui') . '/airui.sql';
-//  $connection = \Drupal::database();
-//  $options = $connection->getConnectionOptions();
-//  $sql_bash = 'mysql -h ' . $options['host'] . ' -P' . $options['port']
-//    . ' -u' . $options['username'] . ' -p' . $options['password']
-//    . ' ' . $options['database'] . ' < ' . $sql_path;
-//
-//  exec($sql_bash);
+  $sql_path = drupal_get_path('profile', 'airui') . '/airui.sql';
+  $connection = \Drupal::database();
+  $options = $connection->getConnectionOptions();
+  $sql_bash = 'mysql -h ' . $options['host'] . ' -P' . $options['port']
+    . ' -u' . $options['username'] . ' -p' . $options['password']
+    . ' ' . $options['database'] . ' < ' . $sql_path;
 
-  $operations = [];
-  $batch = [
-    'operations' => $operations,
-  // t('安装@drupal', ['@drupal' => drupal_install_profile_distribution_name()]),
-    'title' => '初始化软件环境',
-  // t('The installation has encountered an error.'),
-    'error_message' => '安装过程出错',
-  ];
-  return $batch;
+  exec($sql_bash);
+  return [];
 }
 
 /**
