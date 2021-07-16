@@ -1,0 +1,20 @@
+add logo entities:
+  title: 'Create new Logo entities'
+
+administer logo entities:
+  title: 'Administer Logo entities'
+  description: 'Allow to access the administration form to configure Logo entities.'
+  restrict access: true
+
+delete logo entities:
+  title: 'Delete Logo entities'
+
+edit logo entities:
+  title: 'Edit Logo entities'
+
+view published logo entities:
+  title: 'View published Logo entities'
+
+view unpublished logo entities:
+  title: 'View unpublished Logo entities'
+
