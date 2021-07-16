@@ -59,8 +59,7 @@ class FlinkBlock extends BlockBase {
    * {@inheritDoc}
    */
   public function getCacheContexts() {
-    // TODO ADD host
-    return $this->getCacheContexts();
+    return ['url'];
   }
 
   protected function getUrlByEffectiveTime($urls): array {
