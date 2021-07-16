@@ -17,6 +17,7 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *   id = "seo_flink",
  *   label = @Translation("Flink"),
  *   handlers = {
+ *     "storage" = "Drupal\seo_flink\FlinkStorage",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\seo_flink\FlinkListBuilder",
  *     "views_data" = "Drupal\seo_flink\Entity\FlinkViewsData",
@@ -154,6 +155,7 @@ class Flink extends ContentEntityBase implements FlinkInterface {
     $fields['number'] = BaseFieldDefinition::create('integer')
       ->setLabel('调用条数')
       ->setSetting('unsigned', TRUE)
+      ->setSetting('min', 3)
       ->setDisplayOptions('view', [
         'type' => 'number_integer',
         'weight' => 0,
