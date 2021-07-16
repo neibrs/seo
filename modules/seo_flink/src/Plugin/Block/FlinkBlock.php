@@ -59,8 +59,8 @@ class FlinkBlock extends BlockBase {
    * {@inheritDoc}
    */
   public function getCacheContexts() {
-    $host = \Drupal::request()->getHost();
-    return Cache::mergeContexts(parent::getCacheContexts(), ['host' => $host]);
+    // TODO ADD host
+    return $this->getCacheContexts();
   }
 
   protected function getUrlByEffectiveTime($urls): array {
