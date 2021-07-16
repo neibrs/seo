@@ -37,6 +37,25 @@ class FlinkForm extends ContentEntityForm {
     /* @var \Drupal\seo_flink\Entity\Flink $entity */
     $form = parent::buildForm($form, $form_state);
 
+    //$form['domain']['widget'][0]['#type'] = 'text_format';
+    $form['domain']['widget'][0]['#format'] = 'plain_text';
+    $form['domain']['widget'][0]['#placeholder'] = 'ceshi.cm
+4.zhizhuchi.cm
+5.zhizhuchi.cm
+6.zhizhuchi.cm
+7.zhizhuchi.cm
+8.zhizhuchi.cm
+9.zhizhuchi.cm
+10.zhizhuchi.cm';
+
+    //$form['links']['widget'][0]['#type'] = 'text_format';
+    $form['links']['widget'][0]['#format'] = 'plain_text';
+    $form['links']['widget'][0]['#placeholder'] = 'url地址#描文本#过期时间
+如： http://a.com/#百度#2019-10-11
+http://a.com/#百度#2019-10-12
+http://a.com/#百度#2019-10-13';
+
+
     return $form;
   }
 

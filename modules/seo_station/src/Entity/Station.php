@@ -187,12 +187,12 @@ class Station extends ContentEntityBase implements StationInterface {
       ]);
 
     //---------
-//301重定向到www(301_redirect_type)
-    $fields['301_redirect_type'] = BaseFieldDefinition::create('entity_reference')
+//301重定向到www(redirect301type)
+    $fields['redirect301type'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('301重定向到www')
       ->setSetting('target_type', 'lookup')
       ->setSetting('handler_settings', [
-        'target_bundles' => ['301_redirect_type' => '301_redirect_type'],
+        'target_bundles' => ['redirect301type' => 'redirect301type'],
       ]);
 //      ->setDisplayOptions('view', [
 //        'type' => 'entity_reference_label',
