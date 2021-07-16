@@ -168,6 +168,7 @@ class Flink extends ContentEntityBase implements FlinkInterface {
 //开启调用的域名
     $fields['domain'] = BaseFieldDefinition::create('text_long')
       ->setLabel('开启调用的域名')
+      ->setDescription('开启调用的域名：<br/>一行一个，支持泛域名<br/><span class="description-red">a.com<br/>*.a.com</span>')
       ->setDisplayOptions('view', [
         'label' => 'inline',
         'type' => 'text_default',
@@ -182,6 +183,7 @@ class Flink extends ContentEntityBase implements FlinkInterface {
 //友链URL
     $fields['links'] = BaseFieldDefinition::create('text_long')
       ->setLabel('友链URL')
+      ->setDescription('url地址#描文本#过期时间<br/>如： http://a.com/#百度#2019-10-11<br/><span class="description-red">http://a.com/#百度#2019-10-12</span><br/>http://a.com/<span class="description-red">#</span>百度<span class="description-red">#</span>2019-10-13')
       ->setDisplayOptions('view', [
         'label' => 'inline',
         'type' => 'text_default',
