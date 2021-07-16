@@ -309,6 +309,7 @@ function airui_install_tasks(&$install_state) {
 function install_airui_components(&$install_state) {
   $modules = [
     'seoer',
+    'seo_flink',
     'seo_textdata',
     'dsi_login',
     'seo_grant',
