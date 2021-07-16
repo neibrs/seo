@@ -123,12 +123,10 @@ class Logo extends ContentEntityBase implements LogoInterface {
       ->setSetting('file_extensions', 'png jpg jpeg')
       ->setDisplayOptions('view', [
         'type' => 'file_default',
-        'weight' => 110,
         'label' => 'inline',
       ])
       ->setDisplayOptions('form', [
         'type' => 'file_generic',
-        'weight' => 110,
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
