@@ -12,4 +12,40 @@ function seo_station_model_url_install($is_syncing) {
     'view published station model url entities',
     'view unpublished station model url entities',
   ]);
+
+  $station_models = \Drupal::entityTypeManager()->getStorage('seo_station_model')->loadMultiple();
+
+  $rules = [
+    0 => [
+      'template' => 'index',
+      'url' => '/',
+    ],
+    1 => [
+     'url' => 'list/{数字1}{id}{数字2}/
+newslist/{数字1}{id}{数字2}/',
+     'template' => 'list',
+    ],
+    2 => [
+      'url' => 'html/{id}_{aid}.html
+show/{数字6}.html',
+      'template' => 'show',
+    ],
+  ];
+
+  $rule_storage = \Drupal::entityTypeManager()->getStorage('seo_station_model_url');
+  foreach ($station_models as $station_model) {
+    foreach (['dynamic', 'static'] as $type) {
+      foreach ($rules as $rule) {
+        $model_url = $rule_storage->create([
+          'name' => $station_model->label(),
+          'model' => $station_model->id(),
+          'type' => $type,
+          'template' => $rule['template'],
+          'rule_url_content' => $rule['url'],
+        ]);
+
+        $model_url->save();
+      }
+    }
+  }
 }
