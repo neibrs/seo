@@ -129,10 +129,6 @@ function airui_form_install_settings_form_alter(&$form, FormStateInterface $form
   $form['actions']['save']['#value'] = '下一步';
 }
 
-function airui_preprocess_install_page(&$variables) {
-  $variables['site_version'] = '1.0';
-}
-
 /**
  * Implements hook_install_tasks_alter().
  */
@@ -168,6 +164,10 @@ function airui_install_profile_modules(&$install_state) {
   $sql_bash .= ' < ' . $sql_path;
 
   $output = $result = '';
-  exec($sql_bash, $output, $result);
+  if (!exec($sql_bash, $output, $result)) {
+    $x = 'a';
+  }
+
+//  drupal_flush_all_caches();
   return [];
 }

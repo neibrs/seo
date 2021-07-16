@@ -1,0 +1,22 @@
+{#
+/**
+ * @file seo_logo.html.twig
+ * Default theme implementation to present Logo data.
+ *
+ * This template is used when viewing Logo pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_seo_logo()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes.addClass('seo_logo') }}>
+  {% if content %}
+    {{- content -}}
+  {% endif %}
+</div>

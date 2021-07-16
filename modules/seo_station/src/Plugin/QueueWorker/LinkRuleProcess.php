@@ -49,7 +49,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     // TODO， 暂时只做一个新闻类型的网站文章数据.
     $node_storage = $this->entityTypeManager->getStorage('node');
 
-    $body = $this->getBody($data);
+    $body = $this->getBody($station);
     if (empty($body)) {
       return;
     }
@@ -63,7 +63,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       $taxonomies = $this->getTaxonomyValues($data, $station);
 
       // Init sitename
-      $sitename = $this->getSiteNameValues($data, $station);
+      $sitename = $this->getSiteNameValues($station);
 
       // 构造一个tid的数组.
       $rand_tids = [];
@@ -83,7 +83,12 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
 
       // if not set tkdb
       if (empty($tkdb_values['title'])) {
-        $tkdb_values['title'] = '[node:title]-' . $sitename;
+        if (empty($sitename)) {
+          $tkdb_values['title'] = '[node:title]';
+        }
+        else {
+          $tkdb_values['title'] = '[node:title]-' . $sitename;
+        }
       }
 
       $values = [
@@ -118,7 +123,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
 
   // 随机获取title类型的标题库的文件一份
   protected function getTitle($body_title = NULL, $station = NULL) {
-    $body = $this->getFileUri($station, 'title', 'site_title');
+    $title = $this->getFileUri($station, 'title', 'site_title');
 
     if (empty($title)) {
       return [];
@@ -167,8 +172,8 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return $con;
   }
 
-  protected function getBody($data) {
-    $body = $this->getFileUri($data, 'article', 'site_node');
+  protected function getBody($station) {
+    $body = $this->getFileUri($station, 'article', 'site_node');
 
     if (empty($body)) {
       return [];
@@ -319,17 +324,22 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return $terms;
   }
 
-  protected function getSiteNameValues($data, $station) {
+  protected function getSiteNameValues($station) {
     $textdata = NULL;
     if (empty($station->webname->target_id)) {
       $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
         'type' => 'webname',
       ]);
-      // TODO, it would be an error: the reset textdata is same.
-      $textdata = reset($textdata);
+      if (!empty($textdata)) {
+        $textdata = reset($textdata);
+      }
     }
     else {
       $textdata = $station->site_name->entity;
+    }
+
+    if (empty($textdata)) {
+      return '';
     }
 
     $site_name_uri = $textdata->get('attachment')->entity->getFileUri();

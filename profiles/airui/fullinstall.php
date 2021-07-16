@@ -129,10 +129,6 @@ function airui_form_install_settings_form_alter(&$form, FormStateInterface $form
   $form['actions']['save']['#value'] = '下一步';
 }
 
-function airui_preprocess_install_page(&$variables) {
-  $variables['site_version'] = '1.0';
-}
-
 /**
  * Implements hook_install_tasks_alter().
  */
@@ -309,6 +305,7 @@ function airui_install_tasks(&$install_state) {
 function install_airui_components(&$install_state) {
   $modules = [
     'seoer',
+    'seo_flink',
     'seo_textdata',
     'dsi_login',
     'seo_grant',

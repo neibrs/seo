@@ -1,0 +1,14 @@
+
+# Logo menu items definition
+entity.seo_logo.collection:
+  title: 'Logo list'
+  route_name: entity.seo_logo.collection
+  description: 'List Logo entities'
+  parent: system.admin_structure
+  weight: 100
+
+seo_logo.admin.structure.settings:
+  title: 'Logo settings'
+  description: 'Configure Logo entities'
+  route_name: seo_logo.settings
+  parent: system.admin_structure

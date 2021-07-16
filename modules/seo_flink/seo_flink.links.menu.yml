@@ -5,7 +5,7 @@ seo_flink.tools:
   parent: system.seo
   weight: 100
 entity.seo_flink.collection:
-  title: 'Flink'
+  title: '友情链接'
   route_name: entity.seo_flink.collection
   parent: seo_flink.tools
   weight: 10
