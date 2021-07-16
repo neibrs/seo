@@ -117,11 +117,21 @@ class Logo extends ContentEntityBase implements LogoInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['status']->setDescription(t('A boolean indicating whether the Logo is published.'))
+    //文件
+    $fields['file'] = BaseFieldDefinition::create('file')
+      ->setLabel('文件')
+      ->setSetting('file_extensions', 'png jpg jpeg')
+      ->setDisplayOptions('view', [
+        'type' => 'file_default',
+        'weight' => 110,
+        'label' => 'inline',
+      ])
       ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => -3,
-      ]);
+        'type' => 'file_generic',
+        'weight' => 110,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created'))
