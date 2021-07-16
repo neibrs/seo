@@ -206,6 +206,8 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       $rule_url = parse_url($data['domain']);
       $status = $this->getWildRule($rule, $rule_url, $rule_domain);
       if (!$status) {
+        // Append domain site name into settings.
+        // TODO.
         continue;
       }
       // 站点标题.
@@ -223,8 +225,42 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       }
       break;
     }
+    if (empty($rules)) {
+      // TODO, 自动追加网站名称到站点设置里面
+      $web_name = $this->getWebName($data, $station);
+      if (!empty($web_name)) {
+        $field_metatag['title'] = '[node:title]-' . $web_name;
+      }
+    }
+    // Build new tkdb
+    // Get old tkdb config.
+
+
+    // Update global domain web name in configuration settings.
+    $config = \Drupal::configFactory()->getEditable('seo_station.custom_domain_tkd');
+
 
     return $field_metatag;
+  }
+
+  public function getWebName($data, $station) {
+    $web_name = NULL;
+    if ($station->site_name->target_id) {
+      $web_name = $station->site_name->entity;
+    }
+    else {
+      // Get an arbitrarily webname file.
+      $web_names = \Drupal::entityTypeManager()->getStorage('seo_textdata')->loadByProperties([
+        'type' => 'webname',
+      ]);
+
+      $web_name = reset($web_names);
+    }
+    $uri = $web_name->get('attachment')->entity->getFileUri();
+    $data = seo_textdata_auto_read($uri);
+
+    $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
+    return $ds[mt_rand(0, count($ds))];
   }
 
   public function getWildRule($rule, $rule_url, $rule_domain) {

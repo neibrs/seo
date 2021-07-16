@@ -134,7 +134,7 @@ class StationForm extends ContentEntityForm {
       // 站点模式
       $site_mode = [
         'site_mode',
-        '301_redirect_type',
+        'redirect301type',
         'prefix_multi',
 //        'auto_prefix',
         'dis_custom_prefix_multi',
