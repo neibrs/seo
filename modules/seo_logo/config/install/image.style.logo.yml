@@ -1,0 +1,17 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - seo_logo
+name: logo
+label: Logo(100x100)
+effects:
+  8cf00958-6bae-4ea6-a2d9-1e391c799b5b:
+    uuid: 8cf00958-6bae-4ea6-a2d9-1e391c799b5b
+    id: image_scale
+    weight: 1
+    data:
+      width: 100
+      height: 100
+      upscale: true
