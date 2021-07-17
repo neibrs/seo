@@ -9,16 +9,6 @@ class StationController extends ControllerBase {
 
   public function getExtract($number = 1) {
     $data = $this->getStationLinks($number);
-    $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
-    foreach ($data as $id => $addresses) {
-      foreach ($addresses as $address) {
-        // 保存生成的链接数据.
-        $storage->create([
-          'name' => $address,
-          'station' => $id,
-        ])->save();
-      }
-    }
 
     $build = [];
     $build['#theme'] = 'seo_station_extract';
@@ -132,7 +122,13 @@ class StationController extends ControllerBase {
     }
 
     // url 规则
+    // 处理\r\n
     $rules = array_unique(explode(',', str_replace("\r\n",",", $url_rules->rule_url_content->value)));
+
+    $rule = array_pop($rules);
+
+    // 处理\n
+    $rules = array_unique(explode(',', str_replace("\n",",", $rule)));
     $rule = array_pop($rules);
 
     // 提取所有域名

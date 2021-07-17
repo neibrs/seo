@@ -1,0 +1,21 @@
+<?php
+
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Implements hook_update_N() Add fields.
+ */
+function seo_station_address_update_9000(&$sandbox) {
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  $storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel('Domain')
+    ->setSettings([
+      'text_processing' => 0,
+    ]);
+  $entity_definition_update_manager->installFieldStorageDefinition('domain', 'seo_station_address', 'seo_station_address', $storage_definition);
+
+  $storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel('Webname');
+  $entity_definition_update_manager->installFieldStorageDefinition('webname', 'seo_station_address', 'seo_station_address', $storage_definition);
+}

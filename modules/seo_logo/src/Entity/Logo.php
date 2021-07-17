@@ -118,15 +118,17 @@ class Logo extends ContentEntityBase implements LogoInterface {
       ->setRequired(TRUE);
 
     //文件
-    $fields['file'] = BaseFieldDefinition::create('file')
+    $fields['file'] = BaseFieldDefinition::create('image')
       ->setLabel('文件')
-      ->setSetting('file_extensions', 'png jpg jpeg')
       ->setDisplayOptions('view', [
-        'type' => 'file_default',
+        'type' => 'image',
         'label' => 'inline',
+        'settings' => [
+          'image_style' => 'logo',
+        ],
       ])
       ->setDisplayOptions('form', [
-        'type' => 'file_generic',
+        'type' => 'image_image',
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);

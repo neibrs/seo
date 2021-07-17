@@ -119,6 +119,41 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
+    $fields['domain'] = BaseFieldDefinition::create('string')
+      ->setLabel('Domain')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['webname'] = BaseFieldDefinition::create('string')
+      ->setLabel('Webname')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['status']->setDescription(t('A boolean indicating whether the Station address is published.'))
       ->setDisplayOptions('form', [
@@ -141,13 +176,13 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
     parent::postSave($storage, $update);
 
     // Append data for xmlsitemap.
-    $domain = parse_url($this->label());
+    $domains = explode('/', $this->label());
     $values = [
       'context' => [
         'language' => 'zh-hans',
-        'domain' => $domain['host'],
+        'domain' => $domains[0],
       ],
-      'label' => $domain['scheme'] . '://' . $domain['host'],
+      'label' => 'http://' . $domains[0],
     ];
     $queue = \Drupal::queue('station_address_xmlsitemap');
     $queue->createItem($values);

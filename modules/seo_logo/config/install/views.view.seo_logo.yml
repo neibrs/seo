@@ -1,10 +1,13 @@
 langcode: zh-hans
 status: true
 dependencies:
+  config:
+    - image.style.thumbnail
   module:
-    - file
+    - image
     - seo_logo
     - serialization
+    - views_plus
 id: seo_logo
 label: Logo库
 module: views
@@ -23,7 +26,7 @@ display:
         type: none
         options: {  }
       cache:
-        type: tag
+        type: tag_with_display_tags
         options: {  }
       query:
         type: views_query
@@ -44,37 +47,21 @@ display:
           sort_asc_label: 升序
           sort_desc_label: 降序
       pager:
-        type: full
+        type: some
         options:
-          items_per_page: 10
+          items_per_page: 80
           offset: 0
-          id: 0
-          total_pages: null
-          tags:
-            previous: ‹‹
-            next: ››
-            first: '« 首页'
-            last: '末页 »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 每页条目数
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- 全部 -'
-            offset: false
-            offset_label: 偏移量
-          quantity: 9
       style:
         type: grid
         options:
           grouping: {  }
-          columns: 6
+          columns: 8
           automatic_width: true
           alignment: horizontal
           col_class_default: true
           col_class_custom: ''
           row_class_default: true
-          row_class_custom: ''
+          row_class_custom: mb-3
       row:
         type: fields
       fields:
@@ -169,7 +156,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url.query_args
         - user
       tags: {  }
   page_1:
@@ -230,9 +216,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: file_default
+          type: image
           settings:
-            use_description_as_link_text: false
+            image_style: thumbnail
+            image_link: ''
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -253,6 +240,5 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url.query_args
         - user
       tags: {  }

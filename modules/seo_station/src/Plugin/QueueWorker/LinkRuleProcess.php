@@ -2,6 +2,9 @@
 
 namespace Drupal\seo_station\Plugin\QueueWorker;
 
+use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
+use Drupal\Component\Plugin\Exception\PluginNotFoundException;
+use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Queue\QueueWorkerBase;
@@ -53,18 +56,19 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     if (empty($body)) {
       return;
     }
+    // 找标题的原则是body的标题在title库里面找到了就用，没找到就使用自己的标题！如果自己的标题为空，则随机调用标题库里面的标题
     $title = $this->getTitle($body[0], $station);
     if (empty($title)) {
       return;
     }
     try {
-      // 初始化node的值
-      $tkdb_values = $this->getTkdbValues($data, $station);
-      $taxonomies = $this->getTaxonomyValues($data, $station);
+      // 初始化node的值, 及Site name.
+      list($site_name, $tkdb_values) = $this->getTkdbValues($data, $station);
 
-      // Init sitename
-      $sitename = $this->getSiteNameValues($station);
+      // 这里会创建N多，但站群网站却只要几个，矛盾点，待优化
+      $taxonomies = $this->getTaxonomyValues($station);
 
+      // 提取文章分类到标题后缀
       // 构造一个tid的数组.
       $rand_tids = [];
       if (!empty($taxonomies)) {
@@ -73,23 +77,9 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       if (!is_array($rand_tids)) {
         $rand_tids[] = $rand_tids;
       }
-
-      // 提取文章分类到标题后缀
       $rs_rand_tid = reset($rand_tids);
       $term = $taxonomies[$rs_rand_tid];
-      if ($term instanceof TermInterface) {
-        $tkdb_values['title'] . $term->label();
-      }
-
-      // if not set tkdb
-      if (empty($tkdb_values['title'])) {
-        if (empty($sitename)) {
-          $tkdb_values['title'] = '[node:title]';
-        }
-        else {
-          $tkdb_values['title'] = '[node:title]-' . $sitename;
-        }
-      }
+      $tkdb_values = $this->appendTaxonomy2Title($term, $tkdb_values, $site_name);
 
       $values = [
         'type' => 'article',
@@ -136,6 +126,9 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     if (in_array($body_title, $ds)) {
       return $body_title;
     }
+    if (!empty($body_title)) {
+      return $body_title;
+    }
     $dst = $ds[mt_rand(0, count($ds))];
     \Drupal::messenger()->addWarning(t('随机标题: %title', ['%title' => $dst]));
     return explode('******', $dst);
@@ -144,10 +137,14 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
   protected function getFileUri($station, $type = 'article', $field = NULL) {
     $con = NULL;
     $textdata_storage = $this->entityTypeManager->getStorage('seo_textdata');
+    // Use locale content library.
     if (!$station->get('use_official')->value) {
       if (empty($station->{$field}->target_id)) {
         $query = $textdata_storage->getQuery();
         $query->condition('type', $type);
+
+        // The industry filter.
+        // 找对应行业的内容数据TODO
         $tags = $station->get('tags')->referencedEntities();
         $tags = array_map(function ($tag) {
           return $tag->id();
@@ -159,14 +156,16 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
         $ids = $query->execute();
         $con = $textdata_storage->loadMultiple($ids);
 
+        // 任意取一个textdata
         $con = reset($con);
       }
       else {
+        // 取本身设置的textdata
         $con = $station->{$field}->entity;
       }
     }
     else {
-      // TODO, use official content.
+      // TODO, use official content.从官网远程获取功能，待处理
     }
 
     return $con;
@@ -187,64 +186,83 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return explode('******', $dst);
   }
 
-  public function getTkdbValues($data, $station) {
+  public function getTkdbValues($data, $station): array {
     // 这里添加tkdb规则,用以对每个node进行定义。
-    $tkdb_manager = \Drupal::service('seo_station_tkdb.manager');
-    $tkdb_rules = $tkdb_manager->getTkdbShowRule($data);
-    // 根据规则，寻找可替换的TKDB. 这里寻找的是show规则.
-
     // 设置title, keywords, description, content. metatag在此处理.
-    $tkdb_config = \Drupal::config('seo_station.custom_domain_tkd')->get('custom_domain_tkd');
+    $config = \Drupal::configFactory()->getEditable('seo_station.custom_domain_tkd');
+    $tkdb_config = $config->get('custom_domain_tkd');
     // 先解析
     $rules = array_unique(explode('-||-', str_replace("\r\n","-||-", $tkdb_config)));
-    $field_metatag = [
+    $field_metadata = [
       'canonical' => '[node:url]',
     ];
+    $web_name = '';
     foreach ($rules as $rule) {
+      if (empty($rule)) {
+        continue;
+      }
       // rule: 域名----网站名称----首页标题----关键词----描述
-      $rule_domain = explode('----', $rule);
-      $rule_url = parse_url($data['domain']);
-      $status = $this->getWildRule($rule, $rule_url, $rule_domain);
+      $rule_domain = explode('----', $rule); //Tkd全局设置的需要覆写的域名
+      $rule_url = parse_url($data['domain']); //数据的域名
+      $status = $this->getWildRule($rule_url, $rule_domain);
+
       if (!$status) {
         // Append domain site name into settings.
-        // TODO.
         continue;
+      }
+      if (empty($web_name)) {
+        $web_name = $rule_domain[1];
       }
       // 站点标题.
       if (isset($rule_domain[1])) {
-        $field_metatag['title'] = '[node:title]-' . $rule_domain[1];
+        $field_metadata['title'] = '[node:title]-' . $web_name;
       }
       if (isset($rule_domain[2])) {
-        $field_metatag['abstract'] = $rule_domain[2];
+        $field_metadata['abstract'] = $rule_domain[2];
       }
       if (isset($rule_domain[3])) {
-        $field_metatag['keywords'] = $rule_domain[3];
+        $field_metadata['keywords'] = $rule_domain[3];
       }
       if (isset($rule_domain[4])) {
-        $field_metatag['description'] = $rule_domain[4];
+        $field_metadata['description'] = $rule_domain[4];
       }
       break;
     }
-    if (empty($rules)) {
+    if (empty($web_name)) {
       // TODO, 自动追加网站名称到站点设置里面
-      $web_name = $this->getWebName($data, $station);
+      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
+      $web_name = $this->getWebName($station);
+      $web_name = trim(strip_tags($web_name));
       if (!empty($web_name)) {
-        $field_metatag['title'] = '[node:title]-' . $web_name;
+        $field_metadata['title'] = '[node:title]-' . $web_name;
       }
     }
-    // Build new tkdb
-    // Get old tkdb config.
+    try {
+      $address_storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+      $address_values = [
+        'name' => $data['domain'] . '/' . $data['replacement'],
+        'station' => $data['station'],
+        'domain' => $data['domain'],
+      ];
+      $addresses = $address_storage->loadByProperties($address_values);
+      $address_values['webname'] = $web_name;
+      if (!empty($addresses)) {
+        $address = reset($addresses);
+        foreach ($address_values as $key => $value) {
+          $address->set($key, $value);
+        }
+        $address->save();
+      }
+      else {
+        $address_storage->create($address_values)->save();
+      }
+    } catch (InvalidPluginDefinitionException | PluginNotFoundException | EntityStorageException $e) {
+    }
 
-
-    // Update global domain web name in configuration settings.
-    $config = \Drupal::configFactory()->getEditable('seo_station.custom_domain_tkd');
-
-
-    return $field_metatag;
+    return [$web_name, $field_metadata];
   }
 
-  public function getWebName($data, $station) {
-    $web_name = NULL;
+  public function getWebName($station) {
     if ($station->site_name->target_id) {
       $web_name = $station->site_name->entity;
     }
@@ -257,33 +275,39 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       $web_name = reset($web_names);
     }
     $uri = $web_name->get('attachment')->entity->getFileUri();
-    $data = seo_textdata_auto_read($uri);
-
-    $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
-    return $ds[mt_rand(0, count($ds))];
+    $ds = getTextdataArrayFromUri($uri);
+    // TODO, bug
+    return $ds[mt_rand(0, 1)];
   }
 
-  public function getWildRule($rule, $rule_url, $rule_domain) {
+  /**
+   * @param $rule_url //全局设置的需要覆写的域名
+   * @param $rule_domain //数据的域名
+   *
+   * @return bool
+   */
+  public function getWildRule($rule_url, $rule_domain) : bool {
     if ($rule_url['path'] != $rule_domain[0]) {
       // 泛域名匹配
-      if (strpos($rule_domain[0], '*') === 0) {
+      if (strpos($rule_domain[0], '*') !== FALSE) {
         $wild_string = substr($rule_domain[0], 2);
-        $pos = strpos($rule, $wild_string);
+        $pos = strpos($rule_url['path'], $wild_string);
         if (!$pos) {
+          // 不是当前泛域名
           return FALSE;
         }
-        // 找到了主要的泛域名
+        // 找到了当前的泛域名
         return TRUE;
       }
       else {
+        // 不是泛域名
         return FALSE;
       }
     }
     return TRUE;
   }
 
-  public function getTaxonomyValues($data, $station) {
-    $textdata = NULL;
+  public function getTaxonomyValues($station) {
     if (empty($station->site_column->target_id)) {
       $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
         'type' => 'typename'
@@ -324,26 +348,22 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return $terms;
   }
 
-  protected function getSiteNameValues($station) {
-    $textdata = NULL;
-    if (empty($station->webname->target_id)) {
-      $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
-        'type' => 'webname',
-      ]);
-      if (!empty($textdata)) {
-        $textdata = reset($textdata);
+  protected function appendTaxonomy2Title($term, $tkdb_values, $site_name) {
+    // 提取文章分类到标题后缀
+    if ($term instanceof TermInterface) {
+      $tkdb_values['title'] . $term->label();
+    }
+
+    // if not set tkdb title
+    if (empty($tkdb_values['title'])) {
+      if (empty($site_name)) {
+        $tkdb_values['title'] = '[node:title]';
+      }
+      else {
+        $tkdb_values['title'] = '[node:title]-' . $site_name;
       }
     }
-    else {
-      $textdata = $station->site_name->entity;
-    }
 
-    if (empty($textdata)) {
-      return '';
-    }
-
-    $site_name_uri = $textdata->get('attachment')->entity->getFileUri();
-    $ds = getTextdataArrayFromUri($site_name_uri);
-    return array_rand($ds, 1);
+    return $tkdb_values;
   }
 }
