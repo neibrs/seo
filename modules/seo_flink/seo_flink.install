@@ -10,7 +10,6 @@ function seo_flink_install($is_syncing) {
    'mode' => TRUE,
    'page' => TRUE,
    'number' => 10,
-   'domain' => [],
    'links' => [
      'format' => 'plain_text',
      'value' => 'http://baidu.com/#百度#2022-10-12
