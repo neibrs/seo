@@ -3,6 +3,7 @@
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Implements hook_install().
@@ -18,27 +19,40 @@ function seo_textdata_install($is_syncing) {
   ]);
 
   $directory = "public://textdata";
-  \Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+  Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
 
-  $types = \Drupal::entityTypeManager()->getStorage('seo_textdata_type')->loadMultiple();
+  $types = Drupal::entityTypeManager()->getStorage('seo_textdata_type')->loadMultiple();
   foreach ($types as $id => $type) {
     $directory = "public://textdata/" . $type->id();
-    \Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+    Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
   }
 
-  $field_config_storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $field_config_storage = Drupal::entityTypeManager()->getStorage('field_config');
   $field_tags = $field_config_storage->load('node.article.field_tags');
   $settings = $field_tags->get('settings');
   $settings['handler_settings']['target_bundles']['typename'] = 'typename';
   $field_tags->set('settings', $settings)
     ->save();
+
+  // Init textdata industry.
+  $data = [
+    '军事',
+    '娱乐',
+  ];
+  foreach ($data as $item) {
+    $term = Term::create([
+      'name' => $item,
+      'vid' => 'textdata_tags',
+    ]);
+    $term->save();
+  }
 }
 
 /**
  * Implements hook_update_N() for 添加node.article typename tag.
  */
 function seo_textdata_update_9001(&$sandbox) {
-  $field_config_storage = \Drupal::entityTypeManager()->getStorage('field_config');
+  $field_config_storage = Drupal::entityTypeManager()->getStorage('field_config');
   $field_tags = $field_config_storage->load('node.article.field_tags');
   $settings = $field_tags->get('settings');
   $settings['handler_settings']['target_bundles']['typename'] = 'typename';
@@ -51,11 +65,11 @@ function seo_textdata_update_9001(&$sandbox) {
  */
 function seo_textdata_update_9003(&$sandbox) {
   /** @var \Drupal\config_update\ConfigRevertInterface $config_update */
-  $config_update = \Drupal::service('config_update.config_update');
+  $config_update = Drupal::service('config_update.config_update');
 
 //  $config_update->import('taxonomy_vocabulary', 'textdata_tags');
 
-  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+  $entity_definition_update_manager = Drupal::entityDefinitionUpdateManager();
 
   $storage_definition = BaseFieldDefinition::create('entity_reference')
     ->setLabel('行业')
