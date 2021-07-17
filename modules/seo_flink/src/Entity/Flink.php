@@ -15,7 +15,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *
  * @ContentEntityType(
  *   id = "seo_flink",
- *   label = @Translation("Flink"),
+ *   label = @Translation("友情链接"),
+ *   label_collection = @Translation("友情链接"),
  *   handlers = {
  *     "storage" = "Drupal\seo_flink\FlinkStorage",
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
@@ -140,15 +141,16 @@ class Flink extends ContentEntityBase implements FlinkInterface {
       ->setDefaultValue(TRUE)
       ->setSetting('on_label', '仅首页')
       ->setSetting('off_label', '首页和内页')
-      ->setDisplayOptions('form', [
-        'type' => 'options_buttons_with_none',
-        'weight' => 0,
-      ])
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => 0,
-      ])
+      // TODO, 未处理该显示规则
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_buttons_with_none',
+//        'weight' => 0,
+//      ])
+//      ->setDisplayOptions('view', [
+//        'label' => 'above',
+//        'type' => 'string',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //调用条数
