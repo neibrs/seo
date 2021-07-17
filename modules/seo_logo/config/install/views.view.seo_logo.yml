@@ -1,8 +1,10 @@
 langcode: zh-hans
 status: true
 dependencies:
+  config:
+    - image.style.thumbnail
   module:
-    - file
+    - image
     - seo_logo
     - serialization
 id: seo_logo
@@ -23,7 +25,7 @@ display:
         type: none
         options: {  }
       cache:
-        type: tag
+        type: tag_with_display_tags
         options: {  }
       query:
         type: views_query
@@ -230,9 +232,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: file_default
+          type: image
           settings:
-            use_description_as_link_text: false
+            image_style: thumbnail
+            image_link: ''
           group_column: ''
           group_columns: {  }
           group_rows: true
