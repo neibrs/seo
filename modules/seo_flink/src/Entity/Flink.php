@@ -156,6 +156,8 @@ class Flink extends ContentEntityBase implements FlinkInterface {
 //调用条数
     $fields['number'] = BaseFieldDefinition::create('integer')
       ->setLabel('调用条数')
+      ->setRequired(TRUE)
+      ->setDefaultValue(5)
       ->setSetting('unsigned', TRUE)
       ->setSetting('min', 3)
       ->setDisplayOptions('view', [
