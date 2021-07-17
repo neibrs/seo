@@ -175,7 +175,6 @@ class TkdbManager extends TkdbManagerInterface implements ContainerInjectionInte
    */
   public function getTkdbRule($data) {
     $tkdb_manager = \Drupal::service('seo_station_tkdb.manager');
-    $tkdb_storage = \Drupal::entityTypeManager()->getStorage('seo_station_tkdb');
 
     $model = '';
     if ($data['station']) {

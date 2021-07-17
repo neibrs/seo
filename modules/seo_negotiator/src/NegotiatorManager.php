@@ -7,11 +7,12 @@ class NegotiatorManager extends NegotiatorManagerInterface {
   public function getDynamicDomains() {
     $addresses = \Drupal::entityTypeManager()->getStorage('seo_station_address')->loadMultiple();
     $domains = array_map(function ($address) {
-      $domain = parse_url($address->name->value);
-      return $domain['host'];
+      // no https:// or http://
+      $ads = explode('/', $address->label());
+      return $ads[0];
     }, $addresses);
 
-    $domains[] = \Drupal::request()->getHttpHost();
+    $domains[] = \Drupal::request()->getHost();
     return array_combine($domains, $domains);
   }
 }

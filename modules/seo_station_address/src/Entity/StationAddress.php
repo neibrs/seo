@@ -176,13 +176,13 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
     parent::postSave($storage, $update);
 
     // Append data for xmlsitemap.
-    $domain = parse_url($this->label());
+    $domains = explode('/', $this->label());
     $values = [
       'context' => [
         'language' => 'zh-hans',
-        'domain' => $domain['host'],
+        'domain' => $domains[0],
       ],
-      'label' => $domain['scheme'] . '://' . $domain['host'],
+      'label' => 'http://' . $domains[0],
     ];
     $queue = \Drupal::queue('station_address_xmlsitemap');
     $queue->createItem($values);

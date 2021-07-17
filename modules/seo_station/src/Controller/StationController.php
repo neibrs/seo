@@ -9,18 +9,6 @@ class StationController extends ControllerBase {
 
   public function getExtract($number = 1) {
     $data = $this->getStationLinks($number);
-    $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
-    foreach ($data as $id => $addresses) {
-      foreach ($addresses as $address) {
-        // 保存生成的链接数据.
-        $storage->create([
-          'name' => $address,
-          'station' => $id,
-          // TODO, Add domain
-          'domain' => parse_url($address)['host'],
-        ])->save();
-      }
-    }
 
     $build = [];
     $build['#theme'] = 'seo_station_extract';
