@@ -16,6 +16,8 @@ class StationController extends ControllerBase {
         $storage->create([
           'name' => $address,
           'station' => $id,
+          // TODO, Add domain
+          'domain' => parse_url($address)['host'],
         ])->save();
       }
     }
@@ -132,7 +134,13 @@ class StationController extends ControllerBase {
     }
 
     // url 规则
+    // 处理\r\n
     $rules = array_unique(explode(',', str_replace("\r\n",",", $url_rules->rule_url_content->value)));
+
+    $rule = array_pop($rules);
+
+    // 处理\n
+    $rules = array_unique(explode(',', str_replace("\n",",", $rule)));
     $rule = array_pop($rules);
 
     // 提取所有域名
