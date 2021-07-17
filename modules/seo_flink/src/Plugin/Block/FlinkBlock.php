@@ -81,6 +81,10 @@ class FlinkBlock extends BlockBase {
   protected function getUrlByDomain($flink): bool {
     $domains = array_unique(explode(',', str_replace("\r\n",",", $flink->domain->value)));
     foreach ($domains as $domain) {
+      // Fixed, domain未添加数据时，直接返回。
+      if (empty($domain)) {
+        return TRUE;
+      }
       if (strpos($domain, '*') !== FALSE) {
         if (strpos(\Drupal::request()->getHost(), stristr($domain, '*')) !== FALSE) {
           return TRUE;
