@@ -20,4 +20,5 @@ so.com#360#2022-10-12
 cn.bing.com#Bing#2022-10-12',
    ],
  ];
+ $flink_storage->create($values)->save();
 }
