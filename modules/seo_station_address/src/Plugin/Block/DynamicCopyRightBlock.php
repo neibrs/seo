@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\seo_station_address\Plugin;
+namespace Drupal\seo_station_address\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 /**
@@ -13,6 +13,9 @@ use Drupal\Core\Block\BlockBase;
  */
 class DynamicCopyRightBlock extends BlockBase {
 
+  /**
+   * {@inheritDoc}
+   */
   public function build() {
     $build = [];
     $station = \Drupal::entityTypeManager()->getStorage('seo_station_address');
@@ -31,12 +34,33 @@ class DynamicCopyRightBlock extends BlockBase {
     $time_start = $time-20;
 
 
-    $build['#content']['time'] = $time_start . ' - ' . $time;
-    $build['#content']['site_name'] = $site_name;
-    $build['#content']['beian'] = '京ICP备13001482号-1';
-    $build['#content']['anbei'] = '京公网安备11010602004977号-1';
+    $build['#content']['time'] = ['#type' => 'item', '#markup' => $time_start . ' - ' . $time];
+    $build['#content']['site_name'] = ['#type' => 'item', '#markup' => $site_name];
+    $prefix = $this->getProvincePrefix();
+    $build['#content']['beian'] = ['#type' => 'item', '#markup' => $prefix . 'ICP备' . $this->getBeanId() .'号-1'];
+    $build['#content']['anbei'] = ['#type' => 'item', '#markup' => $prefix . '公网安备110106' . $this->getAneId() . '号-1'];
 
     return $build;
+  }
+
+  public function getAneId(): int {
+    return mt_rand(1000000, 9999999);
+  }
+  public function getBeanId(): int {
+    return mt_rand(1000000, 9999999);
+  }
+  public function getProvincePrefix() {
+    $data = [
+      '渝',
+      '蜀',
+    ];
+    return array_rand($data, 1);
+  }
+  /**
+   * {@inheritDoc}
+   */
+  public function getCacheContexts(): array {
+    return ['url'];
   }
 
 }
