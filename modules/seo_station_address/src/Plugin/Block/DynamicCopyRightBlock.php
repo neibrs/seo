@@ -33,10 +33,31 @@ class DynamicCopyRightBlock extends BlockBase {
 
     $build['#content']['time'] = $time_start . ' - ' . $time;
     $build['#content']['site_name'] = $site_name;
-    $build['#content']['beian'] = '京ICP备13001482号-1';
-    $build['#content']['anbei'] = '京公网安备11010602004977号-1';
+    $prefix = $this->getProvincePrefix();
+    $build['#content']['beian'] = $prefix . 'ICP备' . $this->getBeanId() .'号-1';
+    $build['#content']['anbei'] = $prefix . '公网安备110106' . $this->getAneId() . '号-1';
 
     return $build;
+  }
+
+  public function getAneId(): int {
+    return mt_rand(1000000, 9999999);
+  }
+  public function getBeanId(): int {
+    return mt_rand(1000000, 9999999);
+  }
+  public function getProvincePrefix() {
+    $data = [
+      '渝',
+      '蜀',
+    ];
+    return array_rand($data, 1);
+  }
+  /**
+   * {@inheritDoc}
+   */
+  public function getCacheContexts(): array {
+    return ['url'];
   }
 
 }
