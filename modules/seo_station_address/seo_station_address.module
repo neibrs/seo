@@ -44,7 +44,7 @@ function seo_station_address_preprocess_page(&$variables) {
       $storage = \Drupal::entityTypeManager()->getStorage('seo_logo');
       //TODO, 可能影响性能, 待改进
       $logo = array_rand($storage->loadMultiple(), 1);
-      $variables['wild_logo'] = file_create_url($logo->file->entity->getFileUri());
+      $variables['wild_logo'] = ['#type' => 'item', '#markup' => file_create_url($logo->file->entity->getFileUri())];
     }
   }
   catch (\Exception $e) {
