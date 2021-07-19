@@ -14,6 +14,7 @@ function seo_station_address_update_9000(&$sandbox) {
       'text_processing' => 0,
     ]);
   $entity_definition_update_manager->installFieldStorageDefinition('domain', 'seo_station_address', 'seo_station_address', $storage_definition);
+
   $storage_definition = BaseFieldDefinition::create('string')
     ->setLabel('Webname');
   $entity_definition_update_manager->installFieldStorageDefinition('webname', 'seo_station_address', 'seo_station_address', $storage_definition);

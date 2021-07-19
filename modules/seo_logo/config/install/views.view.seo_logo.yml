@@ -7,6 +7,7 @@ dependencies:
     - image
     - seo_logo
     - serialization
+    - views_plus
 id: seo_logo
 label: Logo库
 module: views
@@ -46,37 +47,21 @@ display:
           sort_asc_label: 升序
           sort_desc_label: 降序
       pager:
-        type: full
+        type: some
         options:
-          items_per_page: 10
+          items_per_page: 80
           offset: 0
-          id: 0
-          total_pages: null
-          tags:
-            previous: ‹‹
-            next: ››
-            first: '« 首页'
-            last: '末页 »'
-          expose:
-            items_per_page: false
-            items_per_page_label: 每页条目数
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- 全部 -'
-            offset: false
-            offset_label: 偏移量
-          quantity: 9
       style:
         type: grid
         options:
           grouping: {  }
-          columns: 6
+          columns: 8
           automatic_width: true
           alignment: horizontal
           col_class_default: true
           col_class_custom: ''
           row_class_default: true
-          row_class_custom: ''
+          row_class_custom: mb-3
       row:
         type: fields
       fields:
@@ -171,7 +156,6 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url.query_args
         - user
       tags: {  }
   page_1:
@@ -256,6 +240,5 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - url.query_args
         - user
       tags: {  }
