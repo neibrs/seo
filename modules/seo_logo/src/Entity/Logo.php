@@ -120,6 +120,7 @@ class Logo extends ContentEntityBase implements LogoInterface {
     //文件
     $fields['file'] = BaseFieldDefinition::create('image')
       ->setLabel('文件')
+      ->setSetting('uri_scheme', 'public://logos')
       ->setDisplayOptions('view', [
         'type' => 'image',
         'label' => 'inline',
