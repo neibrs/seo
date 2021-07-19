@@ -1,6 +1,2 @@
 <?php
 
-function seo_logo_install() {
-  // 准备logos专用目录
-  \Drupal::service('file_system')->prepareDirectory('public://logos', \Drupal\Core\File\FileSystemInterface::CREATE_DIRECTORY);
-}

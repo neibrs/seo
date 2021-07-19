@@ -1,15 +1,47 @@
 global-styling:
   css:
     theme:
+      css/commit.css: { }
+      css/header.css: { }
+      css/footer.css: { }
+      css/world.css: { }
 
-  # dependencies:
-  #   - core/jquery
-  #   - core/drupal
-
-front:
+content:
   css:
     theme:
+      css/content/show_new.css: { }
 
+cpxx:
+  css:
+    theme:
+      css/cpxx/product_list.css: { }
 
-front_js:
-  js:
+djgz:
+  css:
+    theme:
+      css/djgz/ddjs.css: { }
+
+gsgk&hyfw:
+  css:
+    theme:
+      css/gsgk&hyfw/information.css: { }
+
+hyfw:
+  css:
+    theme:
+      css/hyfw/cd_list.css: { }
+
+index:
+  css:
+    theme:
+      css/index/index.css: { }
+
+xwzx&hwjg:
+  css:
+    theme:
+      css/xwzx&hwjg/list.css: { }
+
+zyyw:
+  css:
+    theme:
+      css/zyyw/main_yw.css: { }
