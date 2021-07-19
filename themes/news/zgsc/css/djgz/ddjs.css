@@ -1,0 +1,313 @@
+i {
+	font-style: normal;
+}
+
+.headImg {
+	margin: 0 auto;
+	width: 75rem;
+	height: 16.875rem;
+	overflow: hidden;
+}
+
+.clear:after {
+	content: "";
+	display: block;
+	clear: both;
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+.headImg img {
+	width: 100%;
+	height: 16.875rem;
+}
+
+.nav {
+	position: relative;
+	height: 16.875rem;
+	width: 100%;
+}
+
+.asideRight {
+	top: 25.625rem !important;
+}
+
+.navBottom {
+	position: relative;
+}
+
+.navBottomCon {
+	font-size: 0.875rem;
+	box-sizing: border-box;
+	padding-top: 0.3125rem;
+	text-align: center;
+	width: 11.375rem;
+	height: 2.1875rem;
+	color: #fff;
+	position: absolute;
+	background: rgba(203, 15, 24, .6);
+	bottom: 0;
+}
+
+.navBottomCon>p a {
+	color: #fff;
+	vertical-align: middle;
+}
+
+.navBottomCon>p a:hover {
+	text-decoration: underline;
+	color: #009251;
+}
+
+.navBottomCon>p img,
+.navBottomCon>p span {
+	vertical-align: middle;
+}
+
+/* ä¸»ä½“éƒ¨åˆ† */
+.main {
+	margin-bottom: 6.25rem;
+	overflow: hidden;
+}
+
+.main>.title {
+	line-height: 2.1875rem;
+	box-sizing: border-box;
+	padding: 0 2.1875rem;
+	font-size: 1rem;
+	margin-top: 3.125rem;
+}
+
+.Con {
+	margin-top: 2.1875rem;
+	width: 100%;
+}
+
+.Item {
+	float: left;
+}
+
+.Left {
+	width: 32.375rem;
+	height: 16.875rem;
+	overflow: hidden;
+	background-image: url(../../images/djgz/bg1.png);
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+}
+
+.Item>p {
+	box-sizing: border-box;
+	padding-left: 2.1875rem;
+	margin-top: 1.875rem;
+	font-size: 1.375rem;
+	color: #fff;
+}
+
+.Item .info {
+	box-sizing: border-box;
+	padding-left: 6.25rem;
+	font-size: 1rem;
+	margin-top: 0.75rem;
+}
+
+.Item .init {
+	display: inline-block;
+	width: 8.4375rem;
+	height: 1.875rem;
+	border-radius: 0.9375rem;
+	background-color: #fd0303;
+	text-align: center;
+	line-height: 1.875rem;
+	color: #fff253;
+	float: right;
+	margin-top: 2.1875rem;
+	margin-right: 2.25rem;
+	font-size: 0.875rem;
+}
+
+.Item .init:hover {
+	text-decoration: underline;
+}
+
+.Right {
+	float: left;
+	margin-left: 2.5rem;
+	width: 40rem;
+	height: 16.875rem;
+	overflow: hidden;
+}
+
+.dj_tab_nav {
+	height: 2.1875rem;
+}
+
+.dj_tab_nav a {
+	margin-top: 0.625rem;
+	float: right;
+	font-size: 0.9375rem;
+	color: #a9a9a9;
+}
+
+.dj_tab_nav a:hover {
+	text-decoration: underline;
+	color: #fd0303;
+}
+
+.dj_tab_nav {
+	border-bottom: 0.0625rem solid #e0e0e0;
+}
+
+.dj_tab_nav span {
+	height: 1.875rem;
+	line-height: 1.875rem;
+	display: inline-block;
+	color: #282828;
+	padding: 0 0.625rem;
+}
+
+.dj_tab_nav span.active {
+	border-bottom: 0.3125rem solid #fd0303;
+}
+
+.dj_show {
+	width: 100%;
+	height: 14.625rem;
+}
+
+.dj_item {
+	width: 100%;
+	height: 14.625rem;
+	display: none;
+}
+
+.dj_item.active {
+	display: block;
+}
+
+.dj_item ul {
+	margin-top: 0.9375rem;
+}
+
+.dj_item ul li {
+	line-height: 1.625rem;
+}
+
+.dj_item ul li:hover a {
+	text-decoration: underline;
+	color: #fd0303;
+}
+
+.dj_item ul li:hover i {
+	color: #fd0303;
+}
+
+.dj_item ul li a {
+	display: inline-block;
+	max-width: 31.875rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 0.875rem;
+}
+
+.dj_item ul li i {
+	float: right;
+	font-size: 0.75rem;
+}
+
+.jc_box {
+	width: 100%;
+	height: 12.875rem;
+	margin-top: 2.8125rem;
+	background-image: url(../images/dj/jcbg.png);
+}
+
+.jc_title {
+	margin-left: 2.8125rem;
+	margin-top: 1.875rem;
+	float: left;
+	font-size: 1.625rem;
+	color: #ef0406;
+	font-weight: bold;
+}
+
+.jc_right {
+	width: 28.4375rem;
+	height: 6.5625rem;
+	float: right;
+	margin-top: 2.5rem;
+	margin-right: 11.875rem;
+}
+
+.jc_tab_nav {
+	height: 2.5rem;
+	border-bottom: 0.0625rem solid #ddd;
+}
+
+.jc_tab_nav a {
+	margin-top: 0.6875rem;
+	float: right;
+	color: #a9a9a9;
+	font-size: 1rem;
+}
+
+.jc_tab_nav a:hover {
+	text-decoration: underline;
+	color: #fd0303;
+}
+
+.jc_tab_nav span {
+	font-size: 1.1875rem;
+	padding: 0 0.625rem;
+	display: inline-block;
+	height: 2.1875rem;
+	cursor: pointer;
+	line-height: 2.5rem;
+}
+
+.jc_tab_nav span.active {
+	border-bottom: 0.3125rem solid #fd0303;
+}
+
+.jc_show {
+	overflow: hidden;
+	width: 100%;
+	height: 5.3125rem;
+}
+
+.jc_item {
+	display: none;
+	width: 100%;
+	height: 100%;
+}
+
+.jc_item.active {
+	display: block;
+}
+
+.jc_item ul {
+	margin-top: 0.9375rem;
+}
+
+.jc_item ul li {
+	line-height: 1.875rem;
+}
+
+.jc_item ul li a {
+	display: inline-block;
+	max-width: 21.875rem;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.jc_item ul li i {
+	float: right;
+	font-size: 0.75rem;
+}
+
+#footerBox {
+	margin-top: 9.375rem;
+}

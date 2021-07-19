@@ -1,0 +1,77 @@
+* {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	width: 100%;
+	min-height: 100%;
+	overflow-x: hidden;
+	font-family: "microsoft yahei";
+	font-size: initial;
+}
+
+a {
+	text-decoration: none;
+	outline: none;
+	color: #282828;
+}
+
+i {
+	font-style: normal;
+}
+
+img {
+	border: none;
+}
+
+ul,
+li {
+	list-style: none;
+}
+
+.page {
+	width: 100%;
+	background-color: #ffffff;
+}
+
+.clear:after {
+	content: "";
+	display: block;
+	clear: both;
+	height: 0;
+	overflow: hidden;
+	visibility: hidden;
+}
+
+.center {
+	margin: 0 auto;
+}
+
+.l {
+	float: left;
+}
+
+.r {
+	float: right;
+}
+
+.e {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.line1 {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.line3 {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
