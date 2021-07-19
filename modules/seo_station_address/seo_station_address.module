@@ -28,13 +28,27 @@ function seo_station_address_help($route_name, RouteMatchInterface $route_match)
  */
 function seo_station_address_preprocess_page(&$variables) {
   $host = \Drupal::request()->getHost();
-  $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
-  $entities = $storage->loadByProperties([
-    'domain' => $host,
-  ]);
-  $station_address = reset($entities);
-  // 网站名称
-  $variables['wild_web_name'] = [
-    '#markup' => $station_address->webname->value,
-  ];
+  try {
+    $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+    $entities = $storage->loadByProperties([
+      'domain' => $host,
+    ]);
+    $station_address = reset($entities);
+    // 网站名称
+    $variables['wild_web_name'] = [
+      '#markup' => $station_address->webname->value,
+    ];
+
+    if (\Drupal::moduleHandler()->moduleExists('seo_logo')) {
+      // Get logo
+      $storage = \Drupal::entityTypeManager()->getStorage('seo_logo');
+      //TODO, 可能影响性能, 待改进
+      $logo = array_rand($storage->loadMultiple(), 1);
+      $variables['wild_logo'] = file_create_url($logo->file->entity->getFileUri());
+    }
+  }
+  catch (\Exception $e) {
+
+  }
+
 }
