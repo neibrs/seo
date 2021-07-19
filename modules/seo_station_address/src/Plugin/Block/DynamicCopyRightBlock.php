@@ -24,15 +24,18 @@ class DynamicCopyRightBlock extends BlockBase {
       ->condition('domain', $host);
     $ids = $query->execute();
     $id = reset($ids);
-    $station_address = $station->load($id);
 
-    // 1. sitename
-    // 2. time
-    // 3. bei an hao
-    $site_name = $station_address->webname->value;
+    $site_name = '';
+    if ($id) {
+      $station_address = $station->load($id);
+      // 1. sitename
+      // 2. time
+      // 3. bei an hao
+      $site_name = $station_address->webname->value;
+    }
+
     $time = date('Y', REQUEST_TIME);
     $time_start = $time-20;
-
 
     $build['#content']['time'] = ['#markup' => $time_start . ' - ' . $time];
     $build['#content']['site_name'] = ['#markup' => $site_name];
