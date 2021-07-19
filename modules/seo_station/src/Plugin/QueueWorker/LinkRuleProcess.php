@@ -143,6 +143,9 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
         $query = $textdata_storage->getQuery();
         $query->condition('type', $type);
 
+        //限定相同分组下的内容
+        $query->condition('model', $station->model->target_id);
+
         // The industry filter.
         // 找对应行业的内容数据TODO
         $tags = $station->get('tags')->referencedEntities();
@@ -238,7 +241,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       }
     }
     try {
-      $address_storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+      $address_storage = $this->entityTypeManager->getStorage('seo_station_address');
       $address_values = [
         'name' => $data['domain'] . '/' . $data['replacement'],
         'station' => $data['station'],
@@ -268,8 +271,9 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     }
     else {
       // Get an arbitrarily webname file.
-      $web_names = \Drupal::entityTypeManager()->getStorage('seo_textdata')->loadByProperties([
+      $web_names = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
         'type' => 'webname',
+        'model' => $station->model->target_id,
       ]);
 
       $web_name = reset($web_names);
@@ -310,7 +314,8 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
   public function getTaxonomyValues($station) {
     if (empty($station->site_column->target_id)) {
       $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
-        'type' => 'typename'
+        'type' => 'typename',
+        'model' => $station->model->target_id,
       ]);
       $textdata = reset($textdata);
     }
