@@ -326,6 +326,9 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     $ds = getTextdataArrayFromUri($typename_uri);
     $terms = [];
     $storage = $this->entityTypeManager->getStorage('taxonomy_term');
+
+    $transliteration =  \Drupal::service('transliteration');
+
     foreach ($ds as $name) {
       if (strlen($name) > 100) {
         \Drupal::messenger()->addError('栏目名称太长.');
@@ -340,6 +343,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
         $taxonomy = Term::create([
           'name' => $name,
           'vid' => 'typename',
+          'path' => '/' . $this->transliterate($name, $transliteration),
           // TODO, 添加station来标识?
         ]);
         $taxonomy->save();
@@ -351,6 +355,11 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     }
 
     return $terms;
+  }
+
+  protected function transliterate($name, $transliteration) {
+    /** @var \Drupal\Component\Transliteration\TransliterationInterface $transliteration */
+    return $transliteration->transliterate($name, 'zh-hans');
   }
 
   protected function appendTaxonomy2Title($term, $tkdb_values, $site_name) {
