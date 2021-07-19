@@ -22,3 +22,19 @@ function seo_station_address_help($route_name, RouteMatchInterface $route_match)
     default:
   }
 }
+
+/**
+ * Implements hook_preprocess_HOOK() for 设置网站名称.
+ */
+function seo_station_address_preprocess_page(&$variables) {
+  $host = \Drupal::request()->getHost();
+  $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+  $entities = $storage->loadByProperties([
+    'domain' => $host,
+  ]);
+  $station_address = reset($entities);
+  // 网站名称
+  $variables['wild_web_name'] = [
+    '#markup' => $station_address->webname->value,
+  ];
+}
