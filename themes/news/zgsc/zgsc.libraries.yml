@@ -1,0 +1,15 @@
+global-styling:
+  css:
+    theme:
+
+  # dependencies:
+  #   - core/jquery
+  #   - core/drupal
+
+front:
+  css:
+    theme:
+
+
+front_js:
+  js:
