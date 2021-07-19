@@ -16,3 +16,10 @@ function seoer_update_9001(&$sandbox) {
   $role->setThirdPartySetting('role_frontpage', 'frontpage', '/admin/seo_workbench');
   $role->save();
 }
+
+/**
+ * Implements hook_update_N() enable extra module.
+ */
+function seoer_update_9002(&$sandbox) {
+  \Drupal::service('module_installer')->install(['seo_logo']);
+}
