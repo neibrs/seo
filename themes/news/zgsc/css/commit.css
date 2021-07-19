@@ -75,3 +75,20 @@ li {
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 }
+
+/* 导读 */
+.smalltext {
+  margin-bottom: 1.25rem;
+  background: #f1f1f1;
+  padding: 1.25rem;
+  color: #888;
+  line-height: 1.375rem;
+}
+
+.smalltext i {
+  background: url(../images/cmsinfo-icon.png) no-repeat left center;
+  width: 1.5rem;
+  height: 0.9375rem;
+  background-position: 0 0;
+  float: left;
+}
