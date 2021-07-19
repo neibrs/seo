@@ -1,0 +1,7 @@
+seo_logo.upload_form:
+  path: '/admin/seo_logo/upload'
+  defaults:
+    _form: 'Drupal\seo_logo\Form\UploadLogosForm'
+    _title: '上传Logos'
+  requirements:
+    _permission: 'administer logo entities'
