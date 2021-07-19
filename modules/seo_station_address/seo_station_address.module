@@ -39,6 +39,8 @@ function seo_station_address_preprocess_page(&$variables) {
       $variables['wild_web_name'] = [
         '#markup' => $station_address->webname->value,
       ];
+      $site_config = \Drupal::configFactory()->getEditable('system.site');
+      $site_config->set('name', $station_address->webname->value)->save();
     }
 
     if (\Drupal::moduleHandler()->moduleExists('seo_logo')) {
