@@ -320,6 +320,7 @@ function install_airui_components(&$install_state) {
     'dsi_block',
     'seo_station_address',
     'seo_negotiator',
+    'seo_logo',
   ];
   $operations = [];
   foreach ($modules as $module) {
