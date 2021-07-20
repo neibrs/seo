@@ -25,21 +25,40 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
    */
   private function negotiateRoute(RouteMatchInterface $route_match) {
     $request = \Drupal::request();
-    $url = $request->getSchemeAndHttpHost() . $request->getRequestUri();
-    $negotiators = \Drupal::entityTypeManager()->getStorage('seo_negotiator')->loadByProperties([
-      'name' => $url,
-    ]);
-    if (!empty($negotiators)) {
-      $negotiator = reset($negotiators);
-      // If theme is active.
-      $theme_name = $negotiator->get('theme')->value;
+    $theme_name = $this->getThemeByRequest($request);
+    if (!empty($theme_name)) {
       if (!\Drupal::service('theme_handler')->themeExists($theme_name)) {
         // Theme not active, and install it.
-        \Drupal::service('theme_installer')->install([$negotiator->get('theme')->value]);
+        \Drupal::service('theme_installer')->install([$theme_name]);
       }
       return $theme_name;
     }
 
     return FALSE;
+  }
+
+  protected function getThemeByRequest($request) {
+    $theme_negotiator_storage = \Drupal::entityTypeManager()->getStorage('seo_negotiator');
+    $theme = '';
+    // 1. full
+    // 2. wild
+    $fullpath = $request->getHost();
+    $fullpath .= ':' . $request->getPort();
+    $fullpath .= $request->getPathInfo();
+    $negotiators = $theme_negotiator_storage->loadByProperties([
+      'name' => $fullpath,
+    ]);
+    if (!empty($negotiators)) {
+      $negotiator = reset($negotiators);
+      $theme = $negotiator->get('theme')->value;
+    }
+
+    // wild domain.
+    $host = $request->getHost();
+    $host_arr = explode('.', $host);
+    // 多级域名时，需要递归处理最接近的一个泛域名
+
+
+    return $theme;
   }
 }
