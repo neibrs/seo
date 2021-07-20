@@ -24,21 +24,24 @@ class DynamicCopyRightBlock extends BlockBase {
       ->condition('domain', $host);
     $ids = $query->execute();
     $id = reset($ids);
-    $station_address = $station->load($id);
 
-    // 1. sitename
-    // 2. time
-    // 3. bei an hao
-    $site_name = $station_address->webname->value;
+    $site_name = '';
+    if ($id) {
+      $station_address = $station->load($id);
+      // 1. sitename
+      // 2. time
+      // 3. bei an hao
+      $site_name = $station_address->webname->value;
+    }
+
     $time = date('Y', REQUEST_TIME);
     $time_start = $time-20;
 
-
-    $build['#content']['time'] = ['#type' => 'item', '#markup' => $time_start . ' - ' . $time];
-    $build['#content']['site_name'] = ['#type' => 'item', '#markup' => $site_name];
+    $build['#content']['time'] = ['#markup' => $time_start . ' - ' . $time];
+    $build['#content']['site_name'] = ['#markup' => $site_name];
     $prefix = $this->getProvincePrefix();
-    $build['#content']['beian'] = ['#type' => 'item', '#markup' => $prefix . 'ICP备' . $this->getBeanId() .'号-1'];
-    $build['#content']['anbei'] = ['#type' => 'item', '#markup' => $prefix . '公网安备110106' . $this->getAneId() . '号-1'];
+    $build['#content']['beian'] = ['#markup' => $prefix . 'ICP备' . $this->getBeanId() .'号-1'];
+    $build['#content']['anbei'] = ['#markup' => $prefix . '公网安备110106' . $this->getAneId() . '号-1'];
 
     return $build;
   }
@@ -54,7 +57,7 @@ class DynamicCopyRightBlock extends BlockBase {
       '渝',
       '蜀',
     ];
-    return array_rand($data, 1);
+    return $data[array_rand($data, 1)];
   }
   /**
    * {@inheritDoc}
