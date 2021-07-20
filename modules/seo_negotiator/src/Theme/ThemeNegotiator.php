@@ -64,8 +64,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     }
 
     // 下面是泛域名解析 wild domain.
-    $host = $request->getHost();
-    $host_arr = explode('.', $host);
+    $host_arr = explode('.', $domain);
 
     // 多级域名时，需要递归处理最接近的一个泛域名
     $count = count($host_arr);
