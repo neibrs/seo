@@ -72,7 +72,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       // 构造一个tid的数组.
       $rand_tids = [];
       if (!empty($taxonomies)) {
-        $rand_tids = array_rand($taxonomies, 3);
+        $rand_tids = array_rand($taxonomies, 5);
       }
       if (!is_array($rand_tids)) {
         $rand_tids[] = $rand_tids;
@@ -260,6 +260,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
         $address_storage->create($address_values)->save();
       }
     } catch (InvalidPluginDefinitionException | PluginNotFoundException | EntityStorageException $e) {
+      \Drupal::messenger()->addError($e->getMessage());
     }
 
     return [$web_name, $field_metadata];
@@ -330,6 +331,10 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     $transliteration =  \Drupal::service('transliteration');
 
     foreach ($ds as $name) {
+      $name = trim($name);
+      if (empty($name)) {
+        continue;
+      }
       if (strlen($name) > 100) {
         \Drupal::messenger()->addError('栏目名称太长.');
         return [];
@@ -340,7 +345,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
       $ids = $query->execute();
       $taxonomy = NULL;
       if (empty($ids)) {
-        $taxonomy = Term::create([
+        $taxonomy = $storage->create([
           'name' => $name,
           'vid' => 'typename',
           'path' => '/' . $this->transliterate($name, $transliteration),
@@ -357,7 +362,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return $terms;
   }
 
-  protected function transliterate($name, $transliteration) {
+  protected function transliterate($name, $transliteration): string {
     /** @var \Drupal\Component\Transliteration\TransliterationInterface $transliteration */
     return $transliteration->transliterate($name, 'zh-hans');
   }
