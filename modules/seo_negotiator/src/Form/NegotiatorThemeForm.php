@@ -91,39 +91,20 @@ class NegotiatorThemeForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $themes = $form_state->getValue('themes_container');
     $negotiator_storage = $this->entityTypeManager->getStorage('seo_negotiator');
+    $negotiator_storage->delete($negotiator_storage->loadMultiple());
     foreach ($themes as $theme => $data) {
-      if (empty($data['domains'])) {
-        // check theme
-        $old_negotiators = $negotiator_storage->loadByProperties([
-          'theme' => $theme,
-        ]);
-        if (!empty($old_negotiators)) {
-          // update.
-          $negotiator_storage->delete($old_negotiators);
-          continue;
-        }
-      }
-      // TODO, 更新或删除修改后的域名变更的数据.
       $domains = array_unique(explode(',', str_replace("\r\n",",", $data['domains'])));
 
       foreach ($domains as $domain) {
+        if (empty($domain)) {
+          continue;
+        }
         $negotiator_value = [
-          'name' => $domain,
+          'name' => trim($domain),
           'theme' => $theme,
         ];
-        $negotiatories = $negotiator_storage->loadByProperties([
-          'name' => $domain,
-        ]);
-        // 更新
-        if (!empty($negotiatories)) {
-          $negotiatory = reset($negotiatories);
-          $negotiatory->theme->vlaue = $theme;
-          $negotiatory->save();
-        }
-        else {
-          $negotiator_storage->create($negotiator_value)
-            ->save();
-        }
+        $negotiator_storage->create($negotiator_value)
+          ->save();
       }
 
     }
