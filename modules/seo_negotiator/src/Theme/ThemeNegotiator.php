@@ -39,25 +39,52 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
 
   protected function getThemeByRequest($request) {
     $theme_negotiator_storage = \Drupal::entityTypeManager()->getStorage('seo_negotiator');
-    $theme = '';
+    $theme = $full_path = '';
     // 1. full
     // 2. wild
-    $fullpath = $request->getHost();
-    $fullpath .= ':' . $request->getPort();
-    $fullpath .= $request->getPathInfo();
+    $full_path = $request->getHost();
+    $full_path .= ':' . $request->getPort();
+    $full_path .= $request->getPathInfo();
     $negotiators = $theme_negotiator_storage->loadByProperties([
-      'name' => $fullpath,
+      'name' => $full_path,
     ]);
     if (!empty($negotiators)) {
       $negotiator = reset($negotiators);
-      $theme = $negotiator->get('theme')->value;
+      return $negotiator->get('theme')->value;
     }
 
-    // wild domain.
+    //域名完全相等的情况
+    $domain = $request->getHost();
+    $negotiators = $theme_negotiator_storage->loadByProperties([
+      'name' => $domain,
+    ]);
+    if (!empty($negotiators)) {
+      $negotiator = reset($negotiators);
+      return $negotiator->get('theme')->value;
+    }
+
+    // 下面是泛域名解析 wild domain.
     $host = $request->getHost();
     $host_arr = explode('.', $host);
-    // 多级域名时，需要递归处理最接近的一个泛域名
 
+    // 多级域名时，需要递归处理最接近的一个泛域名
+    $count = count($host_arr);
+    if($count < 3){
+      return ''; // 如果数组小于3， 就当成没有模板处理， 返回空
+    }
+    for ($i = 1; $i < $count - 1; $i++){
+      $sub_domains = array_slice($host_arr, $i);
+      $wild_string = '*.' . implode('.', $sub_domains);
+
+      $negotiators = $theme_negotiator_storage->loadByProperties([
+        'name' => $wild_string,
+      ]);
+      if (!empty($negotiators)) {
+        $negotiator = reset($negotiators);
+        $theme = $negotiator->get('theme')->value;
+        break;
+      }
+    }
 
     return $theme;
   }
