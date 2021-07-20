@@ -75,7 +75,6 @@ class NegotiatorThemeForm extends FormBase {
           '#title' => '绑定域名(一行一个)：',
           '#rows' => 5,
           '#default_value' => !empty($default_domains) ? implode("\r\n", $default_domains) : '',
-          '#placeholder' => 'http://drupal.server.host/show/915685.html',
         ],
         'type_theme_action' => [
           '#type' => 'submit',

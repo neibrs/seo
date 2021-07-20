@@ -7,5 +7,6 @@ entity.seo_station_address.add_form:
 seo_station.xmlsitemap.rebuild:
   route_name: seo_station_address.xmlsitemap_rebuild
   title: '(4)重建站点地图'
+  weight: 99
   appears_on:
     - entity.seo_station.collection
