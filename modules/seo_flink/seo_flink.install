@@ -12,11 +12,10 @@ function seo_flink_install($is_syncing) {
    'number' => 10,
    'links' => [
      'format' => 'plain_text',
-     'value' => 'http://baidu.com/#百度#2022-10-12
-http://sogou.com/#搜狗#2022-10-12
-http://a.com/#百度#2022-10-12
-http://so.com#360#2022-10-12
-http://cn.bing.com#Bing#2022-10-12',
+     'value' => 'https://www.baidu.com/#百度#2022-10-12
+https://www.sogou.com//#搜狗#2022-10-12
+https://www.so.com/#360搜索#2022-10-12
+https://cn.bing.com/#Bing必应#2022-10-12',
    ],
  ];
  $flink_storage->create($values)->save();

@@ -50,3 +50,10 @@ seo_station.wildchar_domain:
     _controller: '\Drupal\seo_station\Controller\StationController::getDomainIndex'
   requirements:
     _access: 'TRUE'
+seo_station.cron:
+  path: '/admin/seo_station/cron'
+  defaults:
+    _title: '生成数据'
+    _controller: '\Drupal\seo_station\Controller\StationController::executeCron'
+  requirements:
+    _permission: 'administer station entities'

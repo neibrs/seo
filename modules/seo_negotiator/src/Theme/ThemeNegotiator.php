@@ -25,21 +25,66 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
    */
   private function negotiateRoute(RouteMatchInterface $route_match) {
     $request = \Drupal::request();
-    $url = $request->getSchemeAndHttpHost() . $request->getRequestUri();
-    $negotiators = \Drupal::entityTypeManager()->getStorage('seo_negotiator')->loadByProperties([
-      'name' => $url,
-    ]);
-    if (!empty($negotiators)) {
-      $negotiator = reset($negotiators);
-      // If theme is active.
-      $theme_name = $negotiator->get('theme')->value;
+    $theme_name = $this->getThemeByRequest($request);
+    if (!empty($theme_name)) {
       if (!\Drupal::service('theme_handler')->themeExists($theme_name)) {
         // Theme not active, and install it.
-        \Drupal::service('theme_installer')->install([$negotiator->get('theme')->value]);
+        \Drupal::service('theme_installer')->install([$theme_name]);
       }
       return $theme_name;
     }
 
     return FALSE;
+  }
+
+  protected function getThemeByRequest($request) {
+    $theme_negotiator_storage = \Drupal::entityTypeManager()->getStorage('seo_negotiator');
+    $theme = $full_path = '';
+    // 1. full
+    // 2. wild
+    $full_path = $request->getHost();
+    $full_path .= ':' . $request->getPort();
+    $full_path .= $request->getPathInfo();
+    $negotiators = $theme_negotiator_storage->loadByProperties([
+      'name' => $full_path,
+    ]);
+    if (!empty($negotiators)) {
+      $negotiator = reset($negotiators);
+      return $negotiator->get('theme')->value;
+    }
+
+    //域名完全相等的情况
+    $domain = $request->getHost();
+    $negotiators = $theme_negotiator_storage->loadByProperties([
+      'name' => $domain,
+    ]);
+    if (!empty($negotiators)) {
+      $negotiator = reset($negotiators);
+      return $negotiator->get('theme')->value;
+    }
+
+    // 下面是泛域名解析 wild domain.
+    $host_arr = explode('.', $domain);
+
+    // 多级域名时，需要递归处理最接近的一个泛域名
+    $count = count($host_arr);
+    if($count < 3){
+      return ''; // 如果数组小于3， 就当成没有模板处理， 返回空
+    }
+    for ($i = 1; $i < $count - 1; $i++){
+      $sub_domains = array_slice($host_arr, $i);
+      $wild_string = '*.' . implode('.', $sub_domains);
+
+      $negotiators = $theme_negotiator_storage->loadByProperties([
+        'name' => $wild_string,
+      ]);
+      if (!empty($negotiators)) {
+        $negotiator = reset($negotiators);
+        $theme = $negotiator->get('theme')->value;
+        break;
+      }
+    }
+
+    return $theme;
   }
 }
