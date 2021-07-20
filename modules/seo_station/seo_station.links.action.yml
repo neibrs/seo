@@ -10,9 +10,10 @@ entity.seo_station.add_form:
       data-dialog-options: '{"width":"80%"}'
     query:
       destination: '/admin/seo_station'
-seo_station.cron:
-  route_name: seo_station.cron
-  title: '(3)生成数据'
+
+seo_station.extract_links_form:
+  route_name: seo_station.extract_links_form
+  title: '(2)全站链接提取'
   appears_on:
     - entity.seo_station.collection
   options:
@@ -21,9 +22,9 @@ seo_station.cron:
       data-dialog-type: modal
       data-dialog-options: '{"width":"50%"}'
 
-seo_station.extract_links_form:
-  route_name: seo_station.extract_links_form
-  title: '(2)全站链接提取'
+seo_station.cron:
+  route_name: seo_station.cron
+  title: '(3)生成数据'
   appears_on:
     - entity.seo_station.collection
   options:
