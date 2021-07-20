@@ -1,6 +1,6 @@
 entity.seo_station.add_form:
   route_name: entity.seo_station.add_form
-  title: 'Add'
+  title: '(1)添加'
   appears_on:
     - entity.seo_station.collection
   options:
@@ -13,7 +13,7 @@ entity.seo_station.add_form:
 
 seo_station.extract_links_form:
   route_name: seo_station.extract_links_form
-  title: '(1)全站链接提取'
+  title: '(2)全站链接提取'
   appears_on:
     - entity.seo_station.collection
   options:
