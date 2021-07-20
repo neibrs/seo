@@ -148,15 +148,15 @@ class StationModel extends ContentEntityBase implements StationModelInterface {
         'text_processing' => 0,
       ])
       ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
+//      ->setDisplayOptions('view', [
+//        'label' => 'above',
+//        'type' => 'string',
+//        'weight' => -4,
+//      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'string_textfield',
+//        'weight' => -4,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
@@ -169,15 +169,15 @@ class StationModel extends ContentEntityBase implements StationModelInterface {
         'text_processing' => 0,
       ])
       ->setDefaultValue('')
-      ->setDisplayOptions('view', [
-        'label' => 'above',
-        'type' => 'string',
-        'weight' => -4,
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'string_textfield',
-        'weight' => -4,
-      ])
+//      ->setDisplayOptions('view', [
+//        'label' => 'above',
+//        'type' => 'string',
+//        'weight' => -4,
+//      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'string_textfield',
+//        'weight' => -4,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //rule_url: 模板规则(随机模式，固定模式)

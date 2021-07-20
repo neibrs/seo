@@ -167,7 +167,5 @@ function airui_install_profile_modules(&$install_state) {
   if (!exec($sql_bash, $output, $result)) {
     // TODO
   }
-
-  drupal_flush_all_caches();
   return [];
 }

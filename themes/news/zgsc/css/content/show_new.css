@@ -160,6 +160,12 @@ i{
 	color: #bbbbbb;
 	text-align: center;
 }
+
+.main .Left .info a {
+	font-size: 00.8125rem;
+	color: #bbbbbb;
+}
+
 .main .Left .NewImg{
 	margin: 0.625rem auto;
 	width: 37.5rem;

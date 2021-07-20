@@ -23,7 +23,7 @@ class StationController extends ControllerBase {
 
     $data = [];
     foreach ($stations as $station) {
-      list($domains, $rule) = $this->getWildDomains($station, $number);
+      [$domains, $rule] = $this->getWildDomains($station, $number);
       $data[$station->id()] = $this->getSingleDomainRule($station, $domains, $rule, $number);
     }
 
@@ -82,7 +82,7 @@ class StationController extends ControllerBase {
       ->loadMultiple();
     $data = [];
     foreach ($stations as $station) {
-      list($domains,) = $this->getWildDomains($station);
+      [$domains,] = $this->getWildDomains($station);
       if (!empty($domains)) {
         $data = array_merge($data, $domains);
       }
@@ -142,5 +142,19 @@ class StationController extends ControllerBase {
     }
 
     return [$domains, $rule];
+  }
+
+  /**
+   * Execute cron for generate node data.
+   */
+  public function executeCron() {
+    try {
+      $cron_service = \Drupal::service('cron');
+      $cron_service->run();
+    }
+    catch (\Exception $e) {
+    }
+
+    return ['#markup' => '成功生成数据'];
   }
 }
