@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\seo_station\Plugin\QueueWorker;
+namespace Drupal\seo_textdata\Plugin\QueueWorker;
 
 use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
