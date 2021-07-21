@@ -123,10 +123,98 @@ class Spiders extends ContentEntityBase implements SpidersInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['status']->setDescription(t('A boolean indicating whether the Spiders is published.'))
+//蜘蛛名称
+    $fields['type']->setLabel('蜘蛛名称');
+//IP地址
+    $fields['ip'] = BaseFieldDefinition::create('string')
+      ->setLabel('IP地址')
+      ->setDescription('访问的来源地址.')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+//国家/城市
+    $fields['city'] = BaseFieldDefinition::create('string')
+      ->setLabel('国家/城市')
+      ->setDescription('访问的来源国家/城市.')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+//访问地址
+    $fields['city'] = BaseFieldDefinition::create('string')
+      ->setLabel('访问地址')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+//模型
+    $fields['model'] = BaseFieldDefinition::create('string')
+      ->setLabel('模型')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+//访问时间
+    $fields['access'] = BaseFieldDefinition::create('timestamp')
+      ->setLabel('访问时间')
+      ->setDefaultValue(0)
+      ->setDisplayOptions('view', [
+        'label' => 'inline',
+        'type' => 'timestamp_ago',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('view', TRUE);
+
+    $fields['status']
+      ->setLabel('蜘蛛防火墙开关')
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
-        'weight' => -3,
+        'weight' => -5,
       ]);
 
     $fields['created'] = BaseFieldDefinition::create('created')
