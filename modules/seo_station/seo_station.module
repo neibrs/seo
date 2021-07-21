@@ -5,6 +5,7 @@
  * Contains seo_station.module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Routing\RouteMatchInterface;
 
@@ -198,5 +199,16 @@ function seo_station_block_access(\Drupal\block\Entity\Block $block, $operation,
         return \Drupal\Core\Access\AccessResult::forbidden();
       }
     }
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_insert() for spiders_group.
+ */
+function seo_station_spiders_group_insert(EntityInterface $entity) {
+  if (isset($entity->station->target_id)) {
+    $entity->name->value = $entity->station->entity->label();
+    // Update.
+    $entity->save();
   }
 }

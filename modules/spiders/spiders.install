@@ -1,0 +1,18 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function spiders_install($is_syncing) {
+  $spider_type_storage = \Drupal::entityTypeManager()->getStorage('spiders_group');
+  $types = array_map(function ($item) {
+    return $item->id();
+  }, $spider_type_storage->loadMultiple());
+  $spider_group_storage = \Drupal::entityTypeManager()->getStorage('spiders_group');
+  $values = [
+    'name' => '默认配置',
+    'status' => TRUE,
+    'spiders_type' => $types,
+  ];
+  $spider_group_storage->create($values)->save();
+}

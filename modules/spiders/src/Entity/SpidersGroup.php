@@ -100,8 +100,7 @@ class SpidersGroup extends ContentEntityBase implements SpidersGroupInterface {
     $fields += static::publishedBaseFieldDefinitions($entity_type);
 
     $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Name'))
-      ->setDescription(t('The name of the Spiders group entity.'))
+      ->setLabel(t('配置名称'))
       ->setSettings([
         'max_length' => 50,
         'text_processing' => 0,
@@ -119,6 +118,11 @@ class SpidersGroup extends ContentEntityBase implements SpidersGroupInterface {
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
+
+    $fields['spiders_type'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('蜘蛛')
+      ->setSetting('target_type', 'spiders_type')
+      ->setSetting('handler', 'default');
 
     $fields['status']
       ->setLabel('蜘蛛防火墙开关')
