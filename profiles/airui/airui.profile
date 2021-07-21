@@ -161,11 +161,14 @@ function airui_install_profile_modules(&$install_state) {
   $sql_bash = 'mysql -h ' . $options['host'] . ' -P' . $options['port']
     . ' -u' . $options['username'] . ' -p' . $options['password']
     . ' ' . $options['database'];
-  $sql_bash .= ' < ' . $sql_path;
+  $sql_bash .= ' < ' . $sql_path . ' 2>&1';
 
   $output = $result = '';
   if (!exec($sql_bash, $output, $result)) {
     // TODO
+  }
+  if (!isset($result)) {
+    \Drupal::messenger()->addError('一定要设置数据库密码');
   }
   return [];
 }

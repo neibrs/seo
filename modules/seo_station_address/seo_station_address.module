@@ -48,11 +48,13 @@ function seo_station_address_preprocess_page(&$variables) {
       $storage = \Drupal::entityTypeManager()->getStorage('seo_logo');
       //TODO, 可能影响性能, 待改进
       $logos = $storage->loadMultiple();
-      $logo = array_rand($logos, 1);
-      if (!empty($logo)) {
-        $file = $logos[$logo]->file;
-        if (!empty($file->target_id)) {
-          $variables['wild_logo'] = ['#markup' => file_create_url($file->entity->getFileUri())];
+      if(!empty($logos)){
+        $logo = array_rand($logos, 1);
+        if (!empty($logo)) {
+          $file = $logos[$logo]->file;
+          if (!empty($file->target_id)) {
+            $variables['wild_logo'] = ['#markup' => file_create_url($file->entity->getFileUri())];
+          }
         }
       }
     }
