@@ -317,7 +317,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function getTaxonomyValues($station) {
+  public function getTaxonomyValues($station): array {
     $textdata = '';
     if (empty($station->site_column->target_id)) {
       $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([

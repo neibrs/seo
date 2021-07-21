@@ -26,6 +26,9 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
   private function negotiateRoute(RouteMatchInterface $route_match) {
     $request = \Drupal::request();
     $theme_name = $this->getThemeByRequest($request);
+    if (empty($theme_name)) {
+      $theme_name = $this->getDynamicTheme($request);
+    }
     if (!empty($theme_name)) {
       if (!\Drupal::service('theme_handler')->themeExists($theme_name)) {
         // Theme not active, and install it.
@@ -35,6 +38,27 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     }
 
     return FALSE;
+  }
+
+  protected function getDynamicTheme($request): string {
+    $theme_name = '';
+    $stations = \Drupal::entityTypeManager()->getStorage('seo_station')->loadMultiple();
+    foreach ($stations as $station) {
+      $domain = array_unique(explode(',', str_replace("\r\n",",", $station->domain->value)));
+      $domain = array_filter($domain, function ($item) {
+        if (!empty($item)) {
+          return $item;
+        }
+      });
+      foreach ($domain as $item) {
+        if ($item != $request->getHost()) {
+          continue;
+        }
+        $type = $station->model->entity->config_dir->value;
+      }
+    }
+
+    return $theme_name;
   }
 
   protected function getThemeByRequest($request) {
