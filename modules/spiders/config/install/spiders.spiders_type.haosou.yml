@@ -4,5 +4,5 @@ dependencies:
   enforced:
     module:
       - spiders
-id: haoshou
+id: haosou
 label: 好搜蜘蛛

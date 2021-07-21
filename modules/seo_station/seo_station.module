@@ -153,7 +153,7 @@ function seo_station_entity_base_field_info(\Drupal\Core\Entity\EntityTypeInterf
 
     return $fields;
   }
-  if ($entity_type->id() == 'spiders') {
+  if ($entity_type->id() == 'spiders' || $entity_type->id() == 'spiders_group') {
     $fields = [];
     $fields['station'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('网站分组')

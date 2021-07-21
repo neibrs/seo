@@ -119,7 +119,8 @@ class SpidersGroup extends ContentEntityBase implements SpidersGroupInterface {
       ->setDisplayConfigurable('view', TRUE)
       ->setRequired(TRUE);
 
-    $fields['status']->setDescription(t('A boolean indicating whether the Spiders group is published.'))
+    $fields['status']
+      ->setLabel('蜘蛛防火墙开关')
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',
         'weight' => -3,
