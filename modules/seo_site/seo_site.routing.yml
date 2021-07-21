@@ -1,1 +1,16 @@
-seo_site.configuration:  path: '/admin/seo_site/configuration'  defaults:    _form: '\Drupal\seo_site\Form\SeoSiteForm'    _title: '系统设置'  requirements:    _permission: 'access toolbar'
+
+seo_site.configuration:
+  path: '/admin/seo_site/configuration'
+  defaults:
+    _form: '\Drupal\seo_site\Form\SeoSiteForm'
+    _title: '系统设置'
+  requirements:
+    _permission: 'seo_site management'
+
+seo_site.node.header:
+  path: '/admin/seo_site/node_header'
+  defaults:
+    _form: '\Drupal\seo_site\Form\NodeHeaderForm'
+    _title: '自定义详情头部'
+  requirements:
+    _permission: 'seo_site management'
