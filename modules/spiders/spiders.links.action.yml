@@ -8,8 +8,4 @@ entity.spiders_type.add_form:
   title: 'Add Spiders type'
   appears_on:
     - entity.spiders_type.collection
-entity.spiders_group.add_form:
-  route_name: entity.spiders_group.add_form
-  title: 'Add Spiders group'
-  appears_on:
-    - entity.spiders_group.collection
+

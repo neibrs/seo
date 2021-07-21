@@ -212,3 +212,21 @@ function seo_station_spiders_group_insert(EntityInterface $entity) {
     $entity->save();
   }
 }
+
+/**
+ * Implements hook_ENTITY_TYPE_insert().
+ */
+function seo_station_seo_station_insert(\Drupal\Core\Entity\EntityInterface $entity) {
+  $entityTypeManager = \Drupal::entityTypeManager();
+  $group_storage = $entityTypeManager->getStorage('spiders_group');
+  $query = $group_storage->getQuery();
+  $query->condition('station', $entity->id());
+  $ids = $query->execute();
+  if (empty($ids)) {
+    $values = [
+      'name' => $entity->label(),
+      'status' => FALSE,
+    ];
+    $group_storage->create($values)->save();
+  }
+}

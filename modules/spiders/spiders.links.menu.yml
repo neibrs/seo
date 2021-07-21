@@ -1,0 +1,11 @@
+entity.spiders.administer:
+  title: '蜘蛛'
+  route_name: entity.spiders_group.collection
+  parent: system.seo
+  weight: 50
+
+entity.spiders.firewall:
+  title: '蜘蛛防火墙'
+  route_name: entity.spiders_group.collection
+  parent: entity.spiders.administer
+  weight: 50
