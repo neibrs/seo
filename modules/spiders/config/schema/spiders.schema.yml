@@ -1,0 +1,10 @@
+spiders.settings:
+  type: config_object
+  label: '蜘蛛设置'
+  mapping:
+    switch:
+      type: boolean
+      label: '蜘蛛访问记录开关'
+    item:
+      type: string
+      label: '访问css、js、图片的蜘蛛'

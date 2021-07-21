@@ -46,7 +46,24 @@ class SpidersGroupSettingsForm extends FormBase {
    *   Form definition array.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['spidersgroup_settings']['#markup'] = 'Settings form for Spiders group entities. Manage field settings here.';
+    $form['switch'] = [
+      '#type' => 'radios',
+      '#options' => [
+        1 => '开启',
+        0 => '关闭',
+      ],
+      '#default_value' => 1,
+    ];
+
+    $form['items'] = [
+      '#type' => 'radios',
+      '#options' => [
+        'no process' => '不处理',
+        'no record' => '不记录',
+        'defense' => '直接屏蔽',
+      ],
+      '#default_value' => 'no process',
+    ];
     return $form;
   }
 
