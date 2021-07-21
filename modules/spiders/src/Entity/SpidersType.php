@@ -36,6 +36,10 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *     "edit-form" = "/admin/spiders_type/{spiders_type}/edit",
  *     "delete-form" = "/admin/spiders_type/{spiders_type}/delete",
  *     "collection" = "/admin/spiders_type"
+ *   },
+ *   config_export = {
+ *     "id",
+ *     "label",
  *   }
  * )
  */
