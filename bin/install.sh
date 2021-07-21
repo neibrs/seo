@@ -43,7 +43,8 @@ vendor/bin/drush en -y \
   seo_textdata \
   seo_site \
   seo_negotiator \
-  seo_station_address
+  seo_station_address \
+  seo_logo
 
 vendor/bin/drush en -y seo_front
 #vendor/bin/drush en -y seo_content
