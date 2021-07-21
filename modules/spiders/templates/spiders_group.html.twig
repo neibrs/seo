@@ -1,0 +1,22 @@
+{#
+/**
+ * @file spiders_group.html.twig
+ * Default theme implementation to present Spiders group data.
+ *
+ * This template is used when viewing Spiders group pages.
+ *
+ *
+ * Available variables:
+ * - content: A list of content items. Use 'content' to print all content, or
+ * - attributes: HTML attributes for the container element.
+ *
+ * @see template_preprocess_spiders_group()
+ *
+ * @ingroup themeable
+ */
+#}
+<div{{ attributes.addClass('spiders_group') }}>
+  {% if content %}
+    {{- content -}}
+  {% endif %}
+</div>

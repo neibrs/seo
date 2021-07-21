@@ -18,3 +18,23 @@ view published spiders entities:
 view unpublished spiders entities:
   title: 'View unpublished Spiders entities'
 
+add spiders group entities:
+  title: 'Create new Spiders group entities'
+
+administer spiders group entities:
+  title: 'Administer Spiders group entities'
+  description: 'Allow to access the administration form to configure Spiders group entities.'
+  restrict access: true
+
+delete spiders group entities:
+  title: 'Delete Spiders group entities'
+
+edit spiders group entities:
+  title: 'Edit Spiders group entities'
+
+view published spiders group entities:
+  title: 'View published Spiders group entities'
+
+view unpublished spiders group entities:
+  title: 'View unpublished Spiders group entities'
+
