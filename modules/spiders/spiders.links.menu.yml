@@ -8,8 +8,10 @@ spiders_group.settings:
   title: '蜘蛛设置'
   route_name: spiders.admin_settings
   parent: entity.spiders.administer
+  weight: 40
 
 entity.spiders.firewall:
   title: '蜘蛛防火墙'
   route_name: entity.spiders_group.collection
   parent: entity.spiders.administer
+  weight: 50
