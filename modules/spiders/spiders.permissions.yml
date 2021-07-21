@@ -1,0 +1,20 @@
+add spiders entities:
+  title: 'Create new Spiders entities'
+
+administer spiders entities:
+  title: 'Administer Spiders entities'
+  description: 'Allow to access the administration form to configure Spiders entities.'
+  restrict access: true
+
+delete spiders entities:
+  title: 'Delete Spiders entities'
+
+edit spiders entities:
+  title: 'Edit Spiders entities'
+
+view published spiders entities:
+  title: 'View published Spiders entities'
+
+view unpublished spiders entities:
+  title: 'View unpublished Spiders entities'
+

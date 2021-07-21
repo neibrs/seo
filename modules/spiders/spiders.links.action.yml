@@ -1,0 +1,10 @@
+entity.spiders.add_form:
+  route_name: entity.spiders.add_page
+  title: 'Add Spiders'
+  appears_on:
+    - entity.spiders.collection
+entity.spiders_type.add_form:
+  route_name: entity.spiders_type.add_form
+  title: 'Add Spiders type'
+  appears_on:
+    - entity.spiders_type.collection

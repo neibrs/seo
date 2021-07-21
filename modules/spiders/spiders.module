@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Contains spiders.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function spiders_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the spiders module.
+    case 'help.page.spiders':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The spider records.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function spiders_theme() {
+  $theme = [];
+  $theme['spiders'] = [
+    'render element' => 'elements',
+    'file' => 'spiders.page.inc',
+    'template' => 'spiders',
+  ];
+  $theme['spiders_content_add_list'] = [
+    'render element' => 'content',
+    'variables' => ['content' => NULL],
+    'file' => 'spiders.page.inc',
+  ];
+  return $theme;
+}
+
+/**
+ * Implements hook_theme_suggestions_HOOK().
+ */
+function spiders_theme_suggestions_spiders(array $variables) {
+  $suggestions = [];
+  $entity = $variables['elements']['#spiders'];
+  $sanitized_view_mode = strtr($variables['elements']['#view_mode'], '.', '_');
+
+  $suggestions[] = 'spiders__' . $sanitized_view_mode;
+  $suggestions[] = 'spiders__' . $entity->bundle();
+  $suggestions[] = 'spiders__' . $entity->bundle() . '__' . $sanitized_view_mode;
+  $suggestions[] = 'spiders__' . $entity->id();
+  $suggestions[] = 'spiders__' . $entity->id() . '__' . $sanitized_view_mode;
+  return $suggestions;
+}

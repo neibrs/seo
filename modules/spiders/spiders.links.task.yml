@@ -1,0 +1,17 @@
+# Spiders routing definition
+
+entity.spiders.canonical:
+  route_name: entity.spiders.canonical
+  base_route: entity.spiders.canonical
+  title: 'View'
+
+entity.spiders.edit_form:
+  route_name: entity.spiders.edit_form
+  base_route: entity.spiders.canonical
+  title: 'Edit'
+
+entity.spiders.delete_form:
+  route_name:  entity.spiders.delete_form
+  base_route:  entity.spiders.canonical
+  title: Delete
+  weight: 10
