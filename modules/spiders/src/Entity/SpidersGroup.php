@@ -7,6 +7,7 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Field\FieldStorageDefinitionInterface;
 
 /**
  * Defines the Spiders group entity.
@@ -122,7 +123,19 @@ class SpidersGroup extends ContentEntityBase implements SpidersGroupInterface {
     $fields['spiders_type'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel('蜘蛛')
       ->setSetting('target_type', 'spiders_type')
-      ->setSetting('handler', 'default');
+      ->setCardinality(FieldStorageDefinitionInterface::CARDINALITY_UNLIMITED)
+      ->setSetting('handler', 'default')
+      ->setDisplayOptions('view', [
+        'type' => 'entity_reference_label',
+        'weight' => 0,
+        'label' => 'inline',
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'options_buttons_with_none',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
 
     $fields['status']
       ->setLabel('蜘蛛防火墙开关')
