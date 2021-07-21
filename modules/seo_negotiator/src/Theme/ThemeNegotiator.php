@@ -55,6 +55,16 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
           continue;
         }
         $type = $station->model->entity->config_dir->value;
+
+        // Get all avaiable themes.
+        $themes = \Drupal::service('theme_handler')->rebuildThemeData();
+        uasort($themes, 'system_sort_modules_by_info_name');
+        $type_themes = array_filter($themes, function ($theme, $type) {
+          if (isset($theme->info['seo_theme']) && $theme->info['seo_theme'] == $type) {
+            return $theme;
+          }
+        });
+        return reset($type_themes);
       }
     }
 
