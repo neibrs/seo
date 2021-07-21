@@ -15,7 +15,8 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *
  * @ContentEntityType(
  *   id = "spiders_group",
- *   label = @Translation("Spiders group"),
+ *   label = @Translation("蜘蛛防火墙配置"),
+ *   label_collection = @Translation("蜘蛛防火墙配置"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\spiders\SpidersGroupListBuilder",

@@ -9,7 +9,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *
  * @ConfigEntityType(
  *   id = "spiders_type",
- *   label = @Translation("Spiders type"),
+ *   label = @Translation("蜘蛛名称"),
+ *   label_collection = @Translation("蜘蛛名称"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\spiders\SpidersTypeListBuilder",

@@ -15,8 +15,9 @@ use Drupal\Core\Entity\EntityTypeInterface;
  *
  * @ContentEntityType(
  *   id = "spiders",
- *   label = @Translation("Spiders"),
- *   bundle_label = @Translation("Spiders type"),
+ *   label = @Translation("蜘蛛记录"),
+ *   label_collection = @Translation("蜘蛛记录"),
+ *   bundle_label = @Translation("蜘蛛名称"),
  *   handlers = {
  *     "view_builder" = "Drupal\Core\Entity\EntityViewBuilder",
  *     "list_builder" = "Drupal\spiders\SpidersListBuilder",
