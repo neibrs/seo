@@ -63,7 +63,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     }
     try {
       // 初始化node的值, 及Site name.
-      list($site_name, $tkdb_values) = $this->getTkdbValues($data, $station);
+      [$site_name, $tkdb_values] = $this->getTkdbValues($data, $station);
 
       // 这里会创建N多，但站群网站却只要几个，矛盾点，待优化
       $taxonomies = $this->getTaxonomyValues($station);
@@ -312,7 +312,13 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     return TRUE;
   }
 
+  /**
+   * @throws \Drupal\Core\Entity\EntityStorageException
+   * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
+   * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
+   */
   public function getTaxonomyValues($station) {
+    $textdata = '';
     if (empty($station->site_column->target_id)) {
       $textdata = $this->entityTypeManager->getStorage('seo_textdata')->loadByProperties([
         'type' => 'typename',
@@ -323,43 +329,8 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
     else {
       $textdata = $station->site_column->entity;
     }
-    $typename_uri = $textdata->get('attachment')->entity->getFileUri();
-    $ds = getTextdataArrayFromUri($typename_uri);
-    $terms = [];
-    $storage = $this->entityTypeManager->getStorage('taxonomy_term');
 
-    $transliteration =  \Drupal::service('transliteration');
-
-    foreach ($ds as $name) {
-      $name = trim($name);
-      if (empty($name)) {
-        continue;
-      }
-      if (strlen($name) > 100) {
-        \Drupal::messenger()->addError('栏目名称太长.');
-        return [];
-      }
-      $query = $storage->getQuery();
-      $query->condition('name', $name);
-      $query->condition('vid', 'typename');
-      $ids = $query->execute();
-      $taxonomy = NULL;
-      if (empty($ids)) {
-        $taxonomy = $storage->create([
-          'name' => $name,
-          'vid' => 'typename',
-          'path' => '/' . $this->transliterate($name, $transliteration),
-          // TODO, 添加station来标识?
-        ]);
-        $taxonomy->save();
-      }
-      else {
-        $taxonomy = $storage->load(reset($ids));
-      }
-      $terms[] = $taxonomy;
-    }
-
-    return $terms;
+    return getAllTaxonomyByTextdata($textdata);
   }
 
   protected function transliterate($name, $transliteration): string {

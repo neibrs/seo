@@ -64,13 +64,7 @@ function seo_textdata_update_9001(&$sandbox) {
  * Implements hook_update_N() add tags for textdata.
  */
 function seo_textdata_update_9003(&$sandbox) {
-  /** @var \Drupal\config_update\ConfigRevertInterface $config_update */
-  $config_update = Drupal::service('config_update.config_update');
-
-//  $config_update->import('taxonomy_vocabulary', 'textdata_tags');
-
   $entity_definition_update_manager = Drupal::entityDefinitionUpdateManager();
-
   $storage_definition = BaseFieldDefinition::create('entity_reference')
     ->setLabel('行业')
     ->setSetting('target_type', 'taxonomy_term')
@@ -82,4 +76,13 @@ function seo_textdata_update_9003(&$sandbox) {
     ]);
   $entity_definition_update_manager
     ->installFieldStorageDefinition('tags', 'seo_textdata', 'seo_textdata', $storage_definition);
+}
+
+/**
+ * Implements hook_update_N() 给分类添加一个站群模型分类字段.
+ */
+function seo_textdata_update_9004(&$sandbox) {
+  $config_update = Drupal::service('config_update.config_update');
+  $config_update->import('field_storage_config', 'taxonomy_term.field_station_model');
+  $config_update->import('field_config', 'taxonomy_term.typename.field_station_model');
 }

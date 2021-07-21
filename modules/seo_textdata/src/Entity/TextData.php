@@ -234,7 +234,10 @@ class TextData extends ContentEntityBase implements TextDataInterface {
 
   public function postSave(EntityStorageInterface $storage, $update = TRUE) {
     parent::postSave($storage, $update);
-
+    if ($this->bundle() == 'typename') {
+      $queue = \Drupal::queue('typename_process');
+      $queue->createItem(['textdata' => $this]);
+    }
   }
 
 }
