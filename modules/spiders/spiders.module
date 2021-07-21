@@ -64,6 +64,7 @@ function spiders_sidebar_tee_menu_alter(&$data) {
   $icons = [
     'entity.spiders.administer' => 'icon gitee-icon task',
     'entity.spiders.firewall' => 'icon gitee-icon task',
+    'spiders_group.settings' => 'icon gitee-icon task',
   ];
   _eabax_core_set_menu_items_icon($data, $icons);
 }

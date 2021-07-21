@@ -1,0 +1,7 @@
+spiders.admin_settings:
+  path: '/admin/spider_group/settings'
+  defaults:
+    _form: '\Drupal\spiders\Form\SpidersSettingsForm'
+    _title: '蜘蛛设置'
+  requirements:
+    _permission: 'administer spiders group entities'
