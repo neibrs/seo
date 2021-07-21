@@ -1,1 +1,13 @@
-seo_site.admin:  title: '设置'  route_name: seo_site.configuration  parent: system.seo  weight: 999seo_site.configuration:  title: '系统设置'  route_name: seo_site.configuration  parent: seo_site.admin
+seo_site.admin:
+  title: '设置'
+  route_name: seo_site.configuration
+  parent: system.seo
+  weight: 999
+seo_site.configuration:
+  title: '系统设置'
+  route_name: seo_site.configuration
+  parent: seo_site.admin
+seo_site.node.header:
+  title: '自定义详情头部'
+  route_name: seo_site.node.header
+  parent: seo_site.admin

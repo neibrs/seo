@@ -1,1 +1,52 @@
-seo_site.site_configuration:  type: config_object  label: 'Seo site information'  mapping:    uuid:      type: uuid      label: 'Site UUID'      constraints:        Uuid: []        NotNull: []    insert_top:      type: boolean      label: '页面顶部插入代码'    insert_top_code:      type: string      label: '顶部插入的代码'    default_langcode:      type: string      label: 'Site default language code'
+seo_site.site_configuration:
+  type: config_object
+  label: 'Seo site information'
+  mapping:
+    uuid:
+      type: uuid
+      label: 'Site UUID'
+      constraints:
+        Uuid: []
+        NotNull: []
+    insert_top:
+      type: boolean
+      label: '页面顶部插入代码'
+    insert_top_code:
+      type: string
+      label: '顶部插入的代码'
+    default_langcode:
+      type: string
+      label: 'Site default language code'
+
+seo_site.node_header:
+  type: config_object
+  label: '详情头'
+  mapping:
+    uuid:
+      type: uuid
+      label: 'Site UUID'
+      constraints:
+        Uuid: []
+        NotNull: []
+    tags:
+      type: boolean
+      label: '主要关键词'
+    author:
+      type: boolean
+      label: '网站作者'
+    copyright:
+      type: boolean
+      label: '网站版权'
+    source:
+      type: boolean
+      label: '文章版权作者来源'
+#
+#      type: boolean
+#      type: boolean
+#      type: boolean
+#      type: boolean
+#      type: boolean
+#      type: boolean
+#      type: boolean
+
+
