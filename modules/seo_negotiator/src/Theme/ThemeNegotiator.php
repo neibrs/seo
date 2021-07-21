@@ -29,6 +29,19 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     if (empty($theme_name)) {
       $theme_name = $this->getDynamicTheme($request);
     }
+
+    // Get admin theme
+    $special_path = [
+      '/^\/admin/',
+      '/^\/user/',
+    ];
+    foreach ($special_path as $special) {
+      preg_match($special, $request->getPathInfo(),$result);
+      if (!empty($result)) {
+        $theme_name = 'xbarrio';
+        break;
+      }
+    }
     if (!empty($theme_name)) {
       if (!\Drupal::service('theme_handler')->themeExists($theme_name)) {
         // Theme not active, and install it.
