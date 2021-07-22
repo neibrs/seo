@@ -38,7 +38,13 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     foreach ($special_path as $special) {
       preg_match($special, $request->getPathInfo(),$result);
       if (!empty($result)) {
-        $theme_name = 'xbarrio';
+        $admin_theme = \Drupal::configFactory()->get('system.theme')->get('admin');
+        if (in_array($admin_theme, ['seven', 'xbarrio'])) {
+          $theme_name = $admin_theme;
+        }
+        else {
+          $theme_name = 'xbarrio';
+        }
         break;
       }
     }
