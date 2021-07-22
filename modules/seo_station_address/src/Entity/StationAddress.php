@@ -137,6 +137,15 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['replacement'] = BaseFieldDefinition::create('string')
+      ->setLabel('泛域替换符')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
     $fields['webname'] = BaseFieldDefinition::create('string')
       ->setLabel('Webname')
       ->setSettings([
