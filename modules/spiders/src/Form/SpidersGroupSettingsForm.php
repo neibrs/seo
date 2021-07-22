@@ -31,7 +31,12 @@ class SpidersGroupSettingsForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Empty implementation of the abstract submit class.
+    $config = \Drupal::configFactory()->get('spiders.settings');
+    $config->set('switch', $form_state->getValue('switch'));
+    $config->set('item', $form_state->getValue('item'));
+    $config->save();
+
+    $this->messenger()->addMessage('保存成功!');
   }
 
   /**
@@ -46,23 +51,24 @@ class SpidersGroupSettingsForm extends FormBase {
    *   Form definition array.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = \Drupal::config('spiders.settings');
     $form['switch'] = [
       '#type' => 'radios',
       '#options' => [
         1 => '开启',
         0 => '关闭',
       ],
-      '#default_value' => 1,
+      '#default_value' => $config->get('switch'),
     ];
 
-    $form['items'] = [
+    $form['item'] = [
       '#type' => 'radios',
       '#options' => [
         'no process' => '不处理',
         'no record' => '不记录',
         'defense' => '直接屏蔽',
       ],
-      '#default_value' => 'no process',
+      '#default_value' => $config->get('item'),
     ];
     return $form;
   }
