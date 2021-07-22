@@ -60,4 +60,14 @@ class SpidersType extends ConfigEntityBundleBase implements SpidersTypeInterface
    */
   protected $label;
 
+  /**
+   * @var 存爬虫来源IP，即IP白名单.
+   * TODO, 考虑单独存放白名单IP。
+   */
+  protected $source;
+
+  /**
+   * @var 储存User-Agent的数据，使用\r\n分隔
+   */
+  protected $header;
 }

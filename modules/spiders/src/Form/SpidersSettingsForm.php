@@ -2,8 +2,10 @@
 
 namespace Drupal\spiders\Form;
 
+use Drupal\Component\Serialization\Json;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 /**
  * Class SpidersSettingsForm.
@@ -52,11 +54,12 @@ class SpidersSettingsForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $config = \Drupal::config('spiders.settings');
     $form['basic'] = [
-      '#type' => 'detail',
+      '#type' => 'details',
       '#title' => '基本设置',
       '#attributes' => [
         'class' => ['container-inline'],
-      ]
+      ],
+      '#open' => TRUE,
     ];
     $form['basic']['switch'] = [
       '#type' => 'radios',
@@ -78,6 +81,39 @@ class SpidersSettingsForm extends FormBase {
       ],
       '#default_value' => $config->get('item'),
     ];
+
+    $form['basic']['agents'] = [
+      '#type' => 'details',
+      '#title' => '蜘蛛(UserAgent)识别方式(可自定义)',
+    ];
+
+    $form['basic']['agents']['user_agents'] = [
+      '#type' => 'table',
+      '#header' => [
+        '蜘蛛名称', '操作',
+      ],
+    ];
+    $spider_types = \Drupal::entityTypeManager()->getStorage('spiders_type')->loadMultiple();
+    foreach ($spider_types as $id => $spider_type) {
+      $form['basic']['agents']['user_agents'][$id]['name'] = ['#markup' => $spider_type->label()];
+      $form['basic']['agents']['user_agents'][$id]['operation'] = [
+        'edit' => [
+          '#type' => 'link',
+          '#title' => '编辑',
+          '#url' => Url::fromRoute('entity.spiders_type.edit_form', ['spiders_type' => $spider_type->id()]),
+          '#attributes' => [
+            'class' => 'use-ajax',
+            'data-dialog-type' => 'modal',
+            'data-dialog-options' => Json::encode(['width' => '60%']),
+          ],
+        ],
+        'delete' => [
+          '#type' => 'link',
+          '#title' => '删除',
+          '#url' => Url::fromRoute('entity.spiders_type.delete_form', ['spiders_type' => $spider_type->id()])
+        ],
+      ];
+    }
 
     $form['submit'] = [
       '#type' => 'submit',

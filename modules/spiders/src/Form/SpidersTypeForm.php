@@ -22,7 +22,6 @@ class SpidersTypeForm extends EntityForm {
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $spiders_type->label(),
-      '#description' => $this->t("Label for the Spiders type."),
       '#required' => TRUE,
     ];
 
@@ -35,8 +34,17 @@ class SpidersTypeForm extends EntityForm {
       '#disabled' => !$spiders_type->isNew(),
     ];
 
-    /* You will need additional form elements for your custom properties. */
+    $form['sources'] = [
+      '#type' => 'textarea',
+      '#title' => '来源IP',
+      '#description' => '爬虫服务器的IP',
+    ];
 
+    $form['headers'] = [
+      '#type' => 'textarea',
+      '#title' => 'UserAgent',
+      '#description' => '爬虫的UserAgent, 每行可存放一个',
+    ];
     return $form;
   }
 
