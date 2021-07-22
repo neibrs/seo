@@ -33,8 +33,9 @@ class SpidersUserAgentManager implements SpidersUserAgengMangerInterface {
           }
         }
       }
-
-      $browser_agent = 'other';
+      else {
+        $browser_agent = 'other';
+      }
     }
   }
 

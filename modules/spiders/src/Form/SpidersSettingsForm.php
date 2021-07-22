@@ -31,7 +31,11 @@ class SpidersSettingsForm extends FormBase {
    *   The current state of the form.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // Empty implementation of the abstract submit class.
+    $config = \Drupal::configFactory()->getEditable('spiders.settings');
+    $config->set('switch', $form_state->getValue('switch'));
+    $config->set('item', $form_state->getValue('item'));
+    $config->save();
+    $this->messenger()->addMessage('保存成功!');
   }
 
   /**
@@ -46,7 +50,40 @@ class SpidersSettingsForm extends FormBase {
    *   Form definition array.
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['spiders_settings']['#markup'] = 'Settings form for Spiders entities. Manage field settings here.';
+    $config = \Drupal::config('spiders.settings');
+    $form['basic'] = [
+      '#type' => 'detail',
+      '#title' => '基本设置',
+      '#attributes' => [
+        'class' => ['container-inline'],
+      ]
+    ];
+    $form['basic']['switch'] = [
+      '#type' => 'radios',
+      '#title' => '蜘蛛访问记录开关',
+      '#options' => [
+        1 => '开启',
+        0 => '关闭',
+      ],
+      '#default_value' => $config->get('switch'),
+    ];
+
+    $form['basic']['item'] = [
+      '#type' => 'radios',
+      '#title' => '访问css、js、图片的蜘蛛',
+      '#options' => [
+        'no process' => '不处理',
+        'no record' => '不记录',
+        'defense' => '直接屏蔽',
+      ],
+      '#default_value' => $config->get('item'),
+    ];
+
+    $form['submit'] = [
+      '#type' => 'submit',
+      '#value' => '保存',
+    ];
+
     return $form;
   }
 

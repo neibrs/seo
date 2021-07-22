@@ -1,5 +1,5 @@
 spiders.admin_settings:
-  path: '/admin/spider_group/settings'
+  path: '/admin/spider/settings'
   defaults:
     _form: '\Drupal\spiders\Form\SpidersSettingsForm'
     _title: '蜘蛛设置'

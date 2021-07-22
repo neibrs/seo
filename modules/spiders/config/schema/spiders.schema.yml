@@ -3,7 +3,7 @@ spiders.settings:
   label: '蜘蛛设置'
   mapping:
     switch:
-      type: boolean
+      type: integer
       label: '蜘蛛访问记录开关'
     item:
       type: string
