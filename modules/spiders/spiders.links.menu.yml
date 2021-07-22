@@ -4,6 +4,12 @@ entity.spiders.administer:
   parent: system.seo
   weight: 50
 
+entity.spiders.collection:
+  title: '蜘蛛访问日志'
+  route_name: entity.spiders.collection
+  parent: entity.spiders.administer
+  weight: 10
+
 spiders_group.settings:
   title: '蜘蛛设置'
   route_name: spiders.admin_settings

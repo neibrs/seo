@@ -9,7 +9,7 @@ class SpidersUserAgentManager implements SpidersUserAgengMangerInterface {
 
   public function determineSpider($request) {
     $user_agent = $request->headers->get('user_agent');
-    $browser_agent = '';
+    $browser_agent = 'other';
     $spiders = $this->getSpider();
     foreach ($spiders as $spider) {
       if (isset($spider['user_agent'])) {
@@ -39,18 +39,16 @@ class SpidersUserAgentManager implements SpidersUserAgengMangerInterface {
           }
         }
       }
-      else {
-        $browser_agent = 'other';
-      }
     }
     $this->insertSpider($request, $browser_agent);
   }
 
   public function insertSpider($request, $browser_agent) {
-    $address = $request->server->get('REQUEST_SCHEME') .
-      ':' . '//' . $request->server->get('SERVER_NAME') .
-      ':' . $request->server->get('SERVER_PORT') .
-      $request->getPathInfo();
+    $address = $request->server->get('REQUEST_SCHEME') . ':' . '//' . $request->server->get('SERVER_NAME');
+    if ($request->server->get('SERVER_PORT') != 80) {
+      $address .= ':' . $request->server->get('SERVER_PORT');
+    }
+    $address .= $request->getPathInfo();
     $spiders_type = SpidersType::load($browser_agent);
 
     // Check station address replacement.
