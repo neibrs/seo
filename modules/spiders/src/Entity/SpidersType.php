@@ -81,4 +81,19 @@ class SpidersType extends ConfigEntityBundleBase implements SpidersTypeInterface
     return $this->user_agent;
   }
 
+  public function getUserAgentArray() {
+    return array_filter(explode("\r\n", $this->user_agent), function ($item) {
+      if (!empty($item)) {
+        return $item;
+      }
+    });
+  }
+
+  public function getSourceArray() {
+    return array_filter(explode("\r\n", $this->source), function ($item) {
+      if (!empty($item)) {
+        return $item;
+      }
+    });
+  }
 }

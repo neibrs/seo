@@ -6,7 +6,7 @@ dependencies:
     - serialization
     - spiders
     - views_plus
-id: spider_group
+id: spiders_group
 label: 蜘蛛防火墙配置
 module: views
 description: ''

@@ -246,6 +246,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
         'name' => $data['domain'] . '/' . $data['replacement'],
         'station' => $data['station'],
         'domain' => $data['domain'],
+        'replacement' => $data['replacement'],
       ];
       $addresses = $address_storage->loadByProperties($address_values);
       $address_values['webname'] = $web_name;

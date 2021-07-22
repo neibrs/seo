@@ -164,8 +164,8 @@ class Spiders extends ContentEntityBase implements SpidersInterface {
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-//访问地址
-    $fields['city'] = BaseFieldDefinition::create('string')
+
+    $fields['address'] = BaseFieldDefinition::create('string')
       ->setLabel('访问地址')
       ->setSettings([
         'text_processing' => 0,
@@ -200,7 +200,27 @@ class Spiders extends ContentEntityBase implements SpidersInterface {
       ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
-//访问时间
+
+    // User-Agent
+    $fields['user_agent'] = BaseFieldDefinition::create('string')
+      ->setLabel('UserAgent')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => 0,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => 0,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+      ->setDisplayConfigurable('view', TRUE);
+
+    //访问时间
     $fields['access'] = BaseFieldDefinition::create('timestamp')
       ->setLabel('访问时间')
       ->setDefaultValue(0)
