@@ -1,0 +1,8 @@
+services:
+  spiders.spider_request:
+    class: Drupal\spiders\EventSubscriber\SpiderRequest
+    tags:
+      - { name: event_subscriber }
+  spiders.user_agent:
+    class: Drupal\spiders\SpidersUserAgentManager
+    arguments: ['@entity_type.manager']

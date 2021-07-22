@@ -44,7 +44,9 @@ vendor/bin/drush en -y \
   seo_site \
   seo_negotiator \
   seo_station_address \
-  seo_logo
+  seo_logo \
+  seo_flink \
+  spiders
 
 vendor/bin/drush en -y seo_front
 #vendor/bin/drush en -y seo_content
