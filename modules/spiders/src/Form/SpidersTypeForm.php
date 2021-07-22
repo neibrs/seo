@@ -59,13 +59,13 @@ class SpidersTypeForm extends EntityForm {
 
     switch ($status) {
       case SAVED_NEW:
-        $this->messenger()->addMessage($this->t('Created the %label Spiders type.', [
+        $this->messenger()->addMessage($this->t('已创建蜘蛛%label.', [
           '%label' => $spiders_type->label(),
         ]));
         break;
 
       default:
-        $this->messenger()->addMessage($this->t('Saved the %label Spiders type.', [
+        $this->messenger()->addMessage($this->t('已保存蜘蛛%label.', [
           '%label' => $spiders_type->label(),
         ]));
     }
