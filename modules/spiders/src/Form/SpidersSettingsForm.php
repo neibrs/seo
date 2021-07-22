@@ -84,7 +84,7 @@ class SpidersSettingsForm extends FormBase {
 
     $form['basic']['agents'] = [
       '#type' => 'details',
-      '#title' => '蜘蛛(UserAgent)识别方式(可自定义)',
+      '#title' => '蜘蛛(UserAgent)(可自定义)',
     ];
 
     $form['basic']['agents']['user_agents'] = [

@@ -41,6 +41,8 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *   config_export = {
  *     "id",
  *     "label",
+ *     "source",
+ *     "user_agent",
  *   }
  * )
  */
@@ -69,5 +71,14 @@ class SpidersType extends ConfigEntityBundleBase implements SpidersTypeInterface
   /**
    * @var 储存User-Agent的数据，使用\r\n分隔
    */
-  protected $header;
+  protected $user_agent;
+
+  public function getSource() {
+    return $this->source;
+  }
+
+  public function getUserAgent() {
+    return $this->user_agent;
+  }
+
 }

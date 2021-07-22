@@ -10,3 +10,9 @@ spiders.spiders_type.*:
       label: 'Label'
     uuid:
       type: string
+    source:
+      type: string
+      label: 来源IPs
+    user_agent:
+      type: string
+      label: UserAgent

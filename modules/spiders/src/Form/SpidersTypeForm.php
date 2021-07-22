@@ -34,16 +34,18 @@ class SpidersTypeForm extends EntityForm {
       '#disabled' => !$spiders_type->isNew(),
     ];
 
-    $form['sources'] = [
+    $form['source'] = [
       '#type' => 'textarea',
       '#title' => '来源IP',
       '#description' => '爬虫服务器的IP',
+      '#default_value' => $spiders_type->getSource(),
     ];
 
-    $form['headers'] = [
+    $form['user_agent'] = [
       '#type' => 'textarea',
       '#title' => 'UserAgent',
-      '#description' => '爬虫的UserAgent, 每行可存放一个',
+      '#description' => '爬虫的UserAgent, 每行可放一条',
+      '#default_value' => $spiders_type->getUserAgent(),
     ];
     return $form;
   }
