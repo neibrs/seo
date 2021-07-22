@@ -100,7 +100,9 @@ class SpidersSettingsForm extends FormBase {
         'edit' => [
           '#type' => 'link',
           '#title' => '编辑',
-          '#url' => Url::fromRoute('entity.spiders_type.edit_form', ['spiders_type' => $spider_type->id()]),
+          '#url' => Url::fromRoute('entity.spiders_type.edit_form', ['spiders_type' => $spider_type->id()], [
+            'query' => \Drupal::destination()->getAsArray(),
+          ]),
           '#attributes' => [
             'class' => 'use-ajax',
             'data-dialog-type' => 'modal',
