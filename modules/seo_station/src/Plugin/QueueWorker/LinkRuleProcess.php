@@ -268,6 +268,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
   }
 
   public function getWebName($station) {
+    $ds = [];
     if ($station->site_name->target_id) {
       $web_name = $station->site_name->entity;
     }
@@ -280,8 +281,14 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
 
       $web_name = reset($web_names);
     }
-    $uri = $web_name->get('attachment')->entity->getFileUri();
-    $ds = getTextdataArrayFromUri($uri);
+    if (empty($web_name)) {
+      \Drupal::messenger()->addError('缺乏网站名称内容数据。');
+    }
+    else {
+      $uri = $web_name->get('attachment')->entity->getFileUri();
+      $ds = getTextdataArrayFromUri($uri);
+    }
+
     // TODO, bug
     return $ds[mt_rand(0, 1)];
   }
