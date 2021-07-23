@@ -321,6 +321,7 @@ function install_airui_components(&$install_state) {
     'seo_station_address',
     'seo_negotiator',
     'seo_logo',
+    'spiders',
   ];
   $operations = [];
   foreach ($modules as $module) {
