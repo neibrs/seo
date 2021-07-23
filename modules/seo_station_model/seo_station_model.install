@@ -14,12 +14,13 @@ function seo_station_model_install($is_syncing) {
     'view published station model entities',
     'view unpublished station model entities',
   ]);
+  // TODO, add content for step.
   $pre_data = [
-    'company' => '行业企业',
+//    'company' => '行业企业',
     'news' => '文章新闻',
-    'video' => '电影视频',
-    'bbs' => '论坛社区',
-    'audio' => '视频音乐',
+//    'video' => '电影视频',
+//    'bbs' => '论坛社区',
+//    'audio' => '视频音乐',
   ];
   foreach ($pre_data as $key => $val) {
     $values = [
