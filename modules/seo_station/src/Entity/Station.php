@@ -464,15 +464,15 @@ class Station extends ContentEntityBase implements StationInterface {
         ],
         'auto_create' => TRUE,
       ])
-      ->setDisplayOptions('view', [
-        'type' => 'entity_reference_label',
-        'weight' => 0,
-        'label' => 'inline',
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'entity_reference_autocomplete_tags',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('view', [
+//        'type' => 'entity_reference_label',
+//        'weight' => 0,
+//        'label' => 'inline',
+//      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'entity_reference_autocomplete_tags',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
@@ -481,15 +481,15 @@ class Station extends ContentEntityBase implements StationInterface {
       ->setLabel('是否使用官网数据')
       ->setDescription('如果选用官网数据，则本地内容设置无效')
       ->setDefaultValue(FALSE)
-      ->setDisplayOptions('view', [
-        'type' => 'boolean',
-        'weight' => 0,
-        'label' => 'inline',
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'boolean_checkbox',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('view', [
+//        'type' => 'boolean',
+//        'weight' => 0,
+//        'label' => 'inline',
+//      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'boolean_checkbox',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
