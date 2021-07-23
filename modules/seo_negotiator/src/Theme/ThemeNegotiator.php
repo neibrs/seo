@@ -81,7 +81,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
         $type_themes = [];
         foreach ($themes as $theme) {
           if (isset($theme->info['seo_theme']) && $theme->info['seo_theme'] == $type) {
-            return $theme;
+            return $theme->info['name'];
           }
         }
         $theme = reset($type_themes);
