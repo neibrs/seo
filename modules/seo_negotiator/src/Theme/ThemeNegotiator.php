@@ -75,6 +75,10 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
         }
         $type = $station->model->entity->config_dir->value;
 
+        if (empty($type)) {
+          return 'xbarrio';
+        }
+
         // Get all avaiable themes.
         $themes = \Drupal::service('theme_handler')->rebuildThemeData();
         uasort($themes, 'system_sort_modules_by_info_name');
