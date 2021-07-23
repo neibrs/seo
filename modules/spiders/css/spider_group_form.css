@@ -1,0 +1,9 @@
+
+.fieldset-wrapper {
+  max-width: 35%;
+}
+
+.checkbox .form-check {
+  display: inline-block;
+  width: 8rem;
+}

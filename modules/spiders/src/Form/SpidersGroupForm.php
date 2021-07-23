@@ -37,6 +37,7 @@ class SpidersGroupForm extends ContentEntityForm {
     /* @var \Drupal\spiders\Entity\SpidersGroup $entity */
     $form = parent::buildForm($form, $form_state);
 
+    $form['#attached']['library'][] = 'spiders/spider_group_form';
     return $form;
   }
 

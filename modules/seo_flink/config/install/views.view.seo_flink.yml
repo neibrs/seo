@@ -1,3 +1,4 @@
+
 langcode: zh-hans
 status: true
 dependencies:
@@ -6,6 +7,8 @@ dependencies:
     - seo_flink
     - serialization
     - views_plus
+_core:
+  default_config_hash: bo-VFxmmJQ2D3DB8-5KoM23uuO-8gSSgcNFn2cpp3Xo
 id: seo_flink
 label: 友情链接
 module: views
@@ -63,16 +66,11 @@ display:
             previous: ‹‹
             next: ››
       style:
-        type: grid
+        type: default
         options:
           grouping: {  }
-          columns: 4
-          automatic_width: true
-          alignment: horizontal
-          col_class_default: true
-          col_class_custom: ''
-          row_class_default: true
-          row_class_custom: ''
+          row_class: ''
+          default_row_class: true
       row:
         type: fields
       fields:
@@ -261,8 +259,7 @@ display:
         - 'languages:language_interface'
         - url.query_args
         - user
-      tags:
-        - 'config:core.entity_view_display.seo_flink.seo_flink.default'
+      tags: {  }
   page_1:
     display_plugin: page
     id: page_1
@@ -277,5 +274,25 @@ display:
         - 'languages:language_interface'
         - url.query_args
         - user
-      tags:
-        - 'config:core.entity_view_display.seo_flink.seo_flink.default'
+      tags: {  }
+  rest_export_1:
+    display_plugin: rest_export
+    id: rest_export_1
+    display_title: 'REST export'
+    position: 2
+    display_options:
+      row:
+        type: data_field
+      pager:
+        type: none
+        options:
+          offset: 0
+      path: admin/seo_flink/export.csv
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+        - url.query_args
+        - user
+      tags: {  }
