@@ -2,10 +2,8 @@ langcode: zh-hans
 status: true
 dependencies:
   module:
-    - rest
     - serialization
     - spiders
-    - views_plus
 id: spiders_group
 label: 蜘蛛防火墙配置
 module: views
@@ -21,10 +19,11 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: perm
+        options:
+          perm: 'administer spiders group entities'
       cache:
-        type: tag_with_display_tags
+        type: tag
         options: {  }
       query:
         type: views_query
@@ -367,20 +366,7 @@ display:
           absolute: false
           entity_type: spiders_group
           plugin_id: entity_link_delete
-      filters:
-        status:
-          value: '1'
-          table: spiders_group_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: spiders_group
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
+      filters: {  }
       sorts: {  }
       title: 蜘蛛防火墙配置
       header: {  }
@@ -389,6 +375,9 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      filter_groups:
+        operator: AND
+        groups: {  }
     cache_metadata:
       max-age: -1
       contexts:
