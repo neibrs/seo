@@ -58,17 +58,22 @@ class StationModelForm extends ContentEntityForm {
         unset($form[$child]);
       }
     }
+    if (!$this->entity->isNew()) {
+      $form['base']['config_dir']['#disabled'] = TRUE;
+    }
     if (!$this->getEntity()->isNew()) {
       $form['advanced'] = [
         '#type' => 'details',
         '#title' => '模板URL规则列表 (<span class="description-red">先保存，再设置url规则</span> )',
         '#open' => TRUE,
       ];
+      $tip = "";
+      $tip .= "<span class=\"description-red\">随机模式：即生成的url地址里包含有随机参数，生成的url就是无限模式</span><br/>";
+//      $tip .= "<span class=\"description-red\">固定模式：生成的url地址随内容库的条数所定，例如：文章库的txt有999行，则内容页url最多为999条。</span><br/>";
+//      $tip .= "<span class=\"description-red\">注：修改url规则后，需清除url规则缓存才生效</span>";
       $form['advanced']['rule_url_help'] = [
         '#type' => 'item',
-        '#markup' => '<span class="description-red">随机模式：即生成的url地址里包含有随机参数，生成的url就是无限模式</span><br/>
-                    <span class="description-red">固定模式：生成的url地址随内容库的条数所定，例如：文章库的txt有999行，则内容页url最多为999条。</span><br/>
-                    <span class="description-red">注：修改url规则后，需清除url规则缓存才生效</span>',
+        '#markup' => $tip,
         '#weight' => -10,
         '#attributes' => [
           'class' => [
