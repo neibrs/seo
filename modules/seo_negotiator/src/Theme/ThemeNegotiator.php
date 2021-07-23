@@ -78,12 +78,14 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
         // Get all avaiable themes.
         $themes = \Drupal::service('theme_handler')->rebuildThemeData();
         uasort($themes, 'system_sort_modules_by_info_name');
-        $type_themes = array_filter($themes, function ($theme, $type) {
+        $type_themes = [];
+        foreach ($themes as $theme) {
           if (isset($theme->info['seo_theme']) && $theme->info['seo_theme'] == $type) {
-            return $theme;
+            return $theme->info['name'];
           }
-        });
-        return reset($type_themes);
+        }
+        $theme = reset($type_themes);
+        return $theme->info['name'];
       }
     }
 
