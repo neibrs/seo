@@ -1,6 +1,6 @@
 
 seo_flink.tools:
-  title: 'Tools'
+  title: '工具'
   route_name: entity.seo_flink.collection
   parent: system.seo
   weight: 100
