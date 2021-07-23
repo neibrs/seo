@@ -84,7 +84,8 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
             return $theme;
           }
         }
-        return reset($type_themes);
+        $theme = reset($type_themes);
+        return $theme->info['name'];
       }
     }
 
