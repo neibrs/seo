@@ -14,6 +14,11 @@ class SpiderRequest implements EventSubscriberInterface {
   }
 
   public function onKernelRequest(RequestEvent $event) {
-    \Drupal::service('spiders.user_agent')->determineSpider(\Drupal::request());
+    $spider_groups = \Drupal::entityTypeManager()->getStorage('spider_group')->loadMultiple();
+    foreach ($spider_groups as $spider_group) {
+      if ($spider_group->status->value) {
+        \Drupal::service('spiders.user_agent')->determineSpider(\Drupal::request());
+      }
+    }
   }
 }
