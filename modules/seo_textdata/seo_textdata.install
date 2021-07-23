@@ -140,7 +140,7 @@ function getFileByPath($path, $filename, $textdata_type, $model) {
   }
   $edit = [
     'name' => $file->getFilename(),
-    'type' => 'title',
+    'type' => $textdata_type,
     'model' => $model->id(),
     'attachment' => $file,
   ];
