@@ -6,3 +6,5 @@ dependencies:
       - spiders
 id: iask
 label: 新浪爱问
+source: ''
+user_agent: "iaskspider/2.0(+\r\nMozilla/5.0 (compatible; iaskspider/1.0; MSIE 6.0)"

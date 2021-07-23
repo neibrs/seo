@@ -6,3 +6,5 @@ dependencies:
       - spiders
 id: sougou
 label: 搜狗
+source: ''
+user_agent: "Sogou web spider/3.0(+\r\nSogou Push Spider/3.0(+"

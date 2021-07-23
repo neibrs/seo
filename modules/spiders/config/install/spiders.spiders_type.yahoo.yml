@@ -6,3 +6,5 @@ dependencies:
       - spiders
 id: yahoo
 label: 雅虎
+source: ''
+user_agent: "Mozilla/5.0 (compatible; Yahoo! Slurp China;\r\nMozilla/5.0 (compatible; Yahoo! Slurp;\r\n"

@@ -6,3 +6,5 @@ dependencies:
       - spiders
 id: baidu
 label: 百度
+source: ''
+user_agent: "Baiduspider+(+"
