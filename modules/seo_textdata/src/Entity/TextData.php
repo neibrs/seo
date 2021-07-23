@@ -114,7 +114,7 @@ class TextData extends ContentEntityBase implements TextDataInterface {
       ])
       ->setDefaultValue('')
       ->setDisplayOptions('view', [
-        'label' => 'above',
+        'label' => 'inline',
         'type' => 'string',
         'weight' => -4,
       ])

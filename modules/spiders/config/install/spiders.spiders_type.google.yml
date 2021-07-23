@@ -6,3 +6,5 @@ dependencies:
       - spiders
 id: google
 label: Google
+source: ''
+user_agent: "Mozilla/5.0 (compatible; Googlebot/2.1;\r\nGooglebot/2.1 (+\r\nGooglebot/2.1 (+"

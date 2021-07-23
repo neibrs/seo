@@ -3,6 +3,9 @@
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\StreamWrapper\PublicStream;
+use Drupal\file\Entity\File;
+use Drupal\seo_textdata\Entity\TextData;
 use Drupal\taxonomy\Entity\Term;
 
 /**
@@ -46,6 +49,20 @@ function seo_textdata_install($is_syncing) {
     ]);
     $term->save();
   }
+
+  // init textdata
+  $model = \Drupal::entityTypeManager()->getStorage('seo_station_model')->loadByProperties([
+    'config_dir' => 'news',
+  ]);
+
+  $data_path = drupal_get_path('module', 'seo_textdata');
+  $source = $data_path . '/data/';
+
+  getFileByPath($source, 'title.txt', 'title', $model);
+  getFileByPath($source, 'body.txt', 'article', $model);
+  getFileByPath($source, 'type_all.txt', 'typename', $model);
+  getFileByPath($source, 'webname.txt', 'webname', $model);
+
 }
 
 /**
@@ -85,4 +102,47 @@ function seo_textdata_update_9004(&$sandbox) {
   $config_update = Drupal::service('config_update.config_update');
   $config_update->import('field_storage_config', 'taxonomy_term.field_station_model');
   $config_update->import('field_config', 'taxonomy_term.typename.field_station_model');
+}
+
+/**
+ * Implements hook_update_N() 初始化默认文件.
+ */
+function seo_textdata_update_9008(&$sandbox) {
+  // Create default body.
+  $model = \Drupal::entityTypeManager()->getStorage('seo_station_model')->loadByProperties([
+    'config_dir' => 'news',
+  ]);
+
+  $data_path = drupal_get_path('module', 'seo_textdata');
+  $source = $data_path . '/data/';
+
+  getFileByPath($source, 'title.txt', 'title', $model);
+  getFileByPath($source, 'body.txt', 'article', $model);
+  getFileByPath($source, 'type_all.txt', 'typename', $model);
+  getFileByPath($source, 'webname.txt', 'webname', $model);
+
+}
+
+function getFileByPath($path, $filename, $textdata_type, $model) {
+  $path .= $filename;
+  $file_path = Drupal::service('file_system')->copy($path, 'public://textdata/' . $textdata_type);
+  $file = File::create([
+    'filename' => $filename,
+    'uri' => $file_path,
+    'filemime' => 'text/plain',
+    'status' => FILE_STATUS_PERMANENT,
+  ]);
+  $file->save();
+
+  $model = reset($model);
+  if (empty($model)) {
+    return;
+  }
+  $edit = [
+    'name' => $file->getFilename(),
+    'type' => $textdata_type,
+    'model' => $model->id(),
+    'attachment' => $file,
+  ];
+  TextData::create($edit)->save();
 }
