@@ -75,18 +75,21 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
         }
         $type = $station->model->entity->config_dir->value;
 
-        if (empty($type)) {
-          return 'xbarrio';
-        }
+//        if (empty($type)) {
+//          return 'xbarrio';
+//        }
 
         // Get all avaiable themes.
         $themes = \Drupal::service('theme_handler')->rebuildThemeData();
         uasort($themes, 'system_sort_modules_by_info_name');
-        $type_themes = array_filter($themes, function ($theme, $type) {
+        $type_themes = [];
+        foreach ($themes as $theme) {
           if (isset($theme->info['seo_theme']) && $theme->info['seo_theme'] == $type) {
             return $theme;
           }
-        });
+        }
+//        $type_themes = array_filter($themes, function ($theme, $type) {
+//        });
         return reset($type_themes);
       }
     }
