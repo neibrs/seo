@@ -183,7 +183,7 @@ function getTextdataArrayFromUri($uri) {
  * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
  */
 function getAllTaxonomyByTextdata($textdata = NULL): array {
-  if (!empty($textdata)) {
+  if (empty($textdata) || empty($textdata->attachment->target_id)) {
     return [];
   }
   $text = getTextdataArrayFromUri($textdata->attachment->entity->getFileUri());
