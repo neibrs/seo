@@ -20,14 +20,114 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     return $this->negotiateRoute($route_match) ?: NULL;
   }
 
+  public function getWildSiteMode($request, $domain, $station) {
+    $host = $request->getHost();
+    if ($pos = strpos($domain, '*.') !== FALSE) {
+      // Yes,
+      if (preg_match('#' . substr($domain, $pos). '$#', $host)) {
+        return $this->getThemeByStation($station);
+      }
+      else {
+        return '';
+      }
+    }
+
+    if ($host == $domain) {
+      return $this->getThemeByStation($station);
+    }
+    else {
+      return '';
+    }
+  }
+
+  public function getSingleSiteMode($request, $domain, $station) {
+    $host = $request->getHost();
+    if ($host == $domain) {
+      return $this->getThemeByStation($station);
+    }
+    return '';
+  }
+
+  public function getThemeByStation($station) {
+    // get theme;
+    $type = $station->model->entity->config_dir->value;
+
+    // Get all avaiable themes.
+    $themes = \Drupal::service('theme_handler')->rebuildThemeData();
+    uasort($themes, 'system_sort_modules_by_info_name');
+
+    $type_themes = [];
+    foreach ($themes as $theme) {
+      if (isset($theme->info['seo_theme']) && $theme->info['seo_theme'] == $type) {
+        $type_themes[] = $theme->getName();
+      }
+    }
+
+    $i = array_rand($type_themes, 1);
+    return $type_themes[$i];
+  }
+
+  public function getThemeByRequest($request) {
+    $stations = \Drupal::entityTypeManager()->getStorage('seo_station')->loadMultiple();
+    $theme = '';
+    foreach ($stations as $station) {
+      $domains = array_unique(explode(',', str_replace("\r\n",",", $station->domain->value)));
+      $domains = array_filter($domains);
+      foreach ($domains as $domain) {
+        // Station 是否是泛域名模式
+        // 是
+        if ($station->site_mode->value) {
+          $theme = $this->getWildSiteMode($request, $domain, $station);
+        }
+        // 否
+        else {
+          $theme = $this->getSingleSiteMode($request, $domain, $station);
+        }
+      }
+      if (empty($theme)) {
+        continue;
+      }
+      else {
+        break;
+      }
+    }
+
+    return $theme;
+  }
+
+  public function getThemeByNegotiator($request) {
+    $theme_negotiator_storage = \Drupal::entityTypeManager()->getStorage('seo_negotiator');
+    $negs = $theme_negotiator_storage->loadMultiple();
+    $host = $request->getHost();
+    foreach ($negs as $neg) {
+      if ($pos = strpos($neg->name->value, '*.') !== FALSE) {
+        if (preg_match('#' . substr($neg->label(), 2). '$#', $host, $match)) {
+          return $neg->theme->value;
+        }
+        else {
+          continue;
+        }
+      }
+
+      if ($host == $neg->name->value) {
+        return $neg->theme->value;
+      }
+      else {
+        continue;
+      }
+    }
+
+    return '';
+  }
+
   /**
    * {@inheritDoc}
    */
   private function negotiateRoute(RouteMatchInterface $route_match) {
     $request = \Drupal::request();
-    $theme_name = $this->getThemeByRequest($request);
+    $theme_name = $this->getThemeByNegotiator($request);
     if (empty($theme_name)) {
-      $theme_name = $this->getDynamicTheme($request);
+      $theme_name = $this->getThemeByRequest($request);
     }
 
     // Get admin theme
@@ -59,87 +159,4 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     return FALSE;
   }
 
-  protected function getDynamicTheme($request): string {
-    $theme_name = '';
-    $stations = \Drupal::entityTypeManager()->getStorage('seo_station')->loadMultiple();
-    foreach ($stations as $station) {
-      $domain = array_unique(explode(',', str_replace("\r\n",",", $station->domain->value)));
-      $domain = array_filter($domain, function ($item) {
-        if (!empty($item)) {
-          return $item;
-        }
-      });
-      foreach ($domain as $item) {
-        if ($item != $request->getHost()) {
-          continue;
-        }
-        $type = $station->model->entity->config_dir->value;
-
-        // Get all avaiable themes.
-        $themes = \Drupal::service('theme_handler')->rebuildThemeData();
-        uasort($themes, 'system_sort_modules_by_info_name');
-        $type_themes = [];
-        foreach ($themes as $theme) {
-          if (isset($theme->info['seo_theme']) && $theme->info['seo_theme'] == $type) {
-            return $theme->getName();
-          }
-        }
-        $theme = reset($type_themes);
-        return $theme->getName();
-      }
-    }
-
-    return $theme_name;
-  }
-
-  protected function getThemeByRequest($request) {
-    $theme_negotiator_storage = \Drupal::entityTypeManager()->getStorage('seo_negotiator');
-    $theme = $full_path = '';
-    // 1. full
-    // 2. wild
-    $full_path = $request->getHost();
-    $full_path .= ':' . $request->getPort();
-    $full_path .= $request->getPathInfo();
-    $negotiators = $theme_negotiator_storage->loadByProperties([
-      'name' => $full_path,
-    ]);
-    if (!empty($negotiators)) {
-      $negotiator = reset($negotiators);
-      return $negotiator->get('theme')->value;
-    }
-
-    //域名完全相等的情况
-    $domain = $request->getHost();
-    $negotiators = $theme_negotiator_storage->loadByProperties([
-      'name' => $domain,
-    ]);
-    if (!empty($negotiators)) {
-      $negotiator = reset($negotiators);
-      return $negotiator->get('theme')->value;
-    }
-
-    // 下面是泛域名解析 wild domain.
-    $host_arr = explode('.', $domain);
-
-    // 多级域名时，需要递归处理最接近的一个泛域名
-    $count = count($host_arr);
-    if($count < 3){
-      return ''; // 如果数组小于3， 就当成没有模板处理， 返回空
-    }
-    for ($i = 1; $i < $count - 1; $i++){
-      $sub_domains = array_slice($host_arr, $i);
-      $wild_string = '*.' . implode('.', $sub_domains);
-
-      $negotiators = $theme_negotiator_storage->loadByProperties([
-        'name' => $wild_string,
-      ]);
-      if (!empty($negotiators)) {
-        $negotiator = reset($negotiators);
-        $theme = $negotiator->get('theme')->value;
-        break;
-      }
-    }
-
-    return $theme;
-  }
 }
