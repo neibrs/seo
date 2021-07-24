@@ -192,4 +192,3 @@ function seo_negotiator_xmlsitemap_context() {
 
   return $context;
 }
-

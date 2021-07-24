@@ -227,3 +227,62 @@ function getAllTaxonomyByTextdata($textdata = NULL): array {
   }
   return $terms;
 }
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function seo_textdata_preprocess_page(&$variables) {
+  // 自动设置网站名称
+  try {
+    $theme_info = \Drupal::service('theme.manager')->getActiveTheme()->getExtension()->info;
+    if (!isset($theme_info['seo_theme'])) {
+      return;
+    }
+
+    // 栏目
+//    $storage = \Drupal::entityTypeManager()->getStorage('taxonomy');
+//    $entities = $storage->loadByProperties([
+//      'field_station_model' => $theme_info['seo_theme'],
+//    ]);
+    // 网站名称
+    $textdata_storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
+    $textdata_query = $textdata_storage->getQuery();
+    $textdata_query->condition('type', 'webname');
+    $textdata_query->condition('model.entity.config_dir', $theme_info['seo_theme']);
+    $ids = $textdata_query->execute();
+    if (empty($ids)) {
+      return;
+    }
+    $textdata = $textdata_storage->load($ids[array_rand($ids, 1)]);
+
+    if (!empty($textdata->attachment->target_id)) {
+      $webnames = getTextdataArrayFromUri($textdata->attachment->entity->getFileUri());
+      $webname = $webnames[array_rand($webnames, 1)];
+      $variables['wild_web_name'] = [
+        '#markup' => trim(strip_tags($webname)),
+      ];
+      $site_config = \Drupal::configFactory()->getEditable('system.site');
+      $site_config->set('name', $webname)->save();
+    }
+
+    if (\Drupal::moduleHandler()->moduleExists('seo_logo')) {
+      // Get logo
+      $storage = \Drupal::entityTypeManager()->getStorage('seo_logo');
+      $query = $storage->getQuery();
+      $ids = $query->execute();
+      if (empty($ids)) {
+        return;
+      }
+      $logo = $storage->load($ids[array_rand($ids, 1)]);
+      $file = $logo->file;
+      if (empty($file->target_id)) {
+        return;
+      }
+      $variables['wild_logo'] = ['#markup' => file_create_url($file->entity->getFileUri())];
+    }
+  }
+  catch (\Exception $e) {
+
+  }
+
+}

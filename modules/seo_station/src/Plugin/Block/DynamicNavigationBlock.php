@@ -84,9 +84,11 @@ class DynamicNavigationBlock extends BlockBase implements ContainerFactoryPlugin
    */
   public function build() {
     $build = [];
+    $theme_info = \Drupal::service('theme.manager')->getActiveTheme()->getExtension()->info;
     /** @var \Drupal\taxonomy\TermInterface [] $terms */
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties([
       'vid' => 'typename',
+      'field_station_model' => $theme_info['seo_theme'],
     ]);
     if (empty($terms)) {
       return $build;
@@ -99,7 +101,7 @@ class DynamicNavigationBlock extends BlockBase implements ContainerFactoryPlugin
       $build['items'][$term->id()] = [
         'id' => $term->id(),
         'name' => $term->label(),
-        'link' => $term->toUrl(),
+        'link' => $term->path->alias,
         'active' => FALSE,
       ];
       $parameters = \Drupal::routeMatch()->getParameters();
