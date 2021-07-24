@@ -129,6 +129,7 @@ function getFileByPath($path, $filename, $textdata_type, $model) {
   $file = File::create([
     'filename' => $filename,
     'uri' => $file_path,
+    'filesize' => @filesize($file_path),
     'filemime' => 'text/plain',
     'status' => FILE_STATUS_PERMANENT,
   ]);
