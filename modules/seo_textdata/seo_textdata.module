@@ -244,26 +244,12 @@ function seo_textdata_preprocess_page(&$variables) {
 //    $entities = $storage->loadByProperties([
 //      'field_station_model' => $theme_info['seo_theme'],
 //    ]);
-    // 网站名称
-    $textdata_storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
-    $textdata_query = $textdata_storage->getQuery();
-    $textdata_query->condition('type', 'webname');
-    $textdata_query->condition('model.entity.config_dir', $theme_info['seo_theme']);
-    $ids = $textdata_query->execute();
-    if (empty($ids)) {
-      return;
-    }
-    $textdata = $textdata_storage->load($ids[array_rand($ids, 1)]);
-
-    if (!empty($textdata->attachment->target_id)) {
-      $webnames = getTextdataArrayFromUri($textdata->attachment->entity->getFileUri());
-      $webname = $webnames[array_rand($webnames, 1)];
-      $variables['wild_web_name'] = [
-        '#markup' => trim(strip_tags($webname)),
-      ];
-      $site_config = \Drupal::configFactory()->getEditable('system.site');
-      $site_config->set('name', $webname)->save();
-    }
+    $webname = \Drupal::service('seo_textdata.manager')->getWebname($theme_info);
+    $variables['wild_web_name'] = [
+      '#markup' => trim(strip_tags($webname)),
+    ];
+    $site_config = \Drupal::configFactory()->getEditable('system.site');
+    $site_config->set('name', $webname)->save();
 
     if (\Drupal::moduleHandler()->moduleExists('seo_logo')) {
       // Get logo

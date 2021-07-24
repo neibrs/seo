@@ -1,0 +1,3 @@
+services:
+  seo_textdata.manager:
+    class: Drupal\seo_textdata\TextdataManager
