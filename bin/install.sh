@@ -35,7 +35,6 @@ vendor/bin/drush en -y seoer
 
 vendor/bin/drush en -y \
   dsi_login \
-  seo_grant \
   seo_station_model \
   seo_station_model_url \
   seo_station \
@@ -49,7 +48,6 @@ vendor/bin/drush en -y \
   spiders
 
 vendor/bin/drush en -y seo_front
-#vendor/bin/drush en -y seo_content
 vendor/bin/drush en -y dsi_block
 vendor/bin/drush pmu -y toolbar
 
