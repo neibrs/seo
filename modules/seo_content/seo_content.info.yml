@@ -1,6 +1,0 @@
-name: 'seo_content'
-type: module
-description: 'SEO 站点前台内容，官网性质，可发布新闻，技术日志等.'
-core: 8.x
-core_version_requirement: ^8 || ^9
-package: 'Dsi'
