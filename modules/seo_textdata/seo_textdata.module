@@ -214,7 +214,7 @@ function getAllTaxonomyByTextdata($textdata = NULL): array {
       $taxonomy = $storage->create([
         'name' => $name,
         'vid' => 'typename',
-        'path' => '/' . $transliteration->transliterate($name, $transliteration),
+        'path' => '/' . $transliteration->transliterate($name),
         'field_station_model' => $config_dir,
         // TODO, 添加station来标识?
       ]);
