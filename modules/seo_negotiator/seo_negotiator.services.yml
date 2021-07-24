@@ -6,7 +6,7 @@ services:
     tags:
       - { name: theme_negotiator, priority: 1000 }
   seo_negotiator.twig_extension:
-    class: Drupal\seo_negotiator\TwigExtension\TwigMbSliceExtension
+    class: 'Drupal\seo_negotiator\TwigExtension\TwigMbSliceExtension'
     tags:
       - { name: twig.extension }
   seo_negotiator.manager:
