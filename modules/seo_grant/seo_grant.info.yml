@@ -1,6 +1,0 @@
-name: 'Seo 授权码管理'
-type: module
-description: 'SEO 授权码管理'
-core: 8.x
-core_version_requirement: ^8 || ^9
-package: 'Dsi'
