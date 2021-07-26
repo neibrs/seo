@@ -66,7 +66,7 @@ class StationController extends ControllerBase {
 
         unset($arr['station']);
         $arr['replacement'] = $replacement;
-        $arr['name'] = $domain . '/' . $replacement;
+        $arr['name'] = $d . '/' . $replacement;
 
         // 所有生成的泛域名需要保存.
         \Drupal::moduleHandler()->alter('station_address_process', $new_arr);
