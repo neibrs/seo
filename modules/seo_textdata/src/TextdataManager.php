@@ -23,7 +23,7 @@ class TextdataManager implements TextdataManagerInterface {
    * @throws \Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException
    * @throws \Drupal\Component\Plugin\Exception\PluginNotFoundException
    */
-  public function getWebname($theme_info) {
+  public function getWebnameByStationAddress($theme_info) {
     $sitename = '';
     $host = \Drupal::request()->getHost();
     $storage = $this->entityTypeManager->getStorage('seo_station_address');
@@ -180,7 +180,7 @@ class TextdataManager implements TextdataManagerInterface {
     if (empty($web_name)) {
       // TODO, 自动追加网站名称到站点设置里面
       // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
-      $web_name = $this->getWebName($station);
+      $web_name = $this->getWebNameByTextdata($station);
       $web_name = trim(strip_tags($web_name));
       if (!empty($web_name)) {
         $field_metadata['title'] = '[node:title]-' . $web_name;
@@ -213,7 +213,7 @@ class TextdataManager implements TextdataManagerInterface {
     return [$web_name, $field_metadata];
   }
 
-  public function getWebName($station) {
+  public function getWebNameByTextdata($station) {
     $ds = [];
     if ($station->site_name->target_id) {
       $web_name = $station->site_name->entity;
