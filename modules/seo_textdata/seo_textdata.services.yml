@@ -1,3 +1,4 @@
 services:
   seo_textdata.manager:
     class: Drupal\seo_textdata\TextdataManager
+    arguments: ['@entity_type.manger']
