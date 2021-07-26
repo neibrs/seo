@@ -71,6 +71,10 @@ class StationController extends ControllerBase {
         // 所有生成的泛域名需要保存.
         \Drupal::moduleHandler()->alter('station_address_process', $new_arr);
 
+        // 方案二
+//        $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+//        $station_address = $storage->create($arr);
+//        $station_address->save();
       }
     }
 
