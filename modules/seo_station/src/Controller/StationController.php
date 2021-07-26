@@ -49,14 +49,9 @@ class StationController extends ControllerBase {
           continue;
         }
 
-        $replacements = [];
-        for($i = 0; $i < $number; $i++) {
-          $real_data = \Drupal::service('seo_station.token.manager')->generate([$rule]);
-          $replacements[] = reset($real_data);
-        }
-        foreach ($replacements as $replacement) {
-          $links[] = $_SERVER['REQUEST_SCHEME'] . '://' . $d . '/' . $replacement;
-        }
+        // 每个域名下只生成一条真实数据
+        $real_data = \Drupal::service('seo_station.token.manager')->generate([$rule]);
+        $replacement = reset($real_data);
 
         // 生成真实的链接数据，并加入相应的队列.
         // 插入队列.
@@ -64,10 +59,10 @@ class StationController extends ControllerBase {
           'station' => $station->id(),
           'domain' => $d,
         ];
-        foreach ($replacements as $replacement) {
-          $new_arr = $arr + ['replacement' => $replacement];
-          \Drupal::moduleHandler()->alter('link_rule_data', $new_arr);
-        }
+
+        $new_arr = $arr + ['replacement' => $replacement];
+        \Drupal::moduleHandler()->alter('link_rule_data', $new_arr);
+
       }
     }
 
