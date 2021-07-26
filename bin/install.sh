@@ -49,7 +49,7 @@ vendor/bin/drush en -y \
 
 vendor/bin/drush en -y seo_front
 vendor/bin/drush en -y dsi_block
-vendor/bin/drush pmu -y toolbar && \
+vendor/bin/drush pmu -y toolbar \
   update
 
 # 以下部分，始终放到最后处理.
