@@ -78,7 +78,7 @@ class TextdataManager implements TextdataManagerInterface {
     return explode('******', $dst);
   }
 
-  protected function getFileUri($station, $type = 'article', $field = NULL) {
+  public function getFileUri($station, $type = 'article', $field = NULL) {
     $con = NULL;
     $textdata_storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
     // Use locale content library.
@@ -120,7 +120,7 @@ class TextdataManager implements TextdataManagerInterface {
 
   // ================================
 
-  protected function getBody($station) {
+  public function getBody($station, $default_title) {
     $body = $this->getFileUri($station, 'article', 'site_node');
 
     if (empty($body)) {
@@ -131,7 +131,21 @@ class TextdataManager implements TextdataManagerInterface {
     // 随机模式
     $data = seo_textdata_auto_read($uri);
     $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
-    $dst = $ds[mt_rand(0, count($ds))];
+
+    $index = 0;
+    foreach ($ds as $i => $d) {
+      if (strpos($d, $default_title . '******') !== FALSE) {
+        $index = $i;
+        break;
+      }
+    }
+    $dst = '';
+    if ($index) {
+      $dst = $ds[$index];
+    }
+    else {
+      $dst = $ds[mt_rand(0, count($ds))];
+    }
     return explode('******', $dst);
   }
 
@@ -309,5 +323,44 @@ class TextdataManager implements TextdataManagerInterface {
     }
 
     return $tkdb_values;
+  }
+
+  public function generateNodeFields(&$entity) {
+    // 生成内容
+    // 生成标签
+    // 生成图片
+    $text_body = $this->getBody($entity->field_station->entity, $entity->label());
+
+    //  // 分类
+    $taxonomies = $this->getTaxonomyValues($entity->field_station->entity);
+    // 初始化node的值, 及Site name.
+//    [$site_name, $tkdb_values] = $this->getTkdbValues($data, $entity->field_station->entity);
+    // 提取文章分类到标题后缀
+    // 构造一个tid的数组.
+    $rand_tids = [];
+    if (!empty($taxonomies)) {
+      $rand_tids = array_rand($taxonomies, 5);
+    }
+    if (!is_array($rand_tids)) {
+      $rand_tids[] = $rand_tids;
+    }
+    $rs_rand_tid = reset($rand_tids);
+    $term = $taxonomies[$rs_rand_tid];
+//    $tkdb_values = $this->appendTaxonomy2Title($term, $tkdb_values, $site_name);
+
+    $values = [
+      'body' => [
+        'value' => $text_body[1],
+        'summary' => mb_substr($text_body[1], 0, 100),
+        'format' => 'basic_html',
+      ],
+      'field_tags' => $rand_tids,
+    ];
+
+    foreach ($values as $key => $val) {
+      $entity->set($key, $val);
+    }
+
+    return $entity;
   }
 }

@@ -277,11 +277,13 @@ function seo_textdata_preprocess_page(&$variables) {
 
 // 针对节点显示
 /**
- * Implements hook_ENTITY_TYPE_view() for node_view.
+ * Implements hook_ENTITY_TYPE_storage_load().
  */
-function seo_textdata_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  // 生成内容
-  // 生成标签
-  // 生成图片
-
+function seo_textdata_node_storage_load(array $entities) {
+  foreach ($entities as $entity) {
+    if (empty($entity->body->value)) {
+      $entity = \Drupal::service('seo_textdata.manager')->generateNodeFields($entity);
+      $entity->save();
+    }
+  }
 }
