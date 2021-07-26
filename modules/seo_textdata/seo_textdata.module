@@ -5,6 +5,8 @@
  * Contains seo_textdata.module.
  */
 
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Url;
 
@@ -113,7 +115,7 @@ function seo_textdata_block_access(\Drupal\block\Entity\Block $block, $operation
 /**
  * Implements hook_entity_operation().
  */
-function seo_textdata_entity_operation(\Drupal\Core\Entity\EntityInterface $entity) {
+function seo_textdata_entity_operation(EntityInterface $entity) {
   $operations = [];
   switch ($entity->getEntityTypeId()) {
     case 'seo_textdata':
@@ -149,7 +151,7 @@ function seo_textdata_entity_operation(\Drupal\Core\Entity\EntityInterface $enti
 /**
  * Implements hook_entity_operation_alter().
  */
-function seo_textdata_entity_operation_alter(array &$operations, \Drupal\Core\Entity\EntityInterface $entity) {
+function seo_textdata_entity_operation_alter(array &$operations, EntityInterface $entity) {
   if ($entity->getEntityTypeId() == 'seo_textdata') {
     unset($operations['edit']);
   }
@@ -270,5 +272,16 @@ function seo_textdata_preprocess_page(&$variables) {
   catch (\Exception $e) {
 
   }
+
+}
+
+// 针对节点显示
+/**
+ * Implements hook_ENTITY_TYPE_view() for node_view.
+ */
+function seo_textdata_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  // 生成内容
+  // 生成标签
+  // 生成图片
 
 }

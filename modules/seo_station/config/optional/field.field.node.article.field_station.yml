@@ -1,0 +1,25 @@
+langcode: zh-hans
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_station
+    - node.type.article
+id: node.article.field_station
+field_name: field_station
+entity_type: node
+bundle: article
+label: 网站管理
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:seo_station'
+  handler_settings:
+    target_bundles: null
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+field_type: entity_reference

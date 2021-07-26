@@ -94,3 +94,12 @@ function seo_station_update_9003(&$sandbox) {
     ->setDefaultValue(FALSE);
   $entity_definition_update_manager->installFieldStorageDefinition('use_official', 'seo_station', 'seo_station', $storage_definition);
 }
+
+/**
+ * Implements hook_update_N() add field_station for node article.
+ */
+function seo_station_update_9004(&$sandbox) {
+  $config_update = Drupal::service('config_update.config_update');
+  $config_update->import('field_storage_config', 'node.field_station');
+  $config_update->import('field_config', 'node.article.field_station');
+}

@@ -1,0 +1,19 @@
+langcode: zh-hans
+status: true
+dependencies:
+  module:
+    - node
+    - seo_station
+id: node.field_station
+field_name: field_station
+entity_type: node
+type: entity_reference
+settings:
+  target_type: seo_station
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
