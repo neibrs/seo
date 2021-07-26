@@ -246,7 +246,7 @@ function seo_textdata_preprocess_page(&$variables) {
 //    $entities = $storage->loadByProperties([
 //      'field_station_model' => $theme_info['seo_theme'],
 //    ]);
-    $webname = \Drupal::service('seo_textdata.manager')->getWebname($theme_info);
+    $webname = \Drupal::service('seo_textdata.manager')->getWebnameByStationAddress($theme_info);
     $variables['wild_web_name'] = [
       '#markup' => trim(strip_tags($webname)),
     ];
