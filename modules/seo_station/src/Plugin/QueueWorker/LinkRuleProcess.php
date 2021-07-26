@@ -91,7 +91,6 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
           'format' => 'basic_html',
         ],
         'path' => '/'.$data['replacement'],//Alias
-//        'domain' => $data['domain'], //domain该字段未添加
         'field_metatag' => [
           'value' => serialize($tkdb_values),
         ],
