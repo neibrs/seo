@@ -45,19 +45,8 @@ class StationAddressProcess extends QueueWorkerBase implements ContainerFactoryP
    * {@inheritdoc}
    */
   public function processItem($data) {
-    try {
-//      data结构
-//      $data = [
-//        'name' => 'dxxdf.sdfd.com/show/2343.html',
-//        'domain' => 'dxxdf.sdfd.com',
-//        'replacement' => '/show/2343.html',
-//      ];
-      $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
-      $station_address = $storage->create($data);
-      $station_address->save();
-    }
-    catch (\Exception $e) {
-      \Drupal::messenger()->addWarning($e);
-    }
+    $storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+    $station_address = $storage->create($data);
+    $station_address->save();
   }
 }
