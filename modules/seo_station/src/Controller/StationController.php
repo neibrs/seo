@@ -57,7 +57,7 @@ class StationController extends ControllerBase {
         // 生成真实的链接数据，并加入相应的队列.
         // 插入队列.
         $arr = [
-          'station' => $station->id(),
+          'station' => $station,
           'domain' => $d,
         ];
 
