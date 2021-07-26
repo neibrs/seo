@@ -64,6 +64,13 @@ class StationController extends ControllerBase {
         $new_arr = $arr + ['replacement' => $replacement];
         \Drupal::moduleHandler()->alter('link_rule_data', $new_arr);
 
+        unset($arr['station']);
+        $arr['replacement'] = $replacement;
+        $arr['name'] = $domain . '/' . $replacement;
+
+        // 所有生成的泛域名需要保存.
+        \Drupal::moduleHandler()->alter('station_address_process', $new_arr);
+
       }
     }
 
@@ -137,7 +144,6 @@ class StationController extends ControllerBase {
       $domains = \Drupal::service('seo_station.manager')->getMultiDomainByStation($domains, $station, $number);
     }
 
-    // TODO 所有生成的泛域名需要保存.
     return [$domains, $rule];
   }
 

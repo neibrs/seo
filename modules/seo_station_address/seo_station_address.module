@@ -22,3 +22,11 @@ function seo_station_address_help($route_name, RouteMatchInterface $route_match)
     default:
   }
 }
+
+/**
+ * Implements hook_station_address_process_alter().
+ */
+function seo_station_address_station_address_process_alter(array $data) {
+  $queue = \Drupal::queue('station_address_process');
+  $queue->createItem($data);
+}
