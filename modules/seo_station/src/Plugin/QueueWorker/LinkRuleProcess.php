@@ -97,6 +97,7 @@ class LinkRuleProcess extends QueueWorkerBase implements ContainerFactoryPluginI
 //        ],
 //         TODO, Add taxonomy
 //        'field_tags' => $rand_tids, //$tids,
+        'field_station' => $station->id(),
       ];
       // 创建该别名的文章数据.
       $node = $node_storage->create(['type' => 'article']);
