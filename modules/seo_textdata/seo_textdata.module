@@ -283,10 +283,10 @@ function seo_textdata_preprocess_page(&$variables) {
 function seo_textdata_node_storage_load(array $entities) {
   foreach ($entities as $entity) {
     if (empty($entity->body->value)) {
-      $entity = \Drupal::service('seo_textdata.manager')->generateNodeFields($entity);
+//      $entity = \Drupal::service('seo_textdata.manager')->generateNodeFields($entity);
     }
     else {
-      $entity->save();
+//      $entity->save();
     }
   }
 }

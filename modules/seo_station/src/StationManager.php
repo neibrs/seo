@@ -158,7 +158,7 @@ class StationManager implements StationManagerInterface {
     return [
       'id' => ['#markup' => $node->id()],
       'name' => $node->label(),
-      'link' => ['#markup' => $node->toUrl()],
+      'link' => $node->toUrl(),
       'image' => ['#markup' => $file_uri],
       'description' => ['#markup' => $node->get('body')->summary],
       'created' => ['#markup' => $node->created->value],

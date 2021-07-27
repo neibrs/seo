@@ -115,7 +115,7 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
         $ids = $query->execute();
 
         $rand_ids = array_rand($ids, $this->configuration['items']);
-        $nids = [];
+        $new_ids = $nids = [];
         if (!is_array($rand_ids)) {
           $nids[] = $rand_ids;
         }
@@ -123,7 +123,6 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
           if (in_array($id, array_keys($ids))) {
             $new_ids[] = $ids[$id];
           }
-          continue;
         }
 
         $nodes = $node_storage->loadMultiple($new_ids);
