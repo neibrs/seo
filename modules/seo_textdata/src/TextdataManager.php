@@ -67,12 +67,12 @@ class TextdataManager implements TextdataManagerInterface {
 
     // 随机模式
     $ds = getTextdataArrayFromUri($uri);
-    //    if (in_array($body_title, $ds)) {
-    //      return $body_title;
-    //    }
-    //    if (!empty($body_title)) {
-    //      return $body_title;
-    //    }
+    if (in_array($body_title, $ds)) {
+      return $body_title;
+    }
+    if (!empty($body_title)) {
+      return $body_title;
+    }
     $dst = $ds[mt_rand(0, count($ds))];
     //    \Drupal::messenger()->addWarning(t('随机标题: %title', ['%title' => $dst]));
     return explode('******', $dst);

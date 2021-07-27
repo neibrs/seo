@@ -272,21 +272,4 @@ function seo_textdata_preprocess_page(&$variables) {
   catch (\Exception $e) {
 
   }
-
-}
-
-// 针对节点显示
-// TODO
-/**
- * Implements hook_ENTITY_TYPE_storage_load().
- */
-function seo_textdata_node_storage_load(array $entities) {
-  foreach ($entities as $entity) {
-    if (empty($entity->body->value)) {
-//      $entity = \Drupal::service('seo_textdata.manager')->generateNodeFields($entity);
-    }
-    else {
-//      $entity->save();
-    }
-  }
 }
