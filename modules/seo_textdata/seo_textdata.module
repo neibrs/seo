@@ -251,16 +251,7 @@ function seo_textdata_preprocess_page(&$variables) {
 
     $request = \Drupal::request();
 
-    // delete /zh-hans
-//    if (strpos($request->getPathInfo(), '/zh-hans') !== FALSE) {
-//      $address_query->condition('replacement', substr($request->getPathInfo(), 9));
-//    }
-//    else {
-//      $address_query->condition('replacement', substr($request->getPathInfo(), 1));
-//    }
-
     $address_query->condition('domain', $request->getHost());
-
     $ids = $address_query->execute();
 
     $address = NULL;
@@ -278,7 +269,6 @@ function seo_textdata_preprocess_page(&$variables) {
     }
 
     if (!empty($webname)) {
-      // TODO,
       $variables['wild_web_name'] = [
         '#markup' => trim(strip_tags($webname)),
       ];
