@@ -8,6 +8,7 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_help().

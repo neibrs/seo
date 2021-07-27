@@ -111,15 +111,18 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
         // Find nodes.
         $query = $node_storage->getQuery();
         $query->condition('type', 'article');
+//        $query->condition('field_tags.entity.id', $term->id());
         $ids = $query->execute();
 
         $rand_ids = array_rand($ids, $this->configuration['items']);
-        $new_ids = [];
-        foreach ($rand_ids as $id) {
+        $new_ids = $nids = [];
+        if (!is_array($rand_ids)) {
+          $nids[] = $rand_ids;
+        }
+        foreach ($nids as $id) {
           if (in_array($id, array_keys($ids))) {
             $new_ids[] = $ids[$id];
           }
-          continue;
         }
 
         $nodes = $node_storage->loadMultiple($new_ids);

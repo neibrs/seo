@@ -67,18 +67,18 @@ class TextdataManager implements TextdataManagerInterface {
 
     // 随机模式
     $ds = getTextdataArrayFromUri($uri);
-    //    if (in_array($body_title, $ds)) {
-    //      return $body_title;
-    //    }
-    //    if (!empty($body_title)) {
-    //      return $body_title;
-    //    }
+    if (in_array($body_title, $ds)) {
+      return $body_title;
+    }
+    if (!empty($body_title)) {
+      return $body_title;
+    }
     $dst = $ds[mt_rand(0, count($ds))];
     //    \Drupal::messenger()->addWarning(t('随机标题: %title', ['%title' => $dst]));
     return explode('******', $dst);
   }
 
-  protected function getFileUri($station, $type = 'article', $field = NULL) {
+  public function getFileUri($station, $type = 'article', $field = NULL) {
     $con = NULL;
     $textdata_storage = \Drupal::entityTypeManager()->getStorage('seo_textdata');
     // Use locale content library.
@@ -120,7 +120,7 @@ class TextdataManager implements TextdataManagerInterface {
 
   // ================================
 
-  protected function getBody($station) {
+  public function getBody($station, $default_title = NULL) {
     $body = $this->getFileUri($station, 'article', 'site_node');
 
     if (empty($body)) {
@@ -131,7 +131,21 @@ class TextdataManager implements TextdataManagerInterface {
     // 随机模式
     $data = seo_textdata_auto_read($uri);
     $ds = array_unique(explode('-||-', str_replace("\r\n","-||-", $data)));
-    $dst = $ds[mt_rand(0, count($ds))];
+
+    $index = 0;
+    foreach ($ds as $i => $d) {
+      if (strpos($d, $default_title . '******') !== FALSE) {
+        $index = $i;
+        break;
+      }
+    }
+    $dst = '';
+    if ($index) {
+      $dst = $ds[$index];
+    }
+    else {
+      $dst = $ds[mt_rand(0, count($ds))];
+    }
     return explode('******', $dst);
   }
 
@@ -177,20 +191,20 @@ class TextdataManager implements TextdataManagerInterface {
       }
       break;
     }
-    if (empty($web_name)) {
-      // TODO, 自动追加网站名称到站点设置里面
-      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
-      $web_name = $this->getWebNameByTextdata($station);
-      $web_name = trim(strip_tags($web_name));
-      if (!empty($web_name)) {
-        $field_metadata['title'] = '[node:title]-' . $web_name;
-      }
-    }
+//    if (empty($web_name)) {
+//      // TODO, 自动追加网站名称到站点设置里面
+//      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
+//      $web_name = $this->getWebNameByTextdata($station);
+//      $web_name = trim(strip_tags($web_name));
+//      if (!empty($web_name)) {
+//        $field_metadata['title'] = '[node:title]-' . $web_name;
+//      }
+//    }
     try {
       $address_storage = $this->entityTypeManager->getStorage('seo_station_address');
       $address_values = [
         'name' => $data['domain'] . '/' . $data['replacement'],
-        'station' => $data['station'],
+        'station' => $data['station']->id(),
         'domain' => $data['domain'],
         'replacement' => $data['replacement'],
       ];
@@ -287,12 +301,12 @@ class TextdataManager implements TextdataManagerInterface {
     return getAllTaxonomyByTextdata($textdata);
   }
 
-  protected function transliterate($name, $transliteration): string {
+  public function transliterate($name, $transliteration): string {
     /** @var \Drupal\Component\Transliteration\TransliterationInterface $transliteration */
     return $transliteration->transliterate($name, 'zh-hans');
   }
 
-  protected function appendTaxonomy2Title($term, $tkdb_values, $site_name) {
+  public function appendTaxonomy2Title($term, $tkdb_values, $site_name) {
     // 提取文章分类到标题后缀
     if ($term instanceof TermInterface) {
       $tkdb_values['title'] . $term->label();
@@ -309,5 +323,44 @@ class TextdataManager implements TextdataManagerInterface {
     }
 
     return $tkdb_values;
+  }
+
+  public function generateNodeFields(&$entity) {
+    // 生成内容
+    // 生成标签
+    // 生成图片
+    $text_body = $this->getBody($entity->field_station->entity, $entity->label());
+
+    //  // 分类
+    $taxonomies = $this->getTaxonomyValues($entity->field_station->entity);
+    // 初始化node的值, 及Site name.
+//    [$site_name, $tkdb_values] = $this->getTkdbValues($data, $entity->field_station->entity);
+    // 提取文章分类到标题后缀
+    // 构造一个tid的数组.
+    $rand_tids = [];
+    if (!empty($taxonomies)) {
+      $rand_tids = array_rand($taxonomies, 5);
+    }
+    if (!is_array($rand_tids)) {
+      $rand_tids[] = $rand_tids;
+    }
+    $rs_rand_tid = reset($rand_tids);
+    $term = $taxonomies[$rs_rand_tid];
+//    $tkdb_values = $this->appendTaxonomy2Title($term, $tkdb_values, $site_name);
+
+    $values = [
+      'body' => [
+        'value' => $text_body[1],
+        'summary' => mb_substr($text_body[1], 0, 100),
+        'format' => 'basic_html',
+      ],
+      'field_tags' => $rand_tids,
+    ];
+
+    foreach ($values as $key => $val) {
+      $entity->set($key, $val);
+    }
+
+    return $entity;
   }
 }

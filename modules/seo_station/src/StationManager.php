@@ -156,14 +156,14 @@ class StationManager implements StationManagerInterface {
 //    ];
 
     return [
-      'id' => $node->id(),
+      'id' => ['#markup' => $node->id()],
       'name' => $node->label(),
       'link' => $node->toUrl(),
-      'image' => $file_uri,
-      'description' => $node->get('body')->summary,
-      'created' => date('Y-m-d', $node->created->value),
+      'image' => ['#markup' => $file_uri],
+      'description' => ['#markup' => $node->get('body')->summary],
+      'created' => ['#markup' => $node->created->value],
       'field_tag' => empty($field_tags) ? '' : $field_tag->label(),
-      'field_tag_link' =>empty($field_tags) ? '' :  $field_tag->toUrl(),
+      'field_tag_link' =>['#markup' => empty($field_tags) ? '' :  $field_tag->toUrl()],
     ];
   }
 

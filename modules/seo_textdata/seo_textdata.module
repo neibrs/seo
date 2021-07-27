@@ -272,16 +272,4 @@ function seo_textdata_preprocess_page(&$variables) {
   catch (\Exception $e) {
 
   }
-
-}
-
-// 针对节点显示
-/**
- * Implements hook_ENTITY_TYPE_view() for node_view.
- */
-function seo_textdata_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  // 生成内容
-  // 生成标签
-  // 生成图片
-
 }
