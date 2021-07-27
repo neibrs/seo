@@ -4,7 +4,7 @@ dependencies:
   module:
     - seo_station_address
     - serialization
-id: wangzhandezhi
+id: seo_station_address
 label: 网站地址
 module: views
 description: ''
