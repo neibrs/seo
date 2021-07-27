@@ -278,12 +278,14 @@ function seo_textdata_preprocess_page(&$variables) {
       $adr->save();
     }
 
-    // TODO,
-    $variables['wild_web_name'] = [
-      '#markup' => trim(strip_tags($webname)),
-    ];
-    $site_config = \Drupal::configFactory()->getEditable('system.site');
-    $site_config->set('name', $webname)->save();
+    if (!empty($webname)) {
+      // TODO,
+      $variables['wild_web_name'] = [
+        '#markup' => trim(strip_tags($webname)),
+      ];
+      $site_config = \Drupal::configFactory()->getEditable('system.site');
+      $site_config->set('name', $webname)->save();
+    }
 
     if (\Drupal::moduleHandler()->moduleExists('seo_logo')) {
       // Get logo
