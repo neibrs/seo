@@ -15,11 +15,14 @@ class StationController extends ControllerBase implements ContainerInjectionInte
   /** @var \Drupal\Core\Entity\EntityTypeManagerInterface */
   protected $entityTypeManager;
 
+  /** @var \Drupal\seo_textdata\TextdataManagerInterface */
+  protected $textdataManager;
   /**
    * {@inheritDoc}
    */
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
+    $this->textdataManager = \Drupal::service('seo_textdata.manager');
   }
 
   /**
@@ -208,7 +211,7 @@ class StationController extends ControllerBase implements ContainerInjectionInte
     // TODO， 暂时只做一个新闻类型的网站文章数据.
     $node_storage = $this->entityTypeManager->getStorage('node');
 
-    $body = $this->getBody($station);
+    $body = $this->textdataManager->getBody($station);
     if (empty($body)) {
       return;
     }
@@ -220,10 +223,10 @@ class StationController extends ControllerBase implements ContainerInjectionInte
     }
     try {
       // 初始化node的值, 及Site name.
-      [$site_name, $tkdb_values] = $this->getTkdbValues($data, $station);
+      [$site_name, $tkdb_values] = $this->textdataManager->getTkdbValues($data, $station);
 
       // 这里会创建N多，但站群网站却只要几个，矛盾点，待优化
-      $taxonomies = $this->getTaxonomyValues($station);
+      $taxonomies = $this->textdataManager->getTaxonomyValues($station);
 
       // 提取文章分类到标题后缀
       // 构造一个tid的数组.
@@ -236,7 +239,7 @@ class StationController extends ControllerBase implements ContainerInjectionInte
       }
       $rs_rand_tid = reset($rand_tids);
       $term = $taxonomies[$rs_rand_tid];
-      $tkdb_values = $this->appendTaxonomy2Title($term, $tkdb_values, $site_name);
+      $tkdb_values = $this->textdataManager->appendTaxonomy2Title($term, $tkdb_values, $site_name);
 
       $values = [
         'type' => 'article',

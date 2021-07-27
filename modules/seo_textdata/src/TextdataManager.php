@@ -120,7 +120,7 @@ class TextdataManager implements TextdataManagerInterface {
 
   // ================================
 
-  public function getBody($station, $default_title) {
+  public function getBody($station, $default_title = NULL) {
     $body = $this->getFileUri($station, 'article', 'site_node');
 
     if (empty($body)) {
@@ -191,20 +191,20 @@ class TextdataManager implements TextdataManagerInterface {
       }
       break;
     }
-    if (empty($web_name)) {
-      // TODO, 自动追加网站名称到站点设置里面
-      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
-      $web_name = $this->getWebNameByTextdata($station);
-      $web_name = trim(strip_tags($web_name));
-      if (!empty($web_name)) {
-        $field_metadata['title'] = '[node:title]-' . $web_name;
-      }
-    }
+//    if (empty($web_name)) {
+//      // TODO, 自动追加网站名称到站点设置里面
+//      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
+//      $web_name = $this->getWebNameByTextdata($station);
+//      $web_name = trim(strip_tags($web_name));
+//      if (!empty($web_name)) {
+//        $field_metadata['title'] = '[node:title]-' . $web_name;
+//      }
+//    }
     try {
       $address_storage = $this->entityTypeManager->getStorage('seo_station_address');
       $address_values = [
         'name' => $data['domain'] . '/' . $data['replacement'],
-        'station' => $data['station'],
+        'station' => $data['station']->id(),
         'domain' => $data['domain'],
         'replacement' => $data['replacement'],
       ];
@@ -301,12 +301,12 @@ class TextdataManager implements TextdataManagerInterface {
     return getAllTaxonomyByTextdata($textdata);
   }
 
-  protected function transliterate($name, $transliteration): string {
+  public function transliterate($name, $transliteration): string {
     /** @var \Drupal\Component\Transliteration\TransliterationInterface $transliteration */
     return $transliteration->transliterate($name, 'zh-hans');
   }
 
-  protected function appendTaxonomy2Title($term, $tkdb_values, $site_name) {
+  public function appendTaxonomy2Title($term, $tkdb_values, $site_name) {
     // 提取文章分类到标题后缀
     if ($term instanceof TermInterface) {
       $tkdb_values['title'] . $term->label();
