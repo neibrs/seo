@@ -111,7 +111,7 @@ class Logo extends ContentEntityBase implements LogoInterface {
       ->setSetting('uri_scheme', 'public://logos')
       ->setDisplayOptions('view', [
         'type' => 'image',
-        'label' => 'inline',
+        'label' => 'hidden',
         'settings' => [
           'image_style' => 'logo',
         ],
