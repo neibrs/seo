@@ -252,24 +252,23 @@ function seo_textdata_preprocess_page(&$variables) {
     $request = \Drupal::request();
 
     // delete /zh-hans
-    if (strpos($request->getPathInfo(), '/zh-hans') !== FALSE) {
-      $address_query->condition('replacement', $request->getPathInfo());
-    }
-    else {
-      $address_query->condition('replacement', substr($request->getPathInfo(), 7));
-    }
+//    if (strpos($request->getPathInfo(), '/zh-hans') !== FALSE) {
+//      $address_query->condition('replacement', substr($request->getPathInfo(), 9));
+//    }
+//    else {
+//      $address_query->condition('replacement', substr($request->getPathInfo(), 1));
+//    }
 
     $address_query->condition('domain', $request->getHost());
 
     $ids = $address_query->execute();
 
     $address = NULL;
-    $webname = '';
     if (!empty($ids)) {
       $address = $address_storage->load(reset($ids));
-      $webname = $address->webname->value;
     }
-    else {
+    $webname = $address->webname->value;
+    if (empty($webname)) {
       $webname = \Drupal::service('seo_textdata.manager')->getWebnameByStationAddress($theme_info);
     }
     $addresses = $address_storage->loadMultiple($ids);
