@@ -246,7 +246,39 @@ function seo_textdata_preprocess_page(&$variables) {
 //    $entities = $storage->loadByProperties([
 //      'field_station_model' => $theme_info['seo_theme'],
 //    ]);
-    $webname = \Drupal::service('seo_textdata.manager')->getWebnameByStationAddress($theme_info);
+    $address_storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+    $address_query = $address_storage->getQuery();
+
+    $request = \Drupal::request();
+
+    // delete /zh-hans
+    if (strpos($request->getPathInfo(), '/zh-hans') !== FALSE) {
+      $address_query->condition('replacement', $request->getPathInfo());
+    }
+    else {
+      $address_query->condition('replacement', substr($request->getPathInfo(), 7));
+    }
+
+    $address_query->condition('domain', $request->getHost());
+
+    $ids = $address_query->execute();
+
+    $address = NULL;
+    $webname = '';
+    if (!empty($ids)) {
+      $address = $address_storage->load(reset($ids));
+      $webname = $address->webname->value;
+    }
+    else {
+      $webname = \Drupal::service('seo_textdata.manager')->getWebnameByStationAddress($theme_info);
+    }
+    $addresses = $address_storage->loadMultiple($ids);
+    foreach ($addresses as $adr) {
+      $adr->webname->value = trim(strip_tags($webname));
+      $adr->save();
+    }
+
+    // TODO,
     $variables['wild_web_name'] = [
       '#markup' => trim(strip_tags($webname)),
     ];
