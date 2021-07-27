@@ -95,7 +95,7 @@ class StationController extends ControllerBase implements ContainerInjectionInte
         }
         // 方案二
         else {
-          $this->generateNode($new_arr);
+          \Drupal::service('seo_textdata.manager')->generateNode($new_arr);
         }
 
         // 所有生成的泛域名需要保存.
