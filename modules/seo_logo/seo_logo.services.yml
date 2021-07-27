@@ -1,0 +1,4 @@
+services:
+  seo_logo.manager:
+    class: Drupal\seo_logo\LogoManager
+    arguments: ['@entity_type.manager']

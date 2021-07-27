@@ -3,6 +3,7 @@
 namespace Drupal\seo_logo\Form;
 
 use Drupal\Component\Utility\Environment;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -60,16 +61,16 @@ class LogoImportForm extends FormBase {
    * {@inheritDoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $logo_storage = \Drupal::entityTypeManager()->getStorage('seo_logo');
+    $logoManager = \Drupal::service('seo_logo.manager');
     foreach ($this->files as $file) {
       /** @var \Drupal\file\FileInterface $file */
-      $values = [
-        'name' => $file->getFileName(),
-        'file' => [
-          $file->id(),
-        ],
-      ];
-      $logo_storage->create($values)->save();
+      if (!in_array($file->getMimeType(), ["image/png"])) {
+        // text/plain type
+        $logoManager->loadTxtImages($file->getFileUri());
+      }
+      else {
+        $logoManager->createLogoEntity($file);
+      }
     }
 
     $form_state->setRedirectUrl(Url::fromRoute('entity.seo_logo.collection'));

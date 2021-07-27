@@ -1,0 +1,20 @@
+<?php
+
+use Drupal\Core\File\FileSystemInterface;
+
+/**
+ * Implements hook_install().
+ */
+function seo_logo_install($is_syncing) {
+  $directory = "public://logos";
+  \Drupal::service('file_system')->prepareDirectory($directory, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+
+  // Init logos.
+  $logo_path = drupal_get_path('module', 'seo_logo');
+  $source = $logo_path . '/data/';
+  $source .= $source . 'logo.txt';
+
+  // Init logos from txt.
+  $file_path = Drupal::service('file_system')->copy($source, 'public://logos/' . date('Ymd'));
+  \Drupal::service('seo_logo.manager')->loadTxtImages($file_path);
+}

@@ -3,3 +3,8 @@ entity.seo_logo.add_form:
   title: 'Add'
   appears_on:
     - entity.seo_logo.collection
+seo_logo.upload_form:
+  route_name: seo_logo.upload_form
+  title: '导入'
+  appears_on:
+    - entity.seo_logo.collection
