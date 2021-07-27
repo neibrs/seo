@@ -119,6 +119,9 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
         if (!is_array($rand_ids)) {
           $nids[] = $rand_ids;
         }
+        else {
+          $nids = $rand_ids;
+        }
         foreach ($nids as $id) {
           if (in_array($id, array_keys($ids))) {
             $new_ids[] = $ids[$id];
