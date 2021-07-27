@@ -242,10 +242,6 @@ function seo_textdata_preprocess_page(&$variables) {
     }
 
     // 栏目
-//    $storage = \Drupal::entityTypeManager()->getStorage('taxonomy');
-//    $entities = $storage->loadByProperties([
-//      'field_station_model' => $theme_info['seo_theme'],
-//    ]);
     $address_storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
     $address_query = $address_storage->getQuery();
 
