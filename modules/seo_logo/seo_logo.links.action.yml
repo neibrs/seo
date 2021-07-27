@@ -1,5 +1,5 @@
 entity.seo_logo.add_form:
   route_name: entity.seo_logo.add_form
-  title: 'Add Logo'
+  title: 'Add'
   appears_on:
     - entity.seo_logo.collection

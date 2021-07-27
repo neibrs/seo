@@ -16,6 +16,7 @@ class ExtractLinksForm extends FormBase {
     $form['number'] = [
       '#type' => 'number',
       '#title' => '每个域名提取数量',
+      '#description' => '每个域名提取数量大于10个时，请生成数据后再访问.提取文章<span class="description-red">总数量=域名数*每个域名提取数量</span>',
       '#default_value' => 10,
     ];
     $form['actions'] = [

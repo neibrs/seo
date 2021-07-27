@@ -1,0 +1,12 @@
+<?php
+
+/**
+ * Implements hook_sidebar_tee_menu_alter().
+ */
+function seo_logo_sidebar_tee_menu_alter(array &$data) {
+  $icons = [
+    'entity.seo_logo.collection' => 'gitee-icon icon project',
+  ];
+
+  _eabax_core_set_menu_items_icon($data, $icons);
+}
