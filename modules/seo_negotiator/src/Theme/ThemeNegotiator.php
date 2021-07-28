@@ -148,7 +148,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
         }
       }
 
-      if ($host == $neg->name->value) {
+      if ($host == strtolower($neg->name->value)) {
         return $neg->theme->value;
       }
       else {
