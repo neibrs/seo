@@ -125,6 +125,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     }
 
     if (empty($stations)) {
+      // 设置官网主题
       $theme = \Drupal::service('seo_station_address.manager')->getThemeNameByRequest($request);
     }
 
