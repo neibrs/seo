@@ -8,6 +8,9 @@ use Drupal\spiders\Entity\SpidersType;
 class SpidersUserAgentManager implements SpidersUserAgengMangerInterface {
 
   public function determineSpider($request) {
+    if ($request->server->get('REMOTE_ADDR') == '127.0.0.1') {
+      return;
+    }
     $user_agent = $request->headers->get('user_agent');
     $browser_agent = 'other';
     $spiders = $this->getSpider();
