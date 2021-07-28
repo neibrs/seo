@@ -158,7 +158,7 @@ class StationManager implements StationManagerInterface {
     $site_name = \Drupal::config('system.site')->get('name');
     return [
       'id' => $node->id(),
-      'name' => $site_name, //$node->label(),
+      'name' => $node->label(),
       'link' => $node->toUrl(),
       'image' => $file_uri,
       'description' => $node->get('body')->summary,
