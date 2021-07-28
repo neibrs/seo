@@ -15,6 +15,6 @@ function seo_logo_install($is_syncing) {
   $source .= 'logo.txt';
 
   // Init logos from txt.
-//  $file_path = Drupal::service('file_system')->copy($source, 'public://logos/' . date('Ymd'));
-//  \Drupal::service('seo_logo.manager')->loadTxtImages($file_path);
+  $file_path = Drupal::service('file_system')->copy($source, 'public://logos/' . date('Ymd') . '.txt');
+  \Drupal::service('seo_logo.manager')->loadTxtImages($file_path);
 }

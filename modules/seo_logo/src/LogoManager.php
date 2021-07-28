@@ -22,7 +22,7 @@ class LogoManager implements LogoManagerInterface {
     $files = [];
 
     foreach ($items as $item) {
-      $file = $this->get_external_image($item, 'public://logos/' . date('Ymd') . '/');
+      $file = $this->get_external_image($item, 'public://logos/');// . date('Ymd') . '/');
       $this->createLogoEntity($file);
 
       $files[] = $file->id();
@@ -48,8 +48,15 @@ class LogoManager implements LogoManagerInterface {
     $external_image = file_get_contents($url);
     $parsed_url = parse_url($url);
     $name_dest = rand(1000,9999)."_". basename($parsed_url["path"]);
-    $file = file_save_data($external_image, $path . $name_dest, FileSystemInterface::EXISTS_RENAME);
-    $file->save();
-    return $file;
+
+    try {
+//      \Drupal::service('file_system')->prepareDirectory($path, FileSystemInterface::CREATE_DIRECTORY|FileSystemInterface::MODIFY_PERMISSIONS);
+      $file = file_save_data($external_image, $path . $name_dest, FileSystemInterface::EXISTS_RENAME);
+      $file->save();
+      return $file;
+    }
+    catch (\Exception $e) {
+      \Drupal::messenger()->addError('Public://logos目录无法读写.');
+    }
   }
 }

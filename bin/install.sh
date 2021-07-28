@@ -70,6 +70,6 @@ vendor/bin/drush langimp --langcode=zh-hans modules/dsi/refactor/undef/contrib/t
 
 vendor/bin/drush upwd admin admin
 
-#sudo chmod a+rw sites/default/settings.php
+#sudo chmod -R a+rw sites/default/
 #vendor/bin/drush en -y memcache
 #echo "include \$app_root . '/' . \$site_path . '/settings.memcache.php';" >> sites/default/settings.php
