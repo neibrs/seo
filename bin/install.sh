@@ -43,9 +43,9 @@ vendor/bin/drush en -y \
   seo_site \
   seo_negotiator \
   seo_station_address \
-  seo_logo \
   seo_flink \
   spiders
+#  seo_logo \
 
 vendor/bin/drush en -y seo_front
 vendor/bin/drush en -y dsi_block
@@ -70,5 +70,6 @@ vendor/bin/drush langimp --langcode=zh-hans modules/dsi/refactor/undef/contrib/t
 
 vendor/bin/drush upwd admin admin
 
-vendor/bin/drush en -y memcache
-echo "include \$app_root . '/' . \$site_path . '/settings.memcache.php';" >> sites/default/settings.php
+#sudo chmod a+rw sites/default/settings.php
+#vendor/bin/drush en -y memcache
+#echo "include \$app_root . '/' . \$site_path . '/settings.memcache.php';" >> sites/default/settings.php
