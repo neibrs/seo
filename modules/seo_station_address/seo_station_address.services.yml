@@ -1,0 +1,4 @@
+services:
+  seo_station_address.manager:
+    class: Drupal\seo_station_address\StationAddressManager
+    arguments: ['@entity_type.manager']

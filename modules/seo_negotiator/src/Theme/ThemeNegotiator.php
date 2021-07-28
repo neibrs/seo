@@ -124,6 +124,10 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
       }
     }
 
+    if (empty($stations)) {
+      $theme = \Drupal::service('seo_station_address.manager')->getThemeNameByRequest($request);
+    }
+
     return $theme;
   }
 
