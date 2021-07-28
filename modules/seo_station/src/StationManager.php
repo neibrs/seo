@@ -165,6 +165,7 @@ class StationManager implements StationManagerInterface {
       'created' => $node->created->value,
       'field_tag' => empty($field_tags) ? '' : $field_tag->label(),
       'field_tag_link' => empty($field_tags) ? '' :  $field_tag->toUrl(),
+      'wild_site_name' => $site_name,
     ];
   }
 
