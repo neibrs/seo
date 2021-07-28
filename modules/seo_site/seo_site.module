@@ -86,7 +86,7 @@ function seo_site_entity_extra_field_info() {
     'description' => '下载Word',
     'weight' => 0,
   ];
-  $extra['node']['article']['display']['site_name'] = [
+  $extra['node']['article']['display']['wild_web_name'] = [
     'label' => '站点名字',
     'description' => '站点名字',
     'weight' => 0,
@@ -107,10 +107,10 @@ function seo_site_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $
       ]),
     ];
   }
-  if ($display->getComponent('site_name')) {
-    $site_name = \Drupal::config('system.site')->get('name');
-    $build['site_name'] = [
-      '#markup' => $site_name,
+  if ($display->getComponent('wild_web_name')) {
+    $wild_web_name = \Drupal::config('system.site')->get('name');
+    $build['wild_web_name'] = [
+      '#markup' => $wild_web_name,
     ];
   }
 }
