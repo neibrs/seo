@@ -4,6 +4,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldStorageDefinitionInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\StreamWrapper\PublicStream;
+use Drupal\field\Entity\FieldConfig;
 use Drupal\file\Entity\File;
 use Drupal\seo_textdata\Entity\TextData;
 use Drupal\taxonomy\Entity\Term;
@@ -63,6 +64,7 @@ function seo_textdata_install($is_syncing) {
   getFileByPath($source, 'type_all.txt', 'typename', $model);
   getFileByPath($source, 'webname.txt', 'webname', $model);
 
+  createDefaultImage();
 }
 
 /**
@@ -146,4 +148,29 @@ function getFileByPath($path, $filename, $textdata_type, $model) {
     'attachment' => $file,
   ];
   TextData::create($edit)->save();
+}
+
+/**
+ * Implements hook_update_N() 给node添加默认图片.
+ */
+function seo_textdata_update_9010(&$sandbox) {
+  /* Setup default image for user picture */
+  createDefaultImage();
+}
+
+function createDefaultImage() {
+  /* Setup default image for user picture */
+  \Drupal::service('file_system')->copy(drupal_get_path('module', 'seo_textdata') . '/node-default.jpg', 'public://node-default.jpg');
+  $file = File::create([
+    'filename' => 'node-default.jpg',
+    'uri' => 'public://node-default.jpg',
+    'filemime' => 'image/jpeg',
+    'status' => FILE_STATUS_PERMANENT,
+  ]);
+  $file->save();
+  $field = FieldConfig::load('node.article.field_image');
+  $setting = $field->getSetting('default_image');
+  $setting['uuid'] = $file->uuid();
+  $field->setSetting('default_image', $setting);
+  $field->save();
 }
