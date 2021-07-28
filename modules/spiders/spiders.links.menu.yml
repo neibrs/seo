@@ -1,6 +1,6 @@
 entity.spiders.administer:
   title: '蜘蛛'
-  route_name: entity.spiders_group.collection
+  route_name: entity.spiders.collection
   parent: system.seo
   weight: 50
 

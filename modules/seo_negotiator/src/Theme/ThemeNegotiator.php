@@ -37,7 +37,7 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
           break;
         }
       }
-      if ($find || !empty($theme)) {
+      if ($find && !empty($theme)) {
         break;
       }
     }
