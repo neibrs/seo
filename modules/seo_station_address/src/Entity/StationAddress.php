@@ -164,6 +164,24 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 
+    $fields['theme'] = BaseFieldDefinition::create('string')
+      ->setLabel('主题')
+      ->setSettings([
+        'text_processing' => 0,
+      ])
+      ->setDefaultValue('')
+      ->setDisplayOptions('view', [
+        'label' => 'above',
+        'type' => 'string',
+        'weight' => -4,
+      ])
+      ->setDisplayOptions('form', [
+        'type' => 'string_textfield',
+        'weight' => -4,
+      ])
+      ->setDisplayConfigurable('form', TRUE)
+
+      ->setDisplayConfigurable('view', TRUE);
     $fields['status']->setDescription(t('A boolean indicating whether the Station address is published.'))
       ->setDisplayOptions('form', [
         'type' => 'boolean_checkbox',

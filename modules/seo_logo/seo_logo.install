@@ -12,9 +12,9 @@ function seo_logo_install($is_syncing) {
   // Init logos.
   $logo_path = drupal_get_path('module', 'seo_logo');
   $source = $logo_path . '/data/';
-  $source .= $source . 'logo.txt';
+  $source .= 'logo.txt';
 
   // Init logos from txt.
-  $file_path = Drupal::service('file_system')->copy($source, 'public://logos/' . date('Ymd'));
-  \Drupal::service('seo_logo.manager')->loadTxtImages($file_path);
+//  $file_path = Drupal::service('file_system')->copy($source, 'public://logos/' . date('Ymd'));
+//  \Drupal::service('seo_logo.manager')->loadTxtImages($file_path);
 }

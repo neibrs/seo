@@ -22,22 +22,51 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
 
   public function getWildSiteMode($request, $domain, $station) {
     $host = $request->getHost();
-    if ($pos = strpos($domain, '*.') !== FALSE) {
-      // Yes,
-      if (preg_match('#' . substr($domain, $pos). '$#', $host)) {
-        return $this->getThemeByStation($station);
-      }
-      else {
-        return '';
+
+    $address_storage = \Drupal::entityTypeManager()->getStorage('seo_station_address');
+    $query = $address_storage->getQuery();
+    $query->condition('domain', $host);
+    $ids = $query->execute();
+    if (!empty($ids)) {
+      $addr = $address_storage->load(reset($ids));
+    }
+
+    $theme = $addr->theme->value;
+    if (empty($theme)) {
+      $theme = $this->getThemeByStation($station);
+    }
+
+    // 将主题固化到域名上.
+    if (!empty($theme) && !empty($ids)) {
+      foreach ($address_storage->loadMultiple($ids) as $address) {
+        $address->theme->value = $theme;
+        $address->save();
       }
     }
 
-    if ($host == $domain) {
-      return $this->getThemeByStation($station);
-    }
-    else {
-      return '';
-    }
+    return $theme;
+    // TODO
+//    ->loadByProperties([
+//      'domain' => $host,
+//    ]);
+//    $rand_theme = $this->getThemeByStation($station);
+
+//    if ($pos = strpos($domain, '*.') !== FALSE) {
+//      // Yes,
+//      if (preg_match('#' . substr($domain, $pos). '$#', $host)) {
+//        return $this->getThemeByStation($station);
+//      }
+//      else {
+//        return '';
+//      }
+//    }
+
+//    if ($host == $domain) {
+//      return $this->getThemeByStation($station);
+//    }
+//    else {
+//      return '';
+//    }
   }
 
   public function getSingleSiteMode($request, $domain, $station) {
@@ -75,6 +104,9 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
       $domains = array_filter($domains);
       foreach ($domains as $domain) {
         // Station 是否是泛域名模式
+        if (!empty($theme)) {
+          break;
+        }
         // 是
         if ($station->site_mode->value) {
           $theme = $this->getWildSiteMode($request, $domain, $station);

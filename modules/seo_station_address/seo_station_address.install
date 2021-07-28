@@ -33,3 +33,17 @@ function seo_station_address_update_9001(&$sandbox) {
     ]);
   $entity_definition_update_manager->installFieldStorageDefinition('replacement', 'seo_station_address', 'seo_station_address', $storage_definition);
 }
+
+/**
+ * Implements hook_update_N() 添加主题.
+ */
+function seo_station_address_update_9002(&$sandbox) {
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  $storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel('主题')
+    ->setSettings([
+      'text_processing' => 0,
+    ]);
+  $entity_definition_update_manager->installFieldStorageDefinition('theme', 'seo_station_address', 'seo_station_address', $storage_definition);
+}
