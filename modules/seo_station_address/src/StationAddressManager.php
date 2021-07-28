@@ -64,6 +64,17 @@ class StationAddressManager implements StationAddressManagerInterface {
           'theme' => $theme,
       ];
       $station_address_storage->create($values)->save();
+
+      $arr = explode('.', $request->getHost());
+      if (count($arr) == 2) {
+        // 固化主题到域名上
+        $values = [
+          'name' => 'www' . $request->getHost(),
+          'domain' => 'www' . $request->getHost(),
+          'theme' => $theme,
+        ];
+        $station_address_storage->create($values)->save();
+      }
     }
 
     return $theme;
