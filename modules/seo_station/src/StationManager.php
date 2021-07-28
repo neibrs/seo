@@ -155,9 +155,10 @@ class StationManager implements StationManagerInterface {
 //      'field_tag_link' =>empty($field_tags) ? '' :  $field_tag->toUrl(),
 //    ];
 
+    $site_name = \Drupal::config('system.site')->get('name');
     return [
       'id' => $node->id(),
-      'name' => $node->label(),
+      'name' => $site_name, //$node->label(),
       'link' => $node->toUrl(),
       'image' => $file_uri,
       'description' => $node->get('body')->summary,
