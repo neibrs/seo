@@ -99,23 +99,25 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
   public function getThemeByRequest($request) {
     $stations = \Drupal::entityTypeManager()->getStorage('seo_station')->loadMultiple();
     $theme = '';
+    $find = FALSE;
     foreach ($stations as $station) {
       $domains = array_unique(explode(',', str_replace("\r\n",",", $station->domain->value)));
       $domains = array_filter($domains);
       foreach ($domains as $domain) {
-        // Station 是否是泛域名模式
-        if (!empty($theme)) {
+        if (strpos($request->getHost(), $domain) !== FALSE) {
+          // 找到已定义域名
+          $find = TRUE;
+          $theme = $this->getThemeByStationModel($request, $theme, $domain, $station);
           break;
         }
-        // 是
-        if ($station->site_mode->value) {
-          $theme = $this->getWildSiteMode($request, $domain, $station);
-        }
-        // 否
         else {
-          $theme = $this->getSingleSiteMode($request, $domain, $station);
+          continue;
         }
       }
+      if ($find) {
+        break;
+      }
+
       if (empty($theme)) {
         continue;
       }
@@ -196,4 +198,20 @@ class ThemeNegotiator implements ThemeNegotiatorInterface {
     return FALSE;
   }
 
+  public function getThemeByStationModel($request, $theme, $domain, $station) {
+    // Station 是否是泛域名模式
+    if (!empty($theme)) {
+      return $theme;
+    }
+    // 是
+    if ($station->site_mode->value) {
+      $theme = $this->getWildSiteMode($request, $domain, $station);
+    }
+    // 否
+    else {
+      $theme = $this->getSingleSiteMode($request, $domain, $station);
+    }
+
+    return $theme;
+  }
 }
