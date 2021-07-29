@@ -8,9 +8,9 @@ use Drupal\spiders\Entity\SpidersType;
 class SpidersUserAgentManager implements SpidersUserAgengMangerInterface {
 
   public function determineSpider($request) {
-    if ($request->server->get('REMOTE_ADDR') == '127.0.0.1') {
-      return;
-    }
+//    if ($request->server->get('REMOTE_ADDR') == '127.0.0.1') {
+//      return;
+//    }
     $user_agent = $request->headers->get('user_agent');
     $browser_agent = 'other';
     $spiders = $this->getSpider();
@@ -66,6 +66,8 @@ class SpidersUserAgentManager implements SpidersUserAgengMangerInterface {
       $station = $storage->load($id);
     }
 
+    $forwarded = $request->server->get('HTTP_X_FORWARDED_FOR');
+    $for_arr = explode(',', $forwarded);
     $values = [
       'name' => !empty($spiders_type) ? $spiders_type->label() : '',
       'type' => $browser_agent,
@@ -74,6 +76,8 @@ class SpidersUserAgentManager implements SpidersUserAgengMangerInterface {
       'model' => !empty($station) ? $station->model->entity->label() : NULL, //新闻，企业
       'user_agent' => $request->headers->get('user_agent'),
       'access' => REQUEST_TIME,
+      'forward' => reset($for_arr),
+      'domain' => $request->server->get('SERVER_NAME'),
     ];
     $spider = Spiders::create($values)
       ->save();
