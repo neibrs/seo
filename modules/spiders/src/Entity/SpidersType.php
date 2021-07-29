@@ -45,6 +45,6 @@ namespace Drupal\spiders\Entity;
  *   }
  * )
  */
-class SpidersType extends \Drupal\spiders\Airui\Entities\SpidersType {
+class SpidersType extends \Drupal\spiders\Airui\Entity\SpidersType {
 
 }

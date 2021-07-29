@@ -42,7 +42,7 @@ namespace Drupal\seo_textdata\Entity;
  *   }
  * )
  */
-class TextDataType extends \Drupal\seo_textdata\Airui\Entities\TextDataType {
+class TextDataType extends \Drupal\seo_textdata\Airui\Entity\TextDataType {
 
 
 }

@@ -2,7 +2,7 @@
 
 namespace Drupal\seo_negotiator\Entity;
 
-use Drupal\seo_negotiator\Airui\Entities\Negotiator as NegotiatorBase;
+use Drupal\seo_negotiator\Airui\Entity\Negotiator as NegotiatorBase;
 
 /**
  * Defines the Negotiator entity.

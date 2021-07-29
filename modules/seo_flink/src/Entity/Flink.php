@@ -2,7 +2,7 @@
 
 namespace Drupal\seo_flink\Entity;
 
-use Drupal\seo_flink\Airui\Entities\Flink as FlinkBase;
+use Drupal\seo_flink\Airui\Entity\Flink as FlinkBase;
 
 /**
  * Defines the Flink entity.

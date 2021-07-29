@@ -54,6 +54,6 @@ namespace Drupal\seo_textdata\Entity;
  *   field_ui_base_route = "entity.seo_textdata_type.edit_form"
  * )
  */
-class TextData extends \Drupal\seo_textdata\Airui\Entities\TextData {
+class TextData extends \Drupal\seo_textdata\Airui\Entity\TextData {
 
 }

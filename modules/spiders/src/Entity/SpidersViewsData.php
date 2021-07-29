@@ -6,6 +6,6 @@ namespace Drupal\spiders\Entity;
 /**
  * Provides Views data for Spiders entities.
  */
-class SpidersViewsData extends \Drupal\spiders\Airui\Entities\SpidersViewsData {
+class SpidersViewsData extends \Drupal\spiders\Airui\Entity\SpidersViewsData {
 
 }

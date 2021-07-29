@@ -41,6 +41,6 @@ namespace Drupal\seo_station_model_url\Entity;
  *   }
  * )
  */
-class StationModelUrlType extends \Drupal\seo_station_model_url\Airui\Entities\StationModelUrlType {
+class StationModelUrlType extends \Drupal\seo_station_model_url\Airui\Entity\StationModelUrlType {
 
 }

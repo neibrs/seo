@@ -49,6 +49,6 @@ namespace Drupal\spiders\Entity;
  *   field_ui_base_route = "spiders_group.settings"
  * )
  */
-class SpidersGroup extends \Drupal\spiders\Airui\Entities\SpidersGroup {
+class SpidersGroup extends \Drupal\spiders\Airui\Entity\SpidersGroup {
 
 }

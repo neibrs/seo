@@ -47,5 +47,5 @@ namespace Drupal\seo_station\Entity;
  *   field_ui_base_route = "seo_autoprefix.settings"
  * )
  */
-class AutoPrefix extends \Drupal\seo_station\Airui\Entities\AutoPrefix {
+class AutoPrefix extends \Drupal\seo_station\Airui\Entity\AutoPrefix {
 }
