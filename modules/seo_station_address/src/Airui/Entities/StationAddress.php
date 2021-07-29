@@ -9,9 +9,9 @@ use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\seo_station\Entity\StationInterface;
-use Drupal\xmlsitemap\Entity\XmlSitemap;
+use Drupal\seo_station_address\Entity\StationAddressInterface;
 
-class StationAddress extends ContentEntityBase implements StationInterface {
+class StationAddress extends ContentEntityBase implements StationAddressInterface {
 
   use EntityChangedTrait;
   use EntityPublishedTrait;
