@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Field\BaseFieldDefinition;
+
 /**
  * Implements hook_install().
  */
@@ -15,4 +17,20 @@ function spiders_install($is_syncing) {
     'spiders_type' => array_values($types),
   ];
   $spider_group_storage->create($values)->save();
+}
+
+/**
+ * Implements hook_update_N() add fields.
+ */
+function spiders_update_9002(&$sandbox) {
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  $storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel('Forward');
+  $entity_definition_update_manager
+    ->installFieldStorageDefinition('forward', 'spiders', 'spiders', $storage_definition);
+
+  $storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel('Server Name');
+  $entity_definition_update_manager->installFieldStorageDefinition('domain', 'spiders', 'spiders', $storage_definition);
 }
