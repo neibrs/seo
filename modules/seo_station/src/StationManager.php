@@ -128,32 +128,7 @@ class StationManager implements StationManagerInterface {
 
   public function getNode(NodeInterface $node) {
     $field_tag = $this->getNodeOneTag($node);
-    $file_uri = isset($node->field_image->target_id) ? $node->field_image->entity->createFileUrl() : '';
-//    return [
-//      'id' => [
-//        '#type' => 'item',
-//        '#plain_text' => $node->id()
-//      ],
-//      'name' =>  $node->label(),
-//      'link' => $node->toUrl()->toString(),
-//      'image' => [
-//        '#type' => 'item',
-//        '#plain_text' => $file_uri,
-//      ],
-//      'description' => [
-//        '#type' => 'item',
-//        '#plain_text' => $node->get('body')->summary
-//      ],
-//      'created' => [
-//        '#type' => 'item',
-//        '#plain_text' => date('Y-m-d', $node->created->value)
-//      ],
-//      'field_tag' => [
-//        '#type' => 'item',
-//        '#plain_text' => empty($field_tags) ? '' : $field_tag->label()
-//      ],
-//      'field_tag_link' =>empty($field_tags) ? '' :  $field_tag->toUrl(),
-//    ];
+    $file_uri = empty($node->field_image->referencedEntities()) ? file_create_url('public://node-default.jpg') : $node->field_image->entity->createFileUrl();
 
     $site_name = \Drupal::config('system.site')->get('name');
     return [
