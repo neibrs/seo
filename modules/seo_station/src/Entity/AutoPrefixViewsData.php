@@ -2,22 +2,6 @@
 
 namespace Drupal\seo_station\Entity;
 
-use Drupal\views\EntityViewsData;
 
-/**
- * Provides Views data for Auto prefix entities.
- */
-class AutoPrefixViewsData extends EntityViewsData {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getViewsData() {
-    $data = parent::getViewsData();
-
-    // Additional information for Views integration, such as table joins, can be
-    // put here.
-    return $data;
-  }
-
+class AutoPrefixViewsData extends \Drupal\seo_station\Airui\Entities\AutoPrefixViewsData {
 }

@@ -2,7 +2,6 @@
 
 namespace Drupal\seo_station_model_url\Entity;
 
-use Drupal\Core\Config\Entity\ConfigEntityBase;
 
 /**
  * Defines the 模板URL规则类型 entity.
@@ -42,20 +41,6 @@ use Drupal\Core\Config\Entity\ConfigEntityBase;
  *   }
  * )
  */
-class StationModelUrlType extends ConfigEntityBase implements StationModelUrlTypeInterface {
-
-  /**
-   * The 模板URL规则类型 ID.
-   *
-   * @var string
-   */
-  protected $id;
-
-  /**
-   * The 模板URL规则类型 label.
-   *
-   * @var string
-   */
-  protected $label;
+class StationModelUrlType extends \Drupal\seo_station_model_url\Airui\Entities\StationModelUrlType {
 
 }

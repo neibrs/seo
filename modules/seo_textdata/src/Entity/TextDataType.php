@@ -2,7 +2,6 @@
 
 namespace Drupal\seo_textdata\Entity;
 
-use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 
 /**
  * Defines the Text data type entity.
@@ -43,20 +42,7 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *   }
  * )
  */
-class TextDataType extends ConfigEntityBundleBase implements TextDataTypeInterface {
+class TextDataType extends \Drupal\seo_textdata\Airui\Entities\TextDataType {
 
-  /**
-   * The Text data type ID.
-   *
-   * @var string
-   */
-  protected $id;
-
-  /**
-   * The Text data type label.
-   *
-   * @var string
-   */
-  protected $label;
 
 }

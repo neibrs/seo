@@ -2,7 +2,6 @@
 
 namespace Drupal\seo_station_tkdb\Entity;
 
-use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
 
 /**
  * Defines the Tkdb type entity.
@@ -43,20 +42,6 @@ use Drupal\Core\Config\Entity\ConfigEntityBundleBase;
  *   }
  * )
  */
-class TkdbType extends ConfigEntityBundleBase implements TkdbTypeInterface {
-
-  /**
-   * The Tkdb type ID.
-   *
-   * @var string
-   */
-  protected $id;
-
-  /**
-   * The Tkdb type label.
-   *
-   * @var string
-   */
-  protected $label;
+class TkdbType extends \Drupal\seo_station_tkdb\Airui\Entities\TkdbType {
 
 }

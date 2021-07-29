@@ -2,22 +2,11 @@
 
 namespace Drupal\seo_flink\Entity;
 
-use Drupal\views\EntityViewsData;
+use Drupal\seo_flink\Airui\Entities\FlinkViewsData  as FlinkViewsDataBase;
 
 /**
  * Provides Views data for Flink entities.
  */
-class FlinkViewsData extends EntityViewsData {
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getViewsData() {
-    $data = parent::getViewsData();
-
-    // Additional information for Views integration, such as table joins, can be
-    // put here.
-    return $data;
-  }
+class FlinkViewsData extends FlinkViewsDataBase {
 
 }
