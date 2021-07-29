@@ -180,15 +180,15 @@ class TextdataManager implements TextdataManagerInterface {
       }
       break;
     }
-//    if (empty($web_name)) {
-//      // TODO, 自动追加网站名称到站点设置里面
-//      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
-//      $web_name = $this->getWebNameByTextdata($station);
-//      $web_name = trim(strip_tags($web_name));
-//      if (!empty($web_name)) {
-//        $field_metadata['title'] = '[node:title]-' . $web_name;
-//      }
-//    }
+    if (empty($web_name)) {
+      // TODO, 自动追加网站名称到站点设置里面
+      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
+      $web_name = $this->getWebNameByTextdata($station);
+      $web_name = trim(strip_tags($web_name));
+      if (!empty($web_name)) {
+        $field_metadata['title'] = '[node:title]-' . $web_name;
+      }
+    }
     try {
       $address_storage = $this->entityTypeManager->getStorage('seo_station_address');
       $address_values = [
@@ -251,7 +251,7 @@ class TextdataManager implements TextdataManagerInterface {
   public function getWildRule($rule_url, $rule_domain) : bool {
     if ($rule_url['path'] != $rule_domain[0]) {
       // 泛域名匹配
-      if (strpos($rule_domain[0], '*') !== FALSE) {
+      if (strpos($rule_domain[0], '*.') !== FALSE) {
         $wild_string = substr($rule_domain[0], 2);
         $pos = strpos($rule_url['path'], $wild_string);
         if (!$pos) {
@@ -281,7 +281,8 @@ class TextdataManager implements TextdataManagerInterface {
         'type' => 'typename',
         'model' => $station->model->target_id,
       ]);
-      $textdata = reset($textdata);
+      $rand_id = array_rand($textdata);
+      $textdata = $textdata[$rand_id];
     }
     else {
       $textdata = $station->site_column->entity;
