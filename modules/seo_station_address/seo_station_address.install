@@ -47,3 +47,14 @@ function seo_station_address_update_9002(&$sandbox) {
     ]);
   $entity_definition_update_manager->installFieldStorageDefinition('theme', 'seo_station_address', 'seo_station_address', $storage_definition);
 }
+
+/**
+ * Implements hook_update_N() 添加Node.
+ */
+function seo_station_address_update_9003(&$sandbox) {
+  $entity_definition_update_manager = \Drupal::entityDefinitionUpdateManager();
+
+  $storage_definition = BaseFieldDefinition::create('entity_reference')
+    ->setLabel('文章');
+  $entity_definition_update_manager->installFieldStorageDefinition('node', 'seo_station_address', 'seo_station_address', $storage_definition);
+}
