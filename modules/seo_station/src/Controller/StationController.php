@@ -77,6 +77,8 @@ class StationController extends ControllerBase implements ContainerInjectionInte
         }
 
         // 每个域名下只生成一条真实数据
+        // TODO, 1. 泛域名下每个域名的数据生成一条
+        // 2. 单域名模式下是否确认生成$number条数据。
         $real_data = \Drupal::service('seo_station.token.manager')->generate([$rule]);
         $replacement = reset($real_data);
         $links[] = $d . '/' . $replacement;

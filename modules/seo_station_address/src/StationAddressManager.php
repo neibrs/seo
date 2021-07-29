@@ -53,7 +53,7 @@ class StationAddressManager implements StationAddressManagerInterface {
       $station_address = reset($station_addresses);
       $theme = $station_address->theme->value;
     }
-    else {
+    if (empty($theme)) {
       $theme = $this->getThemeByStationModel($request, $theme, $domain, $station);
     }
     if (!empty($theme) && empty($station_addresses)) {
