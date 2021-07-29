@@ -48,6 +48,6 @@ namespace Drupal\seo_station_model\Entity;
  *   field_ui_base_route = "seo_station_model.settings"
  * )
  */
-class StationModel extends \Drupal\seo_station_model\Airui\Entities\StationModel {
+class StationModel extends \Drupal\seo_station_model\Airui\Entity\StationModel {
 
 }

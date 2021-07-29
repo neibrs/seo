@@ -52,6 +52,6 @@ namespace Drupal\seo_station_model_url\Entity;
  *   field_ui_base_route = "entity.seo_station_model_url_type.edit_form",
  * )
  */
-class StationModelUrl extends \Drupal\seo_station_model_url\Airui\Entities\StationModelUrl {
+class StationModelUrl extends \Drupal\seo_station_model_url\Airui\Entity\StationModelUrl {
 
 }

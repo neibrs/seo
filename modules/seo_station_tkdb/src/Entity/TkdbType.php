@@ -42,6 +42,6 @@ namespace Drupal\seo_station_tkdb\Entity;
  *   }
  * )
  */
-class TkdbType extends \Drupal\seo_station_tkdb\Airui\Entities\TkdbType {
+class TkdbType extends \Drupal\seo_station_tkdb\Airui\Entity\TkdbType {
 
 }

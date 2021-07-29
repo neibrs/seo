@@ -52,6 +52,6 @@ namespace Drupal\seo_station_tkdb\Entity;
  *   field_ui_base_route = "entity.seo_station_tkdb_type.edit_form"
  * )
  */
-class Tkdb extends \Drupal\seo_station_tkdb\Airui\Entities\Tkdb {
+class Tkdb extends \Drupal\seo_station_tkdb\Airui\Entity\Tkdb {
 
 }

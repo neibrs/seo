@@ -2,7 +2,7 @@
 
 namespace Drupal\dsi_collection\Entity;
 
-use Drupal\dsi_collection\Airui\Entities\Collection as CollectionBase;
+use Drupal\dsi_collection\Airui\Entity\Collection as CollectionBase;
 
 /**
  * Defines the Collection entity.

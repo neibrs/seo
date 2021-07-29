@@ -1,7 +1,7 @@
 <?php
 
 namespace Drupal\seo_logo\Entity;
-use Drupal\seo_logo\Airui\Entities\Logo as LogoBase;
+use Drupal\seo_logo\Airui\Entity\Logo as LogoBase;
 
 /**
  * Defines the Logo entity.

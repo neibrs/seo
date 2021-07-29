@@ -54,6 +54,6 @@ namespace Drupal\spiders\Entity;
  *   field_ui_base_route = "entity.spiders_type.edit_form"
  * )
  */
-class Spiders extends \Drupal\spiders\Airui\Entities\Spiders {
+class Spiders extends \Drupal\spiders\Airui\Entity\Spiders {
 
 }

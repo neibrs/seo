@@ -47,6 +47,6 @@ namespace Drupal\seo_station_address\Entity;
  *   field_ui_base_route = "seo_station_address.settings"
  * )
  */
-class StationAddress extends \Drupal\seo_station_address\Airui\Entities\StationAddress {
+class StationAddress extends \Drupal\seo_station_address\Airui\Entity\StationAddress {
 
 }
