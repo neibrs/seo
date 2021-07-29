@@ -4,7 +4,9 @@ namespace Drupal\seo_station\Form;
 
 
 use Drupal\Core\Form\FormBase;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
 
 class ExtractLinksForm extends FormBase {
 
@@ -28,6 +30,7 @@ class ExtractLinksForm extends FormBase {
       '#value' => '提取数据',
       '#button_type' => 'primary',
     ];
+
     return $form;
   }
 
