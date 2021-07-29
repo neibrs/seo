@@ -34,3 +34,12 @@ function spiders_update_9002(&$sandbox) {
     ->setLabel('Server Name');
   $entity_definition_update_manager->installFieldStorageDefinition('domain', 'spiders', 'spiders', $storage_definition);
 }
+
+/**
+ * Implements hook_update_N() update views.view.spiders.
+ */
+function spiders_update_9003(&$sandbox) {
+  $config_update = Drupal::service('config_update.config_update');
+  $config_update->revert('view', 'spiders');
+
+}
