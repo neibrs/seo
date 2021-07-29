@@ -8,7 +8,6 @@ use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\Core\Entity\EntityChangedTrait;
 use Drupal\Core\Entity\EntityPublishedTrait;
 use Drupal\Core\Entity\EntityTypeInterface;
-use Drupal\seo_station\Entity\StationInterface;
 use Drupal\seo_station_address\Entity\StationAddressInterface;
 
 class StationAddress extends ContentEntityBase implements StationAddressInterface {
