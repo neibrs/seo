@@ -6,6 +6,7 @@ use Drupal\Component\Plugin\Exception\InvalidPluginDefinitionException;
 use Drupal\Component\Plugin\Exception\PluginNotFoundException;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\file\Entity\File;
 use Drupal\taxonomy\TermInterface;
 
 class TextdataManager implements TextdataManagerInterface {
@@ -390,10 +391,23 @@ class TextdataManager implements TextdataManagerInterface {
       $term = $taxonomies[$rs_rand_tid];
       $tkdb_values = $this->appendTaxonomy2Title($term, $tkdb_values, $site_name);
 
+      // TODO, refactor it and delete this.
+      $file_image = File::create([
+        'filename' => 'node-default.jpg',
+        'uri' => 'public://node-default.jpg',
+        'filemime' => 'image/jpeg',
+        'status' => FILE_STATUS_PERMANENT,
+      ]);
+      $file_image->save();
+      $title = is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60);
       $values = [
         'type' => 'article',
-        'title' => is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60),
-        //        'field_image' => '',
+        'title' => $title,
+        'field_image' => [
+          'target_id' => $file_image->id(),
+          'alt' => $title,
+          'title' => $title,
+        ],
         'body' => [
           'value' => $body[1],
           'summary' => mb_substr($body[1], 0, 100),
