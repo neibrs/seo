@@ -108,8 +108,8 @@ class StationManager implements StationManagerInterface {
             continue;
           }
           $rds = [];
-          for($i=0; $i< $step; $i++) {
-            $rds[$i] = (new Random())->name(mt_rand($start, $end));
+          for($i=0; $i< $step; $i++) { // TODO, 需要转小写，并过滤重复内容。
+            $rds[$i] = (new Random())->word(mt_rand($start, $end));
           }
           $rds = implode('.', $rds);
 
