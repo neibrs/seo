@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\seo_station\Plugin\QueueWorkers;
+namespace Drupal\seo_station\Plugin\QueueWorker;
 
 
 /**
