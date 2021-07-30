@@ -107,7 +107,13 @@ class MultiColumnTitleBlock extends BlockBase implements ContainerFactoryPluginI
 //        $query->condition('field_tags.entity.id', $term->id());
         $ids = $query->execute();
 
-        $rand_ids = array_rand($ids, $this->configuration['items']);
+        $rand_ids = [];
+        if (count($ids) > $this->configuration['items']) {
+          $rand_ids = array_rand($ids, $this->configuration['items']);
+        }
+        else {
+          $rand_ids = $ids;
+        }
         $new_ids = $nids = [];
         if (!is_array($rand_ids)) {
           $nids[] = $rand_ids;

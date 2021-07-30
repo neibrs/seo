@@ -44,8 +44,8 @@ vendor/bin/drush en -y \
   seo_negotiator \
   seo_station_address \
   seo_flink \
+  seo_logo \
   spiders
-#  seo_logo \
 
 vendor/bin/drush en -y seo_front
 vendor/bin/drush en -y dsi_block

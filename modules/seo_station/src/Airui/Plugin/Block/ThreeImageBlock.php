@@ -86,11 +86,17 @@ class ThreeImageBlock extends BlockBase implements ContainerFactoryPluginInterfa
       'type' => 'article',
     ]);
 
-    $pend_nodes = array_rand($nodes, $this->configuration['items']);
-    if (empty($pend_nodes)) {
+    $rand_ids = [];
+    if (count($nodes) > $this->configuration['items']) {
+      $rand_ids = array_rand($nodes, $this->configuration['items']);
+    }
+    else {
+      $rand_ids = $nodes;
+    }
+    if (empty($rand_ids)) {
       return $build;
     }
-    foreach ($pend_nodes as $node) {
+    foreach ($rand_ids as $node) {
       $build['items'][] = \Drupal::service('seo_station.manager')->getNode($nodes[$node]);
     }
 
