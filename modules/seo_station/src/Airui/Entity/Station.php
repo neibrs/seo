@@ -292,15 +292,15 @@ class Station extends ContentEntityBase implements StationInterface {
           'title' => 'title',
         ],
       ])
-      ->setDisplayOptions('view', [
-        'type' => 'entity_reference_label',
-        'weight' => 0,
-        'label' => 'inline',
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'options_select',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('view', [
+//        'type' => 'entity_reference_label',
+//        'weight' => 0,
+//        'label' => 'inline',
+//      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_select',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义句子库(site_sentence)

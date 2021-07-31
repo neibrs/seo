@@ -15,13 +15,13 @@ seo_textdata.type.article:
     seo_textdata_type: article
   weight: 0
 
-seo_textdata.type.title:
-  title: '标题库'
-  route_name: seo_textdata.type
-  parent: entity.seo_textdata.collection
-  route_parameters:
-    seo_textdata_type: title
-  weight: 5
+#seo_textdata.type.title:
+#  title: '标题库'
+#  route_name: seo_textdata.type
+#  parent: entity.seo_textdata.collection
+#  route_parameters:
+#    seo_textdata_type: title
+#  weight: 5
 
 seo_textdata.type.webname:
   title: '网站名称库'

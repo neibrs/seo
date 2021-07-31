@@ -47,6 +47,11 @@ class TextdataManager implements TextdataManagerInterface {
 
   // 随机获取title类型的标题库的文件一份
   public function getTitle($body_title = NULL, $station = NULL) {
+    // 屏蔽文章标题 Start
+    if (!empty($body_title)) {
+      return $body_title;
+    }
+    // 屏蔽文章标题 End
     $title = $this->getFileUri($station, 'title', 'site_title');
 
     if (empty($title)) {
@@ -134,7 +139,7 @@ class TextdataManager implements TextdataManagerInterface {
       $dst = $ds[$index];
     }
     else {
-      $dst = $ds[mt_rand(0, count($ds))];
+      $dst = $ds[array_rand($ds)];
     }
     return explode('******', $dst);
   }
@@ -240,7 +245,7 @@ class TextdataManager implements TextdataManagerInterface {
     }
 
     // TODO, bug
-    return $ds[mt_rand(0, 1)];
+    return $ds[array_rand($ds, 1)];
   }
 
   /**
@@ -299,6 +304,9 @@ class TextdataManager implements TextdataManagerInterface {
 
   public function appendTaxonomy2Title($term, $tkdb_values, $site_name) {
     // 提取文章分类到标题后缀
+    if (!isset($tkdb_values['title'])) {
+      $tkdb_values['title'] = '';
+    }
     if ($term instanceof TermInterface) {
       $tkdb_values['title'] . $term->label();
     }
