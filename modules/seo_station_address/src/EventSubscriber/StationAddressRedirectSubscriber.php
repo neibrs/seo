@@ -24,7 +24,6 @@ use Symfony\Component\Serializer\Serializer;
  */
 class StationAddressRedirectSubscriber implements EventSubscriberInterface {
 
-  protected $mac_arr;
 
   /**
    * The configuration factory.
@@ -92,7 +91,7 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     // TODO, check local grant code.
     $x = 'a';
     // 1. 获取本地的机器码,生成机器码|config_sync目录名字，服务器IP信息
-    $server_mac = $this->getMac();
+    $server_mac = \Drupal::service('seo_station_address.manager')->getMac();
     // send mac to api server, and get user register information: username, end_date, used_number, email
     $data = '';
 
@@ -136,48 +135,6 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
 //      $event->setResponse($response);
     }
 
-  }
-
-  protected function getMac() {
-    switch (strtolower(PHP_OS)) {
-      case "solaris" :
-      case "unix" :
-      case "aix" :
-      case "linux" :
-        $this->forLinux ();
-        break;
-      default :
-        $this->forWindows ();
-        break;
-    }
-
-    $temp_array = array ();
-    foreach ( $this->mac_arr as $value ) {
-      if (preg_match ( "/[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f]/i", $value, $temp_array )) {
-        $this->mac_addr = $temp_array[0];
-        break;
-      }
-    }
-    unset ( $temp_array );
-    return $this->mac_addr;
-  }
-  protected function forLinux() {
-    @exec ( "ifconfig", $this->mac_arr );
-    return $this->mac_arr;
-  }
-
-  protected function forWindows() {
-    @exec ( "ipconfig /all", $this->mac_arr );
-    if ($this->mac_arr)
-      return $this->mac_arr;
-    else {
-      $ipconfig = $_SERVER ["WINDIR"] . "/system32/ipconfig.exe";
-      if (is_file ( $ipconfig ))
-        @exec ( $ipconfig . " /all", $this->mac_arr );
-      else
-        @exec ( $_SERVER ["WINDIR"] . "/system/ipconfig.exe /all", $this->mac_arr );
-      return $this->mac_arr;
-    }
   }
 
 }

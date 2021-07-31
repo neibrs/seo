@@ -9,6 +9,7 @@ class StationAddressManager implements StationAddressManagerInterface {
   protected $entityTypeManager;
 
   protected $stationAddressStorage;
+  protected $mac_arr;
   /**
    * {@inheritDoc}
    */
@@ -150,5 +151,53 @@ class StationAddressManager implements StationAddressManagerInterface {
 
     $i = array_rand($type_themes, 1);
     return $type_themes[$i];
+  }
+
+
+  public function getMac() {
+    switch (strtolower(PHP_OS)) {
+      case "solaris" :
+      case "unix" :
+      case "aix" :
+      case "linux" :
+        $this->forLinux ();
+        break;
+      default :
+        $this->forWindows ();
+        break;
+    }
+
+    $temp_array = array ();
+    foreach ( $this->mac_arr as $value ) {
+      if (preg_match ( "/[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f][:-]" . "[0-9a-f][0-9a-f]/i", $value, $temp_array )) {
+        $this->mac_addr = $temp_array[0];
+        break;
+      }
+    }
+    unset ( $temp_array );
+    return $this->mac_addr;
+  }
+  protected function forLinux() {
+    try {
+      @exec ( "ifconfig", $this->mac_arr );
+      return $this->mac_arr;
+    }
+    catch (\Exception $exception) {
+      //
+    }
+  }
+
+  protected function forWindows() {
+    @exec ( "ipconfig /all", $this->mac_arr );
+    if ($this->mac_arr)
+      return $this->mac_arr;
+    else {
+      $ipconfig = $_SERVER ["WINDIR"] . "/system32/ipconfig.exe";
+      if (is_file ( $ipconfig ))
+        @exec ( $ipconfig . " /all", $this->mac_arr );
+      else
+        @exec ( $_SERVER ["WINDIR"] . "/system/ipconfig.exe /all", $this->mac_arr );
+      return $this->mac_arr;
+    }
   }
 }
