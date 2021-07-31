@@ -65,7 +65,8 @@ function seo_site_block_access(\Drupal\block\Entity\Block $block, $operation, \D
  */
 function seo_site_page_top(array &$page_top) {
   $seo_site_config = \Drupal::config('seo_site.site_configuration');
-  if ($seo_site_config->get('insert_top')) {
+  $theme = \Drupal::theme()->getActiveTheme()->getName();
+  if ($seo_site_config->get('insert_top') && !in_array($theme, ['xbarrio', 'seven'])) {
     $page_top['insert_top'] = [
       '#type' => 'html_tag',
       '#tag' => 'script',
