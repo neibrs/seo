@@ -86,15 +86,15 @@ class ThreeImageBlock extends BlockBase implements ContainerFactoryPluginInterfa
       'type' => 'article',
     ]);
 
-    $nodes = array_map(function ($node) {
+    $nodes_ids = array_map(function ($node) {
       return $node->id();
     }, $nodes);
     $rand_ids = [];
-    if (count($nodes) > $this->configuration['items']) {
-      $rand_ids = array_rand($nodes, $this->configuration['items']);
+    if (count($nodes_ids) > $this->configuration['items']) {
+      $rand_ids = array_rand($nodes_ids, $this->configuration['items']);
     }
     else {
-      $rand_ids = $nodes;
+      $rand_ids = $nodes_ids;
     }
     if (empty($rand_ids)) {
       return $build;
