@@ -25,7 +25,7 @@ class FlinkBlock extends BlockBase {
         continue;
       }
 
-      $urls = array_unique(explode(',', str_replace("\r\n",",", $flink->links->value)));
+      $urls = array_unique(explode(',', str_replace("\n",",", str_replace("\r\n",",", $flink->links->value))));
       if (empty($urls)) {
         continue;
       }
