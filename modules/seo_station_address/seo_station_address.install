@@ -58,3 +58,10 @@ function seo_station_address_update_9003(&$sandbox) {
     ->setLabel('文章');
   $entity_definition_update_manager->installFieldStorageDefinition('node', 'seo_station_address', 'seo_station_address', $storage_definition);
 }
+
+/**
+ * Implements hook_update_N().
+ */
+function seo_station_address_update_9004(&$sandbox) {
+  \Drupal::service('module_installer')->install(['api_connection']);
+}
