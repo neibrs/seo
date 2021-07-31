@@ -4,6 +4,7 @@ namespace Drupal\seo_flink\Airui\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
+use Drupal\seo_flink\Entity\Flink;
 
 class FlinkBlock extends BlockBase {
 
@@ -13,6 +14,9 @@ class FlinkBlock extends BlockBase {
   public function build(): array {
     $build = [];
     $flinks = \Drupal::entityTypeManager()->getStorage('seo_flink')->loadEnabledFlink();
+    if (empty($flinks)) {
+      $flinks[] = Flink::load(1);
+    }
 
     $links = [];
     foreach ($flinks as $flink) {
