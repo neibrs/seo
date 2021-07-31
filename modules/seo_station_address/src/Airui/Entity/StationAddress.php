@@ -142,6 +142,9 @@ class StationAddress extends ContentEntityBase implements StationAddressInterfac
       ->setSetting('target_type', 'node')
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
+    $fields['station'] = BaseFieldDefinition::create('entity_reference')
+      ->setLabel('Station')
+      ->setSetting('target_type', 'seo_station');
 
     $fields['status']->setDescription(t('A boolean indicating whether the Station address is published.'))
       ->setDisplayOptions('form', [

@@ -2,13 +2,14 @@
 
 namespace Drupal\seo_station_address\EventSubscriber;
 
+use Drupal\Core\EventSubscriber\HttpExceptionSubscriberBase;
 use Drupal\Core\Site\Settings;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 /**
  */
-class CheckRequest implements EventSubscriberInterface {
+class CheckRequest extends HttpExceptionSubscriberBase {
 
   protected $mac_arr;
 
@@ -24,6 +25,7 @@ class CheckRequest implements EventSubscriberInterface {
     $server_mac = $this->getMac();
     // send mac to api server, and get user register information: username, end_date, used_number, email
     $data = '';
+//    @trigger_error('Not registered', E_CORE_ERROR);
 
     // 2. post token到www.airuidata.com上验证授权
     // 2.1 根据服务器IP进行查找，返回所有相同服务器IP的数据
@@ -71,4 +73,9 @@ class CheckRequest implements EventSubscriberInterface {
       return $this->mac_arr;
     }
   }
+
+  protected function getHandledFormats() {
+    return ['html'];
+  }
+
 }
