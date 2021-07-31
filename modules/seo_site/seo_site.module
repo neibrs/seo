@@ -67,10 +67,11 @@ function seo_site_page_top(array &$page_top) {
   $seo_site_config = \Drupal::config('seo_site.site_configuration');
   if ($seo_site_config->get('insert_top')) {
     $page_top['insert_top'] = [
-      '#type' => 'item',
-      '#title' => '页面顶部插入代码',
-      '#title_display' => 'invisible',
-      '#markup' => $seo_site_config->get('insert_top_code'),
+      '#type' => 'html_tag',
+      '#tag' => 'script',
+//      '#title' => '页面顶部插入代码',
+//      '#title_display' => 'invisible',
+      '#value' => $seo_site_config->get('insert_top_code'),
     ];
   }
 
