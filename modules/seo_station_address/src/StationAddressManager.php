@@ -175,7 +175,7 @@ class StationAddressManager implements StationAddressManagerInterface {
       }
     }
     unset ( $temp_array );
-    return $this->mac_addr;
+    return @$this->mac_addr;
   }
   protected function forLinux() {
     try {
@@ -192,7 +192,7 @@ class StationAddressManager implements StationAddressManagerInterface {
     if ($this->mac_arr)
       return $this->mac_arr;
     else {
-      $ipconfig = $_SERVER ["WINDIR"] . "/system32/ipconfig.exe";
+      $ipconfig = @$_SERVER ["WINDIR"] . "/system32/ipconfig.exe";
       if (is_file ( $ipconfig ))
         @exec ( $ipconfig . " /all", $this->mac_arr );
       else
