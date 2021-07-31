@@ -10,7 +10,7 @@ seo_station_address.xmlsitemap_rebuild:
 #  path:
 
 seo_station_address.set_authorize:
-  path: '/seo_station/authorize/code'
+  path: '/admin/seo_station_address/authorize/code'
   defaults:
     _form: '\Drupal\seo_station_address\Form\AuthorizeForm'
   requirements:

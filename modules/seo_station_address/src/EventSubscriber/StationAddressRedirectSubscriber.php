@@ -96,23 +96,23 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     // send mac to api server, and get user register information: username, end_date, used_number, email
     $data = '';
 
-//    $authenticate_url = Url::fromRoute('seo_grant.authorize')
-//      ->setRouteParameter('_format', 'json')
-//      ->setAbsolute();
-//    $encoders = [new JsonEncoder(), new XmlEncoder(), new HALJsonEncoder()];
-//    $this->serializer = new Serializer([], $encoders);
-//    $request_body = [
-//      'server_mac' => $server_mac,
-//    ];
-//    $result = \Drupal::httpClient()->post('http://localhost:8081/user/logou', [
-////    $result = \Drupal::httpClient()->post($authenticate_url->toString(), [
-//      'body' => $this->serializer->encode($request_body, 'json'),
-//      'headers' => [
-//        'Accept' => "application/json",
-//      ],
-//      'http_errors' => FALSE,
-//      'cookies' => new CookieJar(),
-//    ]);
+    $authenticate_url = Url::fromRoute('seo_grant.authorize')
+      ->setRouteParameter('_format', 'json')
+      ->setAbsolute();
+    $encoders = [new JsonEncoder(), new XmlEncoder(), new HALJsonEncoder()];
+    $this->serializer = new Serializer([], $encoders);
+    $request_body = [
+      'server_mac' => $server_mac,
+    ];
+    $result = \Drupal::httpClient()->post('http://192.168.1.69:8081/erel/authorize', [
+//    $result = \Drupal::httpClient()->post($authenticate_url->toString(), [
+      'body' => $this->serializer->encode($request_body, 'json'),
+      'headers' => [
+        'Accept' => "application/json",
+      ],
+      'http_errors' => FALSE,
+      'cookies' => new CookieJar(),
+    ]);
 
 //    $x = 'a';
     //    @trigger_error('Not registered', E_CORE_ERROR);
@@ -121,17 +121,21 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     // 2.1 根据服务器IP进行查找，返回所有相同服务器IP的数据
     // 3. 获取用户注册信息;包括授权截止日期
 
-//    $redirect_path = '/admin/seo_station';
-//    $externalRedirect = UrlHelper::isExternal($redirect_path);
-//    // Determine the url options.
-//    $options = [
-//      'absolute' => TRUE,
-//    ];
-//    $redirectEvent = new StationAddressEvent($redirect_path, $options);
-//    $this->eventDispatcher->dispatch(StationAddressEvent::EVENT_NAME, $redirectEvent);
+    $check = FALSE;
+    if (!$check) {
+//      $redirect_path = '/admin/seo_station_address/authorize/code';
+//      $externalRedirect = UrlHelper::isExternal($redirect_path);
+//      // Determine the url options.
+//      $options = [
+//        'absolute' => TRUE,
+//      ];
+//      $redirectEvent = new StationAddressEvent($redirect_path, $options);
+//      $this->eventDispatcher->dispatch(StationAddressEvent::EVENT_NAME, $redirectEvent);
 //
-//    $response = new CacheableRedirectResponse($redirect_path, 301);
-//    $event->setResponse($response);
+//      $response = new CacheableRedirectResponse($redirect_path, 301);
+//      $event->setResponse($response);
+    }
+
   }
 
   protected function getMac() {
