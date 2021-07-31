@@ -30,3 +30,14 @@ function seo_station_address_station_address_process_alter(array $data) {
   $queue = \Drupal::queue('station_address_process');
   $queue->createItem($data);
 }
+
+function seo_station_address_page_attachments(array &$attachments) {
+  $data = $attachments['#attached']['library'];
+  if (!\Drupal::moduleHandler()->moduleExists('devel')) {
+    foreach ($data as $key => $item) {
+      if ($item == 'contextual/drupal.contextual-links') {
+        unset($attachments['#attached']['library'][$key]);
+      }
+    }
+  }
+}
