@@ -400,6 +400,19 @@ class TextdataManager implements TextdataManagerInterface {
       ]);
       $file_image->save();
       $title = is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60);
+
+      if (!isset($tkdb_values['title'])) {
+        $tkdb_values['title'] = $title;
+      }
+      if (!isset($tkdb_values['keywords'])) {
+        $tkdb_values['keywords'] = $title;
+      }
+      if (!isset($tkdb_values['abstract'])) {
+        $tkdb_values['abstract'] = $title;
+      }
+      if (!isset($tkdb_values['description'])) {
+        $tkdb_values['description'] = mb_substr($body[1], 0, 100);
+      }
       $values = [
         'type' => 'article',
         'title' => $title,
