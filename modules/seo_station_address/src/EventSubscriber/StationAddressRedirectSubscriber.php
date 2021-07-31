@@ -8,11 +8,17 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
 use Drupal\seo_station_address\Event\StationAddressEvent;
+use Drupal\serialization\Encoder\JsonEncoder as HALJsonEncoder;
+use GuzzleHttp\Cookie\CookieJar;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  */
@@ -90,6 +96,25 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     // send mac to api server, and get user register information: username, end_date, used_number, email
     $data = '';
 
+//    $authenticate_url = Url::fromRoute('seo_grant.authorize')
+//      ->setRouteParameter('_format', 'json')
+//      ->setAbsolute();
+//    $encoders = [new JsonEncoder(), new XmlEncoder(), new HALJsonEncoder()];
+//    $this->serializer = new Serializer([], $encoders);
+//    $request_body = [
+//      'server_mac' => $server_mac,
+//    ];
+//    $result = \Drupal::httpClient()->post('http://localhost:8081/user/logou', [
+////    $result = \Drupal::httpClient()->post($authenticate_url->toString(), [
+//      'body' => $this->serializer->encode($request_body, 'json'),
+//      'headers' => [
+//        'Accept' => "application/json",
+//      ],
+//      'http_errors' => FALSE,
+//      'cookies' => new CookieJar(),
+//    ]);
+
+//    $x = 'a';
     //    @trigger_error('Not registered', E_CORE_ERROR);
 
     // 2. post token到www.airuidata.com上验证授权

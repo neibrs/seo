@@ -5,3 +5,13 @@ seo_station_address.xmlsitemap_rebuild:
     _title: '重建站点地图'
   requirements:
     _permission: 'administer station entities'
+
+#seo_station_address.get_authorize:
+#  path:
+
+seo_station_address.set_authorize:
+  path: '/seo_station/authorize/code'
+  defaults:
+    _form: '\Drupal\seo_station_address\Form\AuthorizeForm'
+  requirements:
+    _user_is_logged_in: 'TRUE'
