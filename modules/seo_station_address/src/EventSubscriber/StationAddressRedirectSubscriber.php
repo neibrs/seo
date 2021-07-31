@@ -2,17 +2,21 @@
 
 namespace Drupal\seo_station_address\EventSubscriber;
 
+use Drupal\Component\Utility\UrlHelper;
+use Drupal\Core\Cache\CacheableRedirectResponse;
 use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\EventSubscriber\HttpExceptionSubscriberBase;
 use Drupal\Core\Messenger\MessengerInterface;
 use Drupal\Core\Path\PathMatcherInterface;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\seo_station_address\Event\StationAddressEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
  */
-class RedirectSubscriber extends HttpExceptionSubscriberBase {
+class StationAddressRedirectSubscriber implements EventSubscriberInterface {
 
   protected $mac_arr;
 
@@ -73,28 +77,38 @@ class RedirectSubscriber extends HttpExceptionSubscriberBase {
     $this->messenger = $messenger;
   }
 
-//  public static function getSubscribedEvents() {
-//    $events[KernelEvents::REQUEST][] = ['onKernelRequest'];
-//    return $events;
-//  }
-//
-//  public function onKernelRequest(RequestEvent $event) {
-//    // TODO, check local grant code.
-//    $x = 'a';
-//    // 1. 获取本地的机器码,生成机器码|config_sync目录名字，服务器IP信息
-//    $server_mac = $this->getMac();
-//    // send mac to api server, and get user register information: username, end_date, used_number, email
-//    $data = '';
-////    @trigger_error('Not registered', E_CORE_ERROR);
-//
-//    // 2. post token到www.airuidata.com上验证授权
-//    // 2.1 根据服务器IP进行查找，返回所有相同服务器IP的数据
-//    // 3. 获取用户注册信息;包括授权截止日期
-//  }
-
-  public function on403(GetResponseForExceptionEvent $event) {
-    $x = 'a';
+  public static function getSubscribedEvents() {
+    $events[KernelEvents::REQUEST][] = ['onKernelRequest'];
+    return $events;
   }
+
+  public function onKernelRequest(RequestEvent $event) {
+    // TODO, check local grant code.
+    $x = 'a';
+    // 1. 获取本地的机器码,生成机器码|config_sync目录名字，服务器IP信息
+    $server_mac = $this->getMac();
+    // send mac to api server, and get user register information: username, end_date, used_number, email
+    $data = '';
+
+    //    @trigger_error('Not registered', E_CORE_ERROR);
+
+    // 2. post token到www.airuidata.com上验证授权
+    // 2.1 根据服务器IP进行查找，返回所有相同服务器IP的数据
+    // 3. 获取用户注册信息;包括授权截止日期
+
+//    $redirect_path = '/admin/seo_station';
+//    $externalRedirect = UrlHelper::isExternal($redirect_path);
+//    // Determine the url options.
+//    $options = [
+//      'absolute' => TRUE,
+//    ];
+//    $redirectEvent = new StationAddressEvent($redirect_path, $options);
+//    $this->eventDispatcher->dispatch(StationAddressEvent::EVENT_NAME, $redirectEvent);
+//
+//    $response = new CacheableRedirectResponse($redirect_path, 301);
+//    $event->setResponse($response);
+  }
+
   protected function getMac() {
     switch (strtolower(PHP_OS)) {
       case "solaris" :
@@ -135,10 +149,6 @@ class RedirectSubscriber extends HttpExceptionSubscriberBase {
         @exec ( $_SERVER ["WINDIR"] . "/system/ipconfig.exe /all", $this->mac_arr );
       return $this->mac_arr;
     }
-  }
-
-  protected function getHandledFormats() {
-    return ['html'];
   }
 
 }

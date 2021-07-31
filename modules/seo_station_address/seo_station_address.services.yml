@@ -4,7 +4,7 @@ services:
     arguments: ['@entity_type.manager']
 
   seo_station_address.check_request:
-    class: Drupal\seo_station_address\EventSubscriber\RedirectSubscriber
+    class: Drupal\seo_station_address\EventSubscriber\StationAddressRedirectSubscriber
     arguments: ['@config.factory', '@current_user', '@path.matcher', '@event_dispatcher', '@messenger']
     tags:
       - { name: event_subscriber }
