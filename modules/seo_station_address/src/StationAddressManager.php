@@ -59,11 +59,14 @@ class StationAddressManager implements StationAddressManagerInterface {
       $theme = $this->getThemeByStationModel($request, $theme, $domain, $station);
     }
     if (!empty($theme) && empty($station_addresses)) {
+      $web_name = \Drupal::service('seo_textdata.manager')->getWebNameByTextdata($station);
+      $web_name = trim(strip_tags($web_name));
       // 固化主题到域名上
         $values = [
           'name' => $request->getHost(),
           'domain' => $request->getHost(),
           'theme' => $theme,
+          'webname' => $web_name,
       ];
       $station_address_storage->create($values)->save();
 
@@ -73,10 +76,13 @@ class StationAddressManager implements StationAddressManagerInterface {
         $values = [
           'name' => 'www.' . $request->getHost(),
           'domain' => 'www.' . $request->getHost(),
+          'webname' => $web_name,
           'theme' => $theme,
         ];
         $station_address_storage->create($values)->save();
       }
+      $site_config = \Drupal::configFactory()->getEditable('system.site');
+      $site_config->set('name', $web_name)->save();
     }
 
     return $theme;
