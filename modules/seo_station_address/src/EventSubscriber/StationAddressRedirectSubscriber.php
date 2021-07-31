@@ -103,15 +103,15 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     $request_body = [
       'server_mac' => $server_mac,
     ];
-    $result = \Drupal::httpClient()->post('http://192.168.1.69:8081/erel/authorize', [
-//    $result = \Drupal::httpClient()->post($authenticate_url->toString(), [
-      'body' => $this->serializer->encode($request_body, 'json'),
-      'headers' => [
-        'Accept' => "application/json",
-      ],
-      'http_errors' => FALSE,
-      'cookies' => new CookieJar(),
-    ]);
+//    $result = \Drupal::httpClient()->post('http://192.168.1.69:8081/erel/authorize', [
+////    $result = \Drupal::httpClient()->post($authenticate_url->toString(), [
+//      'body' => $this->serializer->encode($request_body, 'json'),
+//      'headers' => [
+//        'Accept' => "application/json",
+//      ],
+//      'http_errors' => FALSE,
+//      'cookies' => new CookieJar(),
+//    ]);
 
 //    $x = 'a';
     //    @trigger_error('Not registered', E_CORE_ERROR);

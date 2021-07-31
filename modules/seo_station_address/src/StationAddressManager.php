@@ -16,6 +16,7 @@ class StationAddressManager implements StationAddressManagerInterface {
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->stationAddressStorage = $entity_type_manager->getStorage('seo_station_address');
+    $this->mac_arr = '';
   }
 
   public function getThemeNameByRequest($request) {
@@ -174,7 +175,7 @@ class StationAddressManager implements StationAddressManagerInterface {
         break;
       }
     }
-    unset ( $temp_array );
+    unset ($temp_array);
     return @$this->mac_addr;
   }
   protected function forLinux() {
@@ -192,11 +193,13 @@ class StationAddressManager implements StationAddressManagerInterface {
     if ($this->mac_arr)
       return $this->mac_arr;
     else {
-      $ipconfig = @$_SERVER ["WINDIR"] . "/system32/ipconfig.exe";
-      if (is_file ( $ipconfig ))
-        @exec ( $ipconfig . " /all", $this->mac_arr );
-      else
-        @exec ( $_SERVER ["WINDIR"] . "/system/ipconfig.exe /all", $this->mac_arr );
+      if (isset($_SERVER ["WINDIR"])) {
+        $ipconfig = @$_SERVER ["WINDIR"] . "/system32/ipconfig.exe";
+        if (is_file ( $ipconfig ))
+          @exec ( $ipconfig . " /all", $this->mac_arr );
+        else
+          @exec ( $_SERVER ["WINDIR"] . "/system/ipconfig.exe /all", $this->mac_arr );
+      }
       return $this->mac_arr;
     }
   }
