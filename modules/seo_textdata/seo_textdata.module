@@ -331,10 +331,24 @@ function seo_textdata_preprocess_html__front(&$variables) {
 }
 
 /**
- * Implements hook_ENTITY_TYPE_view().
+ * Implements hook_ENTITY_TYPE_view() for node article view.
  */
 function seo_textdata_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->getEntityTypeId() != 'article') {
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function seo_textdata_preprocess_html__node(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+  if ($route_name != 'entity.node.canonical') {
+    return;
+  }
+  $entity = $route_match->getParameter('node');
+
+  if ($entity->bundle() != 'article') {
     return;
   }
   $host = \Drupal::request()->getHost();
@@ -362,7 +376,7 @@ function seo_textdata_node_view(array &$build, \Drupal\Core\Entity\EntityInterfa
     }
     // 站点标题.
     if (isset($rule_domain[1])) {
-      $build['head_title']['title'] = $entity->label() . '-' . $web_name;
+      $variables['head_title']['title'] = $entity->label() . '-' . $web_name;
     }
     break;
   }
@@ -373,5 +387,5 @@ function seo_textdata_node_view(array &$build, \Drupal\Core\Entity\EntityInterfa
   ]);
   $station_address = reset($entities);
   $webname = $station_address->webname->value;
-  $build['head_title']['title'] = !empty($webname) ? $entity->label() . '-' . $webname : $entity->label();
+  $variables['head_title']['title'] = !empty($webname) ? $entity->label() . '-' . $webname : $entity->label();
 }
