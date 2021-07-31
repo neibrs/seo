@@ -7,3 +7,4 @@ package: 'Dsi'
 dependencies:
   - xmlsitemap
   - seo_station
+  - api_connection

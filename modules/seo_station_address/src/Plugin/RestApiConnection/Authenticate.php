@@ -1,5 +1,5 @@
 <?php
-namespace Drupal\seo_statioin_address\Plugin\RestApiConnection;
+namespace Drupal\seo_station_address\Plugin\RestApiConnection;
 
 use Drupal\api_connection\Plugin\RestApiConnectionBase;
 use GuzzleHttp\RequestOptions;
@@ -19,15 +19,22 @@ use GuzzleHttp\RequestOptions;
  */
 class Authenticate extends RestApiConnectionBase {
 
-  public function authentication() {
+  public function authentication($data): bool {
     $server_mac = \Drupal::service('seo_station_address.manager')->getMac();
     $options = [
-      RequestOptions::BODY => [
-        'server_mac' => $server_mac,
+      RequestOptions::AUTH => [
+        'name' => 'admin',
+        'pass' => 'admin',
       ],
+      RequestOptions::JSON=> [
+          'name' => 'admin',
+          'pass' => 'admin',
+        'server_mac' => $server_mac,
+      ] + $data,
     ];
 
-    $response = $this->sendRequest('authenticate', "POST", $options);
+    $response = $this->sendRequest('api/authentication', "POST", $options);
+
 
     return FALSE;
   }

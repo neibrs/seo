@@ -18,7 +18,12 @@ class AuthorizeForm extends FormBase {
    * {@inheritDoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['code'] = [
+    $form['authenticate_username'] = [
+      '#type' => 'textfield',
+      '#title' => '用户名',
+      '#description' => '客户姓名',
+    ];
+    $form['authenticate_code'] = [
       '#type' => 'textarea',
       '#title' => '授权码',
     ];
@@ -36,8 +41,20 @@ class AuthorizeForm extends FormBase {
    * {@inheritDoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $code = $form_state->getValue('code');
-    \Drupal::state()->set('all_user_authorize_code', $code);
+    $username = $form_state->getValue('authenticate_username');
+    $code = $form_state->getValue('authenticate_code');
+    \Drupal::state()->set('authenticate_username' , $username);
+    \Drupal::state()->set('authenticate_code', $code);
+
+    // TODO, check on remote server.
+    $data = [
+      'username' => $username,
+      'code' => $code,
+    ];
+    $api_connection = \Drupal::getContainer()->get('plugin.manager.rest_api_connection');
+    $instance = $api_connection->createInstance('airui_authenticate');
+    $response = $instance->authentication($data);
+    $x = 'a';
   }
 
 }
