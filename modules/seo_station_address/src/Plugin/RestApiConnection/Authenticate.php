@@ -22,22 +22,9 @@ class Authenticate extends RestApiConnectionBase {
 
   public function authentication($data): bool {
     $server_mac = \Drupal::service('seo_station_address.manager')->getMac();
+    // Login
     $options = [
       RequestOptions::BODY => $data,
-      //      RequestOptions::DEBUG => TRUE,
-//      RequestOptions::AUTH => $data,
-//    [
-//        'restui',
-//        'restui',
-//      ],
-//      RequestOptions::HEADERS => Json::encode([
-//        'Content-Type' => 'application/hal+json',
-//        'X-CSRF-Token' => 'token',
-//        'Authorization' => 'Basic ' + '',
-//      ]),
-//      RequestOptions::BODY => Json::encode([
-//        'server_mac' => $server_mac,
-//      ] + $data),
     ];
 
     $response = $this->sendRequest('user/login?_format=json', "POST", $options);
@@ -64,7 +51,8 @@ class Authenticate extends RestApiConnectionBase {
       //        'server_mac' => $server_mac,
       //      ] + $data),
     ];
-//    $response = $this->sendRequest('api/authentication?_format=hal_json', "POST", $options);
+    $response = $this->sendRequest('api/authentication?_format=hal_json', "POST", $options);
+    $x = 'a';
 
 
     return FALSE;
