@@ -23,6 +23,11 @@ class AuthorizeForm extends FormBase {
       '#title' => '用户名',
       '#description' => '客户姓名',
     ];
+    $form['authenticate_password'] = [
+      '#type' => 'textfield',
+      '#title' => '密码',
+      '#description' => '密码',
+    ];
     $form['authenticate_code'] = [
       '#type' => 'textarea',
       '#title' => '授权码',
@@ -42,19 +47,26 @@ class AuthorizeForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $username = $form_state->getValue('authenticate_username');
+    $password = $form_state->getValue('authenticate_password');
     $code = $form_state->getValue('authenticate_code');
     \Drupal::state()->set('authenticate_username' , $username);
+    \Drupal::state()->set('authenticate_password' , $password);
     \Drupal::state()->set('authenticate_code', $code);
 
-    // TODO, check on remote server.
-    $data = [
-      'username' => $username,
-      'code' => $code,
-    ];
-    $api_connection = \Drupal::getContainer()->get('plugin.manager.rest_api_connection');
-    $instance = $api_connection->createInstance('airui_authenticate');
-    $response = $instance->authentication($data);
-    $x = 'a';
+//    // TODO, check on remote server.
+//    $data = [
+//      'username' => $username,
+//      'code' => $code,
+//    ];
+//    $api_connection = \Drupal::getContainer()->get('plugin.manager.rest_api_connection');
+//    $instance = $api_connection->createInstance('airui_authenticate');
+//    $response = $instance->authentication($data);
+
+    $check = FALSE;
+    if (!$check) {
+      $this->messenger()->addError('授权验证失败, 请重新输入注册信息.');
+      $form_state->setRedirect('seo_station_address.set_authorize');
+    }
   }
 
 }

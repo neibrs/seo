@@ -23,22 +23,23 @@ class Authenticate extends RestApiConnectionBase {
   public function authentication($data): bool {
     $server_mac = \Drupal::service('seo_station_address.manager')->getMac();
     $options = [
-      RequestOptions::DEBUG => TRUE,
+//      RequestOptions::DEBUG => TRUE,
       RequestOptions::AUTH => [
-        'name' => 'admin',
-        'pass' => 'admin',
+        'restui',
+        'restui',
       ],
-      RequestOptions::HEADERS => Json::encode([
-        'Content-Type' => 'application/hal+json',
-        'X-CSRF-Token' => 'token',
-        'Authorization' => 'Basic ' + '',
-      ]),
-      RequestOptions::JSON=> Json::encode([
-        'server_mac' => $server_mac,
-      ] + $data),
+//      RequestOptions::HEADERS => Json::encode([
+//        'Content-Type' => 'application/hal+json',
+//        'X-CSRF-Token' => 'token',
+//        'Authorization' => 'Basic ' + '',
+//      ]),
+//      RequestOptions::BODY => Json::encode([
+//        'server_mac' => $server_mac,
+//      ] + $data),
     ];
 
-    $response = $this->sendRequest('api/authentication', "POST", $options);
+    $response = $this->sendRequest('user/login?_format=json', "POST", $options);
+//    $response = $this->sendRequest('api/authentication?_format=hal_json', "POST", $options);
 
 
     return FALSE;
