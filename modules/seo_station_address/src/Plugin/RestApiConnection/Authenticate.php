@@ -37,19 +37,45 @@ class Authenticate extends RestApiConnectionBase {
       // 加一个定时清理的任务.
       \Drupal::state()->set('user_authentication_info', $response);
     }
-
+    $state = \Drupal::state()->get('user_authentication_info');
+    // Login
     $options = [
-      RequestOptions::BODY => [
-        'server_mac' => $server_mac,
+      RequestOptions::BODY => $data,
+      RequestOptions::QUERY => [
+        'token' => $state['csrf_token'],
       ],
-      RequestOptions::DEBUG => TRUE,
-//      RequestOptions::AUTH => $data,
       RequestOptions::HEADERS => [
         'Content-Type' => 'application/json',
-        'X-CSRF-Token' => $state['csrf_token'],
+        'X-Csrf-Token' => $state['csrf_token'],
+        'Authentication' => base64_encode($data['name'] . ':' . $data['pass']),
       ],
     ];
-    $response = $this->sendRequest('api/authentication?_format=hal_json', "POST", $options);
+
+    $response = $this->sendRequest('erel/authorize?_format=json&xxx=ldf', "POST", $options);
+    if(empty($response)) {
+      return FALSE;
+    }
+//    $options = [
+//      RequestOptions::BODY => [
+//        'payload' => 'body',
+//      ],
+//      RequestOptions::FORM_PARAMS => [
+//        'payload' => 'xxx',
+//      ],
+//      RequestOptions::DEBUG => TRUE,
+//      RequestOptions::AUTH => $data,
+//      RequestOptions::QUERY => [
+//        'payload' => 'xxx',
+//      ],
+//      RequestOptions::JSON => [
+//        'xx' => 'x',
+//      ],
+//      RequestOptions::HEADERS => [
+//        'Content-Type' => 'application/json',
+//        'X-CSRFToken' => 'oVaAKU02ChPj293AeQlr2rUiP0N6rGPVcctNcx3TMFM',//$state['csrf_token'],
+//      ],
+//    ];
+//    $response = $this->sendRequest('api/authentication?_format=json', "POST", $options);
     $x = 'a';
 
     $options = [
@@ -60,7 +86,10 @@ class Authenticate extends RestApiConnectionBase {
 
     // Logout success.
     $response = $this->sendRequest('user/logout?_format=json', "POST", $options);
-    $x = 'a';
+    if ($response) {
+      return TRUE;
+    }
+    $state = \Drupal::state()->delete('user_authentication_info');
 
     return FALSE;
   }
