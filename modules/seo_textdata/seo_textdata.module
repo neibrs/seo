@@ -292,3 +292,100 @@ function seo_textdata_preprocess_page(&$variables) {
 
   }
 }
+
+/**
+ * Implements hook_template_preprocess_default_variables_alter().
+ */
+function seo_textdata_template_preprocess_default_variables_alter(&$variables) {
+  $x = 'a';
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function seo_textdata_preprocess_html__front(&$variables) {
+  // TODO, 识别自定义TKD
+  // TODO 列表页面，详情页面被自动生成网站名称了，需要修改
+  $variables['head_title']['title'] = mb_substr($variables['head_title']['title'], 2);
+
+  $data = [
+    'Keywords' => [
+      '#tag' => 'meta',
+      '#attributes' => [
+        'name' => 'keywords',
+        'content' => mb_substr($variables['head_title']['title'], 2),
+      ],
+    ],
+    'Description' => [
+      '#tag' => 'meta',
+      '#attributes' => [
+        'name' => 'description',
+        'content' => mb_substr($variables['head_title']['title'], 2),
+      ],
+    ],
+  ];
+
+  foreach ($data as $key => $value) {
+    $variables['#attached']['html_head'][] = [$value, $key];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_view() for node article view.
+ */
+function seo_textdata_node_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode) {
+
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function seo_textdata_preprocess_html__node(&$variables) {
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+  if ($route_name != 'entity.node.canonical') {
+    return;
+  }
+  $entity = $route_match->getParameter('node');
+
+  if ($entity->bundle() != 'article') {
+    return;
+  }
+  $host = \Drupal::request()->getHost();
+  // TODO 1. 获取自定义TKD里面的网站名称，标题... return
+  $config = \Drupal::configFactory()->getEditable('seo_station.custom_domain_tkd');
+  $tkdb_config = $config->get('custom_domain_tkd');
+  // 先解析
+  $rules = array_unique(explode('-||-', str_replace("\n","-||-", str_replace("\r\n","-||-", $tkdb_config))));
+  $web_name = '';
+  foreach ($rules as $rule) {
+    if (empty($rule)) {
+      continue;
+    }
+    // rule: 域名----网站名称----首页标题----关键词----描述
+    $rule_domain = explode('----', $rule); //Tkd全局设置的需要覆写的域名
+    $rule_url = parse_url($host); //数据的域名
+    $status = \Drupal::service('seo_textdata.manager')->getWildRule($rule_url, $rule_domain);
+
+    if (!$status) {
+      // Append domain site name into settings.
+      continue;
+    }
+    if (empty($web_name)) {
+      $web_name = $rule_domain[1];
+    }
+    // 站点标题.
+    if (isset($rule_domain[1])) {
+      $variables['head_title']['title'] = $entity->label() . '-' . $web_name;
+    }
+    break;
+  }
+
+  // TODO 2. 获取当前域名下动态生成的网站名称 return.
+  $entities = \Drupal::entityTypeManager()->getStorage('seo_station_address')->loadByProperties([
+    'domain' => $host,
+  ]);
+  $station_address = reset($entities);
+  $webname = $station_address->webname->value;
+  $variables['head_title']['title'] = !empty($webname) ? $entity->label() . '-' . $webname : $entity->label();
+}

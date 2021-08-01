@@ -134,7 +134,7 @@ class Station extends ContentEntityBase implements StationInterface {
 //网站模式(站点模式)(site_mode)
     $fields['site_mode'] = BaseFieldDefinition::create('boolean')
       ->setLabel('站点模式')
-      ->setDefaultValue(TRUE)
+      ->setDefaultValue(FALSE)
       ->setSetting('on_label', '泛域名')
       ->setSetting('off_label', '单域名')
       ->setDisplayOptions('form', [
@@ -292,15 +292,15 @@ class Station extends ContentEntityBase implements StationInterface {
           'title' => 'title',
         ],
       ])
-      ->setDisplayOptions('view', [
-        'type' => 'entity_reference_label',
-        'weight' => 0,
-        'label' => 'inline',
-      ])
-      ->setDisplayOptions('form', [
-        'type' => 'options_select',
-        'weight' => 0,
-      ])
+//      ->setDisplayOptions('view', [
+//        'type' => 'entity_reference_label',
+//        'weight' => 0,
+//        'label' => 'inline',
+//      ])
+//      ->setDisplayOptions('form', [
+//        'type' => 'options_select',
+//        'weight' => 0,
+//      ])
       ->setDisplayConfigurable('form', TRUE)
       ->setDisplayConfigurable('view', TRUE);
 //自定义句子库(site_sentence)

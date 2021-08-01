@@ -62,14 +62,17 @@ class StationForm extends ContentEntityForm {
       $models = $this->entityTypeManager->getStorage('seo_station_model')->loadMultiple();
       $model = reset($models);
       if (!empty($model)) {
-        $form['model']['widget']['#default_value'] = $model->id();
+        $form['model']['widget']['#default_value'] = 2;//(string)$model->id(); //TODO, improve.
       }
     }
     else {
       $form['model']['widget']['#default_value'] = $this->getEntity()->model->target_id;
     }
 
-    $form['site_mode']['widget']['#default_value'] = $this->entity->site_mode->value;
+    $form['site_mode']['widget']['#options'] = [
+      '0' => '单域名',
+    ];
+    $form['site_mode']['widget']['#default_value'] = empty($this->entity->site_mode->value) ? '0' : $this->entity->site_mode->value;
     $form['content_type']['widget']['#default_value'] = 0;
     $form['prefix_multi']['widget']['#default_value'] = 0;
 
@@ -386,10 +389,10 @@ class StationForm extends ContentEntityForm {
     $form['site_models']['multi_help'] = [
       '#type' => 'item',
       '#markup' => '<p><strong>单域名</strong></p>
-<p><span class="description-red">单域名最终生成链接数: <strong>每个域名提取数量 * 域名数 </strong></span> </p>
-<p><strong>泛域名</strong></p>
-<p><span class="description-red">1. 自动生成时: 泛域名最终生成的链接数: <strong>域名数 * 生成级数 * 每个域名提取数量<sup>2</sup></strong></span></p>
-<p>2. 自定义（推荐）<strong>待更新</strong></p>',
+<p><span class="description-red">单域名最终生成链接数: <strong>每个域名提取数量 * 域名数 </strong></span> </p>',
+//<p><strong>泛域名</strong></p>
+//<p><span class="description-red">1. 自动生成时: 泛域名最终生成的链接数: <strong>域名数 * 生成级数 * 每个域名提取数量<sup>2</sup></strong></span></p>
+//<p>2. 自定义（推荐）<strong>待更新</strong></p>',
     ];
 
     // 删除暂时未实现的功能

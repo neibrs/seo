@@ -16,6 +16,7 @@ class StationAddressManager implements StationAddressManagerInterface {
   public function __construct(EntityTypeManagerInterface $entity_type_manager) {
     $this->entityTypeManager = $entity_type_manager;
     $this->stationAddressStorage = $entity_type_manager->getStorage('seo_station_address');
+    $this->mac_arr = '';
   }
 
   public function getThemeNameByRequest($request) {
@@ -58,11 +59,14 @@ class StationAddressManager implements StationAddressManagerInterface {
       $theme = $this->getThemeByStationModel($request, $theme, $domain, $station);
     }
     if (!empty($theme) && empty($station_addresses)) {
+      $web_name = \Drupal::service('seo_textdata.manager')->getWebNameByTextdata($station);
+      $web_name = trim(strip_tags($web_name));
       // 固化主题到域名上
         $values = [
           'name' => $request->getHost(),
           'domain' => $request->getHost(),
           'theme' => $theme,
+          'webname' => $web_name,
       ];
       $station_address_storage->create($values)->save();
 
@@ -72,10 +76,13 @@ class StationAddressManager implements StationAddressManagerInterface {
         $values = [
           'name' => 'www.' . $request->getHost(),
           'domain' => 'www.' . $request->getHost(),
+          'webname' => $web_name,
           'theme' => $theme,
         ];
         $station_address_storage->create($values)->save();
       }
+      $site_config = \Drupal::configFactory()->getEditable('system.site');
+      $site_config->set('name', $web_name)->save();
     }
 
     return $theme;
@@ -174,8 +181,8 @@ class StationAddressManager implements StationAddressManagerInterface {
         break;
       }
     }
-    unset ( $temp_array );
-    return $this->mac_addr;
+    unset ($temp_array);
+    return @$this->mac_addr;
   }
   protected function forLinux() {
     try {
@@ -192,11 +199,13 @@ class StationAddressManager implements StationAddressManagerInterface {
     if ($this->mac_arr)
       return $this->mac_arr;
     else {
-      $ipconfig = $_SERVER ["WINDIR"] . "/system32/ipconfig.exe";
-      if (is_file ( $ipconfig ))
-        @exec ( $ipconfig . " /all", $this->mac_arr );
-      else
-        @exec ( $_SERVER ["WINDIR"] . "/system/ipconfig.exe /all", $this->mac_arr );
+      if (isset($_SERVER ["WINDIR"])) {
+        $ipconfig = @$_SERVER ["WINDIR"] . "/system32/ipconfig.exe";
+        if (is_file ( $ipconfig ))
+          @exec ( $ipconfig . " /all", $this->mac_arr );
+        else
+          @exec ( $_SERVER ["WINDIR"] . "/system/ipconfig.exe /all", $this->mac_arr );
+      }
       return $this->mac_arr;
     }
   }

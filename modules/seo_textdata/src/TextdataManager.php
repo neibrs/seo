@@ -47,6 +47,11 @@ class TextdataManager implements TextdataManagerInterface {
 
   // 随机获取title类型的标题库的文件一份
   public function getTitle($body_title = NULL, $station = NULL) {
+    // 屏蔽文章标题 Start
+    if (!empty($body_title)) {
+      return $body_title;
+    }
+    // 屏蔽文章标题 End
     $title = $this->getFileUri($station, 'title', 'site_title');
 
     if (empty($title)) {
@@ -134,7 +139,7 @@ class TextdataManager implements TextdataManagerInterface {
       $dst = $ds[$index];
     }
     else {
-      $dst = $ds[mt_rand(0, count($ds))];
+      $dst = $ds[array_rand($ds)];
     }
     return explode('******', $dst);
   }
@@ -145,7 +150,7 @@ class TextdataManager implements TextdataManagerInterface {
     $config = \Drupal::configFactory()->getEditable('seo_station.custom_domain_tkd');
     $tkdb_config = $config->get('custom_domain_tkd');
     // 先解析
-    $rules = array_unique(explode('-||-', str_replace("\r\n","-||-", $tkdb_config)));
+    $rules = array_unique(explode('-||-', str_replace("\n","-||-", str_replace("\r\n","-||-", $tkdb_config))));
     $field_metadata = [
       'canonical' => '[node:url]',
     ];
@@ -181,15 +186,15 @@ class TextdataManager implements TextdataManagerInterface {
       }
       break;
     }
-    if (empty($web_name)) {
-      // TODO, 自动追加网站名称到站点设置里面
-      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
-      $web_name = $this->getWebNameByTextdata($station);
-      $web_name = trim(strip_tags($web_name));
-      if (!empty($web_name)) {
-        $field_metadata['title'] = '[node:title]-' . $web_name;
-      }
-    }
+//    if (empty($web_name)) {
+//      // TODO, 自动追加网站名称到站点设置里面
+//      // eg. 成都宏义动力科技有限公司, TODO, 去除地域名，行业名(科技有限公司)
+//      $web_name = $this->getWebNameByTextdata($station);
+//      $web_name = trim(strip_tags($web_name));
+//      if (!empty($web_name)) {
+//        $field_metadata['title'] = '[node:title]-' . $web_name;
+//      }
+//    }
     try {
       $address_storage = $this->entityTypeManager->getStorage('seo_station_address');
       $address_values = [
@@ -240,7 +245,7 @@ class TextdataManager implements TextdataManagerInterface {
     }
 
     // TODO, bug
-    return $ds[mt_rand(0, 1)];
+    return $ds[array_rand($ds, 1)];
   }
 
   /**
@@ -299,6 +304,9 @@ class TextdataManager implements TextdataManagerInterface {
 
   public function appendTaxonomy2Title($term, $tkdb_values, $site_name) {
     // 提取文章分类到标题后缀
+    if (!isset($tkdb_values['title'])) {
+      $tkdb_values['title'] = '';
+    }
     if ($term instanceof TermInterface) {
       $tkdb_values['title'] . $term->label();
     }
@@ -400,6 +408,19 @@ class TextdataManager implements TextdataManagerInterface {
       ]);
       $file_image->save();
       $title = is_array($title) ? mb_substr($title[0], 0, 60) : mb_substr($title, 0, 60);
+
+      if (!isset($tkdb_values['title'])) {
+        $tkdb_values['title'] = $title;
+      }
+      if (!isset($tkdb_values['keywords'])) {
+        $tkdb_values['keywords'] = $title;
+      }
+      if (!isset($tkdb_values['abstract'])) {
+        $tkdb_values['abstract'] = $title;
+      }
+      if (!isset($tkdb_values['description'])) {
+        $tkdb_values['description'] = mb_substr($body[1], 0, 100);
+      }
       $values = [
         'type' => 'article',
         'title' => $title,
