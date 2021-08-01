@@ -9,7 +9,6 @@ class Authenticate extends RestApiConnectionBase {
 
   public function authentication($data): bool {
     $state = \Drupal::state()->get('user_authentication_info');
-    \Drupal::state()->delete('user_authentication_info');
     $server_mac = \Drupal::service('seo_station_address.manager')->getMac();
     if (empty($server_mac)) {
       \Drupal::messenger()->addError('系统无法获取机器码');
@@ -21,15 +20,17 @@ class Authenticate extends RestApiConnectionBase {
         RequestOptions::BODY => $data,
       ];
 
-      $response = $this->sendRequest('user/login?_format=json', "POST", $options);
+      $response_data = $response = $this->sendRequest('user/login?_format=json', "POST", $options);
       if(empty($response)) {
         return FALSE;
       }
+      $response_status = 'abc';
+      $xx = $server_mac . $response_status;
       // 加一个定时清理的任务.
-      \Drupal::state()->set('user_authentication_info', $response);
+      \Drupal::state()->set('user_authentication_info', md5($xx));
     }
     try {
-      $state = \Drupal::state()->get('user_authentication_info');
+      $state = $response_data;//\Drupal::state()->get('user_authentication_info');
       // Login
       $options = [
         RequestOptions::BODY => $data,

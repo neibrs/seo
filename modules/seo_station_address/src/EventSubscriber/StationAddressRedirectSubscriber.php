@@ -29,7 +29,6 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     if ($status) {
       return $event;
     }
-    \Drupal::state()->set('authorize_token_key', 1);
     $request = $event->getRequest();
     $currentPath = $request->getPathInfo();
     $destination = substr($currentPath, 1);
