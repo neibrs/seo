@@ -53,14 +53,14 @@ class AuthorizeForm extends FormBase {
     \Drupal::state()->set('authenticate_password' , $password);
     \Drupal::state()->set('authenticate_code', $code);
 
-//    // TODO, check on remote server.
-//    $data = [
-//      'username' => $username,
-//      'code' => $code,
-//    ];
-//    $api_connection = \Drupal::getContainer()->get('plugin.manager.rest_api_connection');
-//    $instance = $api_connection->createInstance('airui_authenticate');
-//    $response = $instance->authentication($data);
+    // TODO, check on remote server.
+    $data = [
+      'name' => $username,
+      'pass' => $code,
+    ];
+    $api_connection = \Drupal::getContainer()->get('plugin.manager.rest_api_connection');
+    $instance = $api_connection->createInstance('airui_authenticate');
+    $response = $instance->authentication($data);
 
     $check = FALSE;
     if (!$check) {
