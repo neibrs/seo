@@ -21,39 +21,46 @@ use GuzzleHttp\RequestOptions;
 class Authenticate extends RestApiConnectionBase {
 
   public function authentication($data): bool {
+    $state = \Drupal::state()->get('user_authentication_info');
+    \Drupal::state()->delete('user_authentication_info');
     $server_mac = \Drupal::service('seo_station_address.manager')->getMac();
-    // Login
-    $options = [
-      RequestOptions::BODY => $data,
-    ];
+    if (!$state) {
+      // Login
+      $options = [
+        RequestOptions::BODY => $data,
+      ];
 
-    $response = $this->sendRequest('user/login?_format=json', "POST", $options);
-    if(empty($response)) {
-      return FALSE;
+      $response = $this->sendRequest('user/login?_format=json', "POST", $options);
+      if(empty($response)) {
+        return FALSE;
+      }
+      // 加一个定时清理的任务.
+      \Drupal::state()->set('user_authentication_info', $response);
     }
-    $login_info = $response;
 
-    \Drupal::state()->set('user_authentication_info', $login_info);
     $options = [
-      RequestOptions::BODY => $data,
-      //      RequestOptions::DEBUG => TRUE,
-      //      RequestOptions::AUTH => $data,
-      //    [
-      //        'restui',
-      //        'restui',
-      //      ],
-      //      RequestOptions::HEADERS => Json::encode([
-      //        'Content-Type' => 'application/hal+json',
-      //        'X-CSRF-Token' => 'token',
-      //        'Authorization' => 'Basic ' + '',
-      //      ]),
-      //      RequestOptions::BODY => Json::encode([
-      //        'server_mac' => $server_mac,
-      //      ] + $data),
+      RequestOptions::BODY => [
+        'server_mac' => $server_mac,
+      ],
+      RequestOptions::DEBUG => TRUE,
+//      RequestOptions::AUTH => $data,
+      RequestOptions::HEADERS => [
+        'Content-Type' => 'application/json',
+        'X-CSRF-Token' => $state['csrf_token'],
+      ],
     ];
     $response = $this->sendRequest('api/authentication?_format=hal_json', "POST", $options);
     $x = 'a';
 
+    $options = [
+      RequestOptions::QUERY => [
+        'token' => $state['logout_token'],
+      ],
+    ];
+
+    // Logout success.
+    $response = $this->sendRequest('user/logout?_format=json', "POST", $options);
+    $x = 'a';
 
     return FALSE;
   }
