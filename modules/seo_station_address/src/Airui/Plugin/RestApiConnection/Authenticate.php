@@ -72,10 +72,10 @@ class Authenticate extends RestApiConnectionBase {
       if (isset($items['status']) && $items['status'] !== md5($mac_string)) {
         return FALSE;
       }
-      if (strtotime() >= $data['date']) {
+      if (REQUEST_TIME >= $items['date']) {
         return FALSE;
       }
-      \Drupal::state()->set('authorize_token_key', $data['date']);
+      \Drupal::state()->set('authorize_token_key', $items['date']);
       return TRUE;
     }
     catch (\Exception $e) {
