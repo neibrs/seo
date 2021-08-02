@@ -18,6 +18,11 @@ class AuthorizeForm extends FormBase {
    * {@inheritDoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $form['author_platform'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => '请输入授权平台账号及密码',
+    ];
     $form['authenticate_username'] = [
       '#type' => 'textfield',
       '#title' => '用户名',

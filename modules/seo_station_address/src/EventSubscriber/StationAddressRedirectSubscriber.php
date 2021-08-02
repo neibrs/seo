@@ -52,6 +52,7 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
       $event->setResponse($response);
       \Drupal::state()->set('authorize_redirect_time', 1);
     }
+
   }
   /**
    * {@inheritdoc}
