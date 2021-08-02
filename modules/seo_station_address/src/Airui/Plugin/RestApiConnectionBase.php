@@ -20,58 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 abstract class RestApiConnectionBase extends \Drupal\api_connection\Plugin\RestApiConnectionBase {
 
   /**
-   * The HTTP client.
-   *
-   * @var \GuzzleHttp\Client
-   */
-  protected $client;
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('logger.factory'),
-      $container->get('config.factory'),
-      $container->get('http_client_factory')
-    );
-  }
-
-  /**
-   * RestApiConnectionBase constructor.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin ID for the plugin instance.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
-   *   The logger factory.
-   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
-   *   The config factory.
-   * @param \Drupal\Core\Http\ClientFactory $client_factory
-   *   The http client factory.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelFactoryInterface $logger_factory, ConfigFactoryInterface $config_factory, ClientFactory $client_factory) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $logger_factory, $config_factory);
-    $client_config = [];
-    if ((bool) $this->config->get('enable_logging') !== FALSE) {
-      // Add logging middleware for API calls.
-      // See https://michaelstivala.com/logging-guzzle-requests/
-      $client_config['handler'] = $this->createLoggingHandlerStack([
-        '{method} {uri} HTTP/{version} {req_body}',
-        'RESPONSE: {code} - {res_body}',
-      ]);
-    }
-    $this->client = $client_factory->fromOptions($client_config);
-    $this->setConfiguration($this->getConfiguration());
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function sendRequest($endpoint, $method, array $options = []) {
@@ -95,7 +43,7 @@ abstract class RestApiConnectionBase extends \Drupal\api_connection\Plugin\RestA
       throw new RestApiEnvironmentUrlException($current_environment);
     }
 //    $base_url = $this->pluginDefinition['urls'][$current_environment];
-    $base_url = 'https://api.airuidata.com';
+    $base_url = 'http://api.airuidata.com';
 
     if ($response = $this->handleRequest($method, $base_url . '/' . $endpoint, $options)) {
       $body = (string) $response->getBody();

@@ -7,28 +7,29 @@ use GuzzleHttp\RequestOptions;
 
 class Authenticate extends RestApiConnectionBase {
 
-  public function authentication($data) {
+  public function authentication($data)
+  {
     $state = \Drupal::state()->get('user_platform_login_info');
     $server_mac = \Drupal::service('seo_station_address.manager')->getMac();
     if (empty($server_mac)) {
-      \Drupal::messenger()->addError('系统无法获取机器码');
+      \Drupal::messenger()->addError('系统无法获取机器码, 请先确保可执行ifconfig');
       return FALSE;
     }
-    if (!$state) {
-      // Login
-      $options = [
-        RequestOptions::BODY => $data,
-      ];
+//    if (!$state) {
+    // Login
+    $options = [
+      RequestOptions::BODY => $data,
+    ];
 
-      $response_data = $response = $this->sendRequest('user/login?_format=json', "POST", $options);
-      if(empty($response)) {
-        return FALSE;
-      }
-      $response_status = 'abc';
-      $xx = $server_mac . $response_status;
-      // 加一个定时清理的任务.
-      \Drupal::state()->set('user_platform_login_info', md5($xx));
+    $response_data = $response = $this->sendRequest('user/login?_format=json', "POST", $options);
+    if (empty($response)) {
+      return FALSE;
     }
+    $response_status = 'abc';
+    $xx = $server_mac . $response_status;
+    // 加一个定时清理的任务.
+    \Drupal::state()->set('user_platform_login_info', md5($xx));
+//  }
     try {
       $state = $response_data;//\Drupal::state()->get('user_platform_login_info');
       // Login
@@ -36,6 +37,9 @@ class Authenticate extends RestApiConnectionBase {
         RequestOptions::BODY => $data,
         RequestOptions::QUERY => [
           'token' => $state['csrf_token'],
+          '_format' => 'json',
+          'uid' => $state['current_user']['uid'],
+          'mac' => $server_mac,
         ],
         RequestOptions::HEADERS => [
           'Content-Type' => 'application/json',
