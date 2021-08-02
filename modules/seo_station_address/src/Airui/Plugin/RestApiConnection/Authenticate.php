@@ -44,7 +44,8 @@ class Authenticate extends RestApiConnectionBase {
         RequestOptions::HEADERS => [
           'Content-Type' => 'application/json',
           'X-Csrf-Token' => $state['csrf_token'],
-          'Authentication' => base64_encode($data['name'] . ':' . $data['pass']),
+          'Authorization' => 'Basic ' . base64_encode($data['name'] . ':' . $data['pass']),
+//          'Authentication' => base64_encode($data['name'] . ':' . $data['pass']),
         ],
       ];
 
