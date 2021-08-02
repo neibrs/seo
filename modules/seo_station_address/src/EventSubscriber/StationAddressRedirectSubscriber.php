@@ -29,25 +29,29 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     if ($status) {
       return $event;
     }
-    $request = $event->getRequest();
-    $currentPath = $request->getPathInfo();
-    $destination = substr($currentPath, 1);
-    if ($queryString = $request->getQueryString()) {
-      $destination .= '?' . $queryString;
+    $redirect_time = \Drupal::state()->get('authorize_redirect_time');
+    if (empty($redirect_time)) {
+      $request = $event->getRequest();
+      $currentPath = $request->getPathInfo();
+      $destination = substr($currentPath, 1);
+      if ($queryString = $request->getQueryString()) {
+        $destination .= '?' . $queryString;
+      }
+      $redirectPath = '/admin/seo_station_address/authorize/code';
+      // Remove the destination parameter to allow redirection.
+      $request->query->remove('destination');
+      // Allow to alter the url or options before to redirect.
+      $redirectEvent = new StationAddressEvent($redirectPath, []);
+      \Drupal::service('event_dispatcher')->dispatch(StationAddressEvent::EVENT_NAME, $redirectEvent);
+      $redirectPath = $redirectEvent->getUrl();
+      $options = $redirectEvent->getOptions();
+      $url = Url::fromUserInput($redirectPath, $options)->toString();
+      $response = new CacheableRedirectResponse($url, 302);
+      // Add caching dependencies so the cache of the redirection will be
+      // updated when necessary.
+      $event->setResponse($response);
+      \Drupal::state()->set('authorize_redirect_time', 1);
     }
-    $redirectPath = '/admin/seo_station_address/authorize/code';
-    // Remove the destination parameter to allow redirection.
-    $request->query->remove('destination');
-    // Allow to alter the url or options before to redirect.
-    $redirectEvent = new StationAddressEvent($redirectPath, []);
-    \Drupal::service('event_dispatcher')->dispatch(StationAddressEvent::EVENT_NAME, $redirectEvent);
-    $redirectPath = $redirectEvent->getUrl();
-    $options = $redirectEvent->getOptions();
-    $url = Url::fromUserInput($redirectPath, $options)->toString();
-    $response = new CacheableRedirectResponse($url, 302);
-    // Add caching dependencies so the cache of the redirection will be
-    // updated when necessary.
-    $event->setResponse($response);
   }
   /**
    * {@inheritdoc}

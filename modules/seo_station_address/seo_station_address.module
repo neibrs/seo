@@ -41,3 +41,7 @@ function seo_station_address_page_attachments(array &$attachments) {
     }
   }
 }
+
+function seo_station_address_cron() {
+  \Drupal::state()->delete('authorize_redirect_time', 0);
+}
