@@ -42,6 +42,9 @@ function seo_station_address_page_attachments(array &$attachments) {
   }
 }
 
+/**
+ * Implements hook_cron().
+ */
 function seo_station_address_cron() {
   \Drupal::state()->delete('authorize_redirect_time', 0);
   \Drupal::state()->delete('user_platform_login_info', 0);
