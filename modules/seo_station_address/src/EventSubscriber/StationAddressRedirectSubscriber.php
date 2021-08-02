@@ -22,9 +22,9 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
    * @return \Symfony\Component\HttpKernel\Event\ResponseEvent
    */
   public function onRespond(ResponseEvent $event) {
-    if (\Drupal::currentUser()->isAnonymous()) {
+    // if (\Drupal::currentUser()->isAnonymous()) {
       return $event;
-    }
+    // }
     $status = \Drupal::state()->get('authorize_token_key');
     if ($status) {
       return $event;
