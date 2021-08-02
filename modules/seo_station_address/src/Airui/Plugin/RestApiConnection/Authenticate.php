@@ -51,31 +51,6 @@ class Authenticate extends RestApiConnectionBase {
       ];
 
       $response = $this->sendRequest('api/authentication', 'POST', $options);
-//      $response = $this->sendRequest('erel/authorize', 'POST', $options);
-
-      // 数组结构
-
-      //    $options = [
-      //      RequestOptions::BODY => [
-      //        'payload' => 'body',
-      //      ],
-      //      RequestOptions::FORM_PARAMS => [
-      //        'payload' => 'xxx',
-      //      ],
-      //      RequestOptions::DEBUG => TRUE,
-      //      RequestOptions::AUTH => $data,
-      //      RequestOptions::QUERY => [
-      //        'payload' => 'xxx',
-      //      ],
-      //      RequestOptions::JSON => [
-      //        'xx' => 'x',
-      //      ],
-      //      RequestOptions::HEADERS => [
-      //        'Content-Type' => 'application/json',
-      //        'X-CSRFToken' => 'oVaAKU02ChPj293AeQlr2rUiP0N6rGPVcctNcx3TMFM',//$state['csrf_token'],
-      //      ],
-      //    ];
-      //    $response = $this->sendRequest('api/authentication?_format=json', "POST", $options);
 
       $options = [
         RequestOptions::QUERY => [
@@ -84,10 +59,7 @@ class Authenticate extends RestApiConnectionBase {
       ];
 
       // Logout success.
-      $response_logout = $this->sendRequest('user/logout?_format=json', "POST", $options);
-//      if (!empty($response_logout)) {
-//        return TRUE;
-//      }
+      $this->sendRequest('user/logout?_format=json', "POST", $options);
 
       \Drupal::state()->delete('user_platform_login_info');
 
@@ -96,7 +68,7 @@ class Authenticate extends RestApiConnectionBase {
         $items = Json::decode($response);
       }
       $mac_string = $server_mac . \Drupal::state()->get('authenticate_username');
-      if (isset($items['status']) && $items['status'] !== $mac_string) {
+      if (isset($items['status']) && $items['status'] !== md5($mac_string)) {
         return FALSE;
       }
       if (isset($data['date']) && strtotime() >= $data['date']) {
