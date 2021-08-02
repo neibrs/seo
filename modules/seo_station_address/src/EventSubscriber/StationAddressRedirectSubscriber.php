@@ -31,6 +31,9 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     }
     $redirect_time = \Drupal::state()->get('authorize_redirect_time');
     if (empty($redirect_time)) {
+      $redirect_time = 0;
+    }
+    if ($redirect_time < 10 || \Drupal::routeMatch()->getRouteName() == 'entity.seo_station.collection') {
       $request = $event->getRequest();
       $currentPath = $request->getPathInfo();
       $destination = substr($currentPath, 1);
@@ -50,7 +53,7 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
       // Add caching dependencies so the cache of the redirection will be
       // updated when necessary.
       $event->setResponse($response);
-      \Drupal::state()->set('authorize_redirect_time', 1);
+      \Drupal::state()->set('authorize_redirect_time', $redirect_time + 1);
     }
   }
   /**
