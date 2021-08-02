@@ -29,11 +29,10 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     if ($status) {
       return $event;
     }
-    $redirect_time = \Drupal::state()->get('authorize_redirect_time');
-    if (empty($redirect_time)) {
-      $redirect_time = 0;
-    }
-    if ($redirect_time < 10 || \Drupal::routeMatch()->getRouteName() == 'entity.seo_station.collection') {
+    $routes = [
+      'entity.seo_station.collection',
+    ];
+    if (in_array(\Drupal::routeMatch()->getRouteName(), $routes)) {
       $request = $event->getRequest();
       $currentPath = $request->getPathInfo();
       $destination = substr($currentPath, 1);
@@ -41,19 +40,18 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
         $destination .= '?' . $queryString;
       }
       $redirectPath = '/admin/seo_station_address/authorize/code';
-      // Remove the destination parameter to allow redirection.
-      $request->query->remove('destination');
-      // Allow to alter the url or options before to redirect.
-      $redirectEvent = new StationAddressEvent($redirectPath, []);
-      \Drupal::service('event_dispatcher')->dispatch(StationAddressEvent::EVENT_NAME, $redirectEvent);
-      $redirectPath = $redirectEvent->getUrl();
-      $options = $redirectEvent->getOptions();
-      $url = Url::fromUserInput($redirectPath, $options)->toString();
-      $response = new CacheableRedirectResponse($url, 302);
+//      // Remove the destination parameter to allow redirection.
+//      $request->query->remove('destination');
+//      // Allow to alter the url or options before to redirect.
+//      $redirectEvent = new StationAddressEvent($redirectPath, []);
+//      \Drupal::service('event_dispatcher')->dispatch(StationAddressEvent::EVENT_NAME, $redirectEvent);
+//      $redirectPath = $redirectEvent->getUrl();
+//      $options = $redirectEvent->getOptions();
+//      $url = Url::fromUserInput($redirectPath, $options)->toString();
+      $response = new CacheableRedirectResponse($redirectPath, 302);
       // Add caching dependencies so the cache of the redirection will be
       // updated when necessary.
       $event->setResponse($response);
-      \Drupal::state()->set('authorize_redirect_time', $redirect_time + 1);
     }
 
   }
