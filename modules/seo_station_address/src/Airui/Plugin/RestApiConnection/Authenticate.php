@@ -7,8 +7,7 @@ use GuzzleHttp\RequestOptions;
 
 class Authenticate extends RestApiConnectionBase {
 
-  public function authentication($data)
-  {
+  public function authentication($data) {
     $state = \Drupal::state()->get('user_platform_login_info');
     $server_mac = \Drupal::service('seo_station_address.manager')->getMac();
     if (empty($server_mac)) {
@@ -46,7 +45,6 @@ class Authenticate extends RestApiConnectionBase {
           'Content-Type' => 'application/json',
 //          'X-Csrf-Token' => $state['csrf_token'],
           'Authorization' => 'Basic ' . base64_encode($data['name'] . ':' . $data['pass']),
-//          'Authentication' => base64_encode($data['name'] . ':' . $data['pass']),
         ],
       ];
 
@@ -68,10 +66,13 @@ class Authenticate extends RestApiConnectionBase {
         $items = Json::decode($response);
       }
       $mac_string = $server_mac . \Drupal::state()->get('authenticate_username');
+      if (!isset($items['status']) && !isset($items['date'])) {
+        return FALSE;
+      }
       if (isset($items['status']) && $items['status'] !== md5($mac_string)) {
         return FALSE;
       }
-      if (isset($data['date']) && strtotime() >= $data['date']) {
+      if (strtotime() >= $data['date']) {
         return FALSE;
       }
       \Drupal::state()->set('authorize_token_key', 1);
@@ -83,5 +84,4 @@ class Authenticate extends RestApiConnectionBase {
 
     return FALSE;
   }
-
 }
