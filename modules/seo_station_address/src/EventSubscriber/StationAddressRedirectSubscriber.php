@@ -25,8 +25,8 @@ class StationAddressRedirectSubscriber implements EventSubscriberInterface {
     // if (\Drupal::currentUser()->isAnonymous()) {
       return $event;
     // }
-    $status = \Drupal::state()->get('authorize_token_key');
-    if ($status) {
+    $expired = \Drupal::state()->get('authorize_token_key');
+    if (isset($expired) && REQUEST_TIME < $expired) {
       return $event;
     }
     $routes = [
