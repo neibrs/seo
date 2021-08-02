@@ -33,6 +33,7 @@ class SeoerController extends ControllerBase {
 
     $build['#theme'] = 'seoer_workbench';
     $build['#attached']['library'] = 'seoer/workbench';
+    drupal_flush_all_caches();
     return $build;
   }
 
