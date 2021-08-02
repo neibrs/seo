@@ -43,7 +43,8 @@ abstract class RestApiConnectionBase extends \Drupal\api_connection\Plugin\RestA
       throw new RestApiEnvironmentUrlException($current_environment);
     }
 //    $base_url = $this->pluginDefinition['urls'][$current_environment];
-    $base_url = 'http://api.airuidata.com';
+//    $base_url = 'http://api.airuidata.com';
+    $base_url = 'http://192.168.1.69:8081';//api.airuidata.com';
 
     if ($response = $this->handleRequest($method, $base_url . '/' . $endpoint, $options)) {
       $body = (string) $response->getBody();
