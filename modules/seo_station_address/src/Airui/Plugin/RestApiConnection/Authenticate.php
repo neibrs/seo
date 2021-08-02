@@ -52,10 +52,6 @@ class Authenticate extends RestApiConnectionBase {
 
       $response = $this->sendRequest('api/authentication', 'POST', $options);
 //      $response = $this->sendRequest('erel/authorize', 'POST', $options);
-      $x = 'a';
-      if(empty($response)) {
-        return FALSE;
-      }
 
       // 数组结构
 
@@ -89,9 +85,10 @@ class Authenticate extends RestApiConnectionBase {
 
       // Logout success.
       $response_logout = $this->sendRequest('user/logout?_format=json', "POST", $options);
-      if (!empty($response_logout)) {
-        return TRUE;
-      }
+//      if (!empty($response_logout)) {
+//        return TRUE;
+//      }
+
       \Drupal::state()->delete('user_platform_login_info');
 
       $items = [];
